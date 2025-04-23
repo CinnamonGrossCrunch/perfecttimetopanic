@@ -1,9 +1,9 @@
-export const runtime = "nodejs"; // Ensure Node runtime (not edge)
+export const runtime = "nodejs";
 
-import { fetchNews } from "../lib/fetchNews"; // use relative path to avoid aliasing issues
+import { fetchNews } from "../lib/fetchNews";
+import { summarizeWithGPT } from "../lib/summarizeWithGPT";
 import Image from "next/image";
 
-// TypeScript type for each article from GNews
 type Article = {
   title: string;
   description: string;
@@ -15,7 +15,17 @@ type Article = {
 };
 
 export default async function Home() {
-  const articles: Article[] = await fetchNews(); // get real articles
+  const articles: Article[] = await fetchNews();
+
+  // Use GPT to summarize each article (in parallel)
+  const summaries = await Promise.all(
+    articles.map(async (article) => {
+      return await summarizeWithGPT({
+        title: article.title,
+        description: article.description,
+      });
+    })
+  );
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-black text-white">
@@ -41,7 +51,7 @@ export default async function Home() {
 
           {articles.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2">
-              {articles.map((article: Article, idx: number) => (
+              {articles.map((article, idx) => (
                 <a
                   key={idx}
                   href={article.url}
@@ -52,7 +62,9 @@ export default async function Home() {
                   <h3 className="text-lg font-bold mb-2 text-red-400">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-gray-300">{article.description}</p>
+                  <p className="text-sm text-gray-300">
+                    {summaries[idx] || article.description}
+                  </p>
                   <p className="text-xs mt-2 text-right text-gray-500">
                     {new Date(article.publishedAt).toLocaleDateString()} &middot;{" "}
                     {article.source.name}
@@ -66,7 +78,7 @@ export default async function Home() {
         </section>
 
         <div className="text-sm text-gray-400 italic mt-8">
-          [Live news updating from GNews — refreshing every time you visit.]
+          [Each story is now GPT-summarized for existential threat analysis.]
         </div>
       </main>
 
