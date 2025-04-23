@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.bg-pastel-noise {
+  background-image: 
+  linear-gradient(to bottom right, rgba(255, 100, 150, 0.2), rgba(100, 180, 255, 0.7)),
+    linear-gradient(to bottom right, #fdf6f0, #e8f0ff),
+    url('/noise.png');
+  background-blend-mode: overlay, overlay;
+  background-size: cover;
+}
+
