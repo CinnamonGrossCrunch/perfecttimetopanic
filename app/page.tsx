@@ -1,3 +1,4 @@
+import { fetchNews } from "../lib/fetchNews.ts";
 import Image from "next/image";
 
 export default function Home() {
