@@ -1,4 +1,13 @@
 // lib/fetchNews.ts
+type Article = {
+    title: string;
+    description: string;
+    url: string;
+    publishedAt: string;
+    source: {
+      name: string;
+    };
+  };
 export async function fetchNews() {
     const API_KEY = "0a7a07435a303d2b093edbd68159819a"; 
     const query = "existential threat";

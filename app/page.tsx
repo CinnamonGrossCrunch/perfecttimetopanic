@@ -1,11 +1,21 @@
-// app/page.tsx
-export const runtime = "nodejs"; // ensure full Node runtime for external fetch()
+export const runtime = "nodejs"; // Ensure Node runtime (not edge)
 
-import { fetchNews } from "@/lib/fetchNews";
+import { fetchNews } from "../lib/fetchNews"; // use relative path to avoid aliasing issues
 import Image from "next/image";
 
+// TypeScript type for each article from GNews
+type Article = {
+  title: string;
+  description: string;
+  url: string;
+  publishedAt: string;
+  source: {
+    name: string;
+  };
+};
+
 export default async function Home() {
-  const articles = await fetchNews(); // fetch live articles
+  const articles: Article[] = await fetchNews(); // get real articles
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-black text-white">
@@ -13,6 +23,7 @@ export default async function Home() {
         <h1 className="text-4xl sm:text-6xl font-bold text-red-600 animate-pulse text-center sm:text-left">
           Perfect Time to Panic
         </h1>
+
         <p className="max-w-xl text-gray-300 text-center sm:text-left text-lg sm:text-xl">
           A live feed of stories tracking the slow erosion of democratic order, ecological collapse,
           artificial intelligence risk, economic unraveling, and other delightful omens of human decline.
@@ -30,7 +41,7 @@ export default async function Home() {
 
           {articles.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2">
-              {articles.map((article, idx) => (
+              {articles.map((article: Article, idx: number) => (
                 <a
                   key={idx}
                   href={article.url}
