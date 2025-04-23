@@ -1,17 +1,19 @@
+export const runtime = "nodejs"; // Ensure server-side fetch works in full Node
+
 import { fetchNews } from "@/lib/fetchNews";
 import Image from "next/image";
 
 export default async function Home() {
-  const articles = await fetchNews(); // <-- THIS is what was missing
+  const articles = await fetchNews();
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-black text-white">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-black text-white font-sans">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <h1 className="text-4xl sm:text-6xl font-bold text-red-600 animate-pulse text-center sm:text-left">
           Perfect Time to Panic
         </h1>
         <p className="max-w-xl text-gray-300 text-center sm:text-left text-lg sm:text-xl">
-          A live feed of stories tracking the slow erosion of democratic order, ecological collapse,
+          A live feed of stories tracking the erosion of democratic order, ecological collapse,
           artificial intelligence risk, economic unraveling, and other delightful omens of human decline.
         </p>
 
@@ -50,11 +52,11 @@ export default async function Home() {
         </section>
 
         <div className="text-sm text-gray-400 italic mt-8">
-          [Live news updating from GNews — refreshing every time you visit.]
+          [Live news updating from GNews — refresh this page to fetch new stories.]
         </div>
       </main>
 
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center text-gray-500">
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center text-gray-500">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://nextjs.org"
