@@ -1,9 +1,9 @@
 import { fetchFromGNews } from "./fetchFromGNews";
 import { fetchRSSFeed } from "./fetchRSSFeed";
 
-// Add or remove feeds here:
+// You can add more feeds here
 const SUBSTACKS = [
-  "https://doomberg.substack.com/feed",
+  "https://bloodinthemachine.substack.com/feed",
   "https://noahpinion.substack.com/feed",
 ];
 
