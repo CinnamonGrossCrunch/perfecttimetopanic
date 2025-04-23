@@ -15,7 +15,28 @@ export default function Home() {
         <div className="rounded-xl border border-red-600 px-6 py-4 text-sm bg-red-900 bg-opacity-20">
           <span className="text-red-300">🚨 PANIC LEVEL:</span> <strong>Moderate → Rising</strong>
         </div>
+        <section className="w-full max-w-4xl mt-12">
+  <h2 className="text-2xl sm:text-3xl font-semibold mb-6 border-b border-gray-700 pb-2">
+    Latest Existential Threats
+  </h2>
 
+  {/* Placeholder cards for stories */}
+  <div className="grid gap-6 sm:grid-cols-2">
+    <div className="bg-white bg-opacity-5 p-4 rounded-lg border border-gray-700">
+      <h3 className="text-lg font-bold mb-2 text-red-400">Climate Crisis Escalates</h3>
+      <p className="text-sm text-gray-300">
+        UN report warns of irreversible tipping points. Global cooperation faltering.
+      </p>
+    </div>
+
+    <div className="bg-white bg-opacity-5 p-4 rounded-lg border border-gray-700">
+      <h3 className="text-lg font-bold mb-2 text-yellow-400">AI Alignment Breakdown?</h3>
+      <p className="text-sm text-gray-300">
+        Leaked memo suggests leading AI lab rushed deployment despite ethical red flags.
+      </p>
+    </div>
+  </div>
+</section>
         <div className="text-sm text-gray-400 italic">
           [Soon this will auto-update with live existential threat news...]
         </div>
