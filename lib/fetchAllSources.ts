@@ -19,6 +19,16 @@ const MEDIUM_TAGS = [
   "https://medium.com/feed/tag/world-war-iii",
 ];
 
+// Fisher-Yates shuffle
+function shuffle<T>(arr: T[]): T[] {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export async function fetchAllSources() {
   const gnews = await fetchFromGNews();
 
@@ -35,7 +45,7 @@ export async function fetchAllSources() {
           new Date(b.publishedAt ?? "").getTime() - new Date(a.publishedAt ?? "").getTime()
       )[0]
     )
-    .filter(Boolean); // Remove undefined if any feed is empty
+    .filter(Boolean);
 
   // Combine all articles
   const all = [...gnews, ...rssFeeds.flat()];
@@ -49,9 +59,25 @@ export async function fetchAllSources() {
     ),
   ];
 
-  // Sort by published date
-  return unique.sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  // Separate by source
+  const substack = unique.filter(a => SUBSTACKS.some(url => a.feedUrl?.startsWith(url)));
+  const medium = unique.filter(a => MEDIUM_TAGS.some(url => a.feedUrl?.startsWith(url)));
+  const gnewsOnly = unique.filter(a => a.source === "gnews");
+  const otherRss = unique.filter(
+    a =>
+      !substack.includes(a) &&
+      !medium.includes(a) &&
+      !gnewsOnly.includes(a)
   );
+
+  // Shuffle non-Substack
+  const shuffled = shuffle([...medium, ...gnewsOnly, ...otherRss]);
+
+  // Prioritize Substack, then shuffled others
+  const result = [...substack, ...shuffled];
+
+  // Sort Substack by published date (optional)
+  result.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+  return result;
 }
