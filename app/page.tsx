@@ -1,4 +1,4 @@
-import { fetchNews } from "../lib/fetchNews.ts";
+import { fetchNews } from "@/lib/fetchNews";
 import Image from "next/image";
 
 export default function Home() {
