@@ -10,6 +10,9 @@ const SUBSTACKS = [
 const MEDIUM_TAGS = [
   "https://medium.com/feed/tag/ai",
   "https://medium.com/feed/tag/democracy",
+  "https://medium.com/feed/tag/authoritarianism",
+  "https://medium.com/feed/tag/fear",
+  "https://medium.com/feed/tag/dystopia",
 ];
 
 export async function fetchAllSources() {
