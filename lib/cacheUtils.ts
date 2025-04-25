@@ -13,10 +13,24 @@ export function getCacheFilePath(name: string) {
   return path.join(CACHE_DIR, `${name}.json`);
 }
 
-export async function readCache(/* ...args */) {
-  // implementation
+export async function readCache(key: string): Promise<{ timestamp: number; data: any } | null> {
+  ensureCacheDir();
+  const filePath = getCacheFilePath(key);
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    const raw = await fs.promises.readFile(filePath, "utf-8");
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
-export async function writeCache(/* ...args */) {
-  // implementation
+export async function writeCache(key: string, data: any) {
+  ensureCacheDir();
+  const filePath = getCacheFilePath(key);
+  const payload = {
+    timestamp: Date.now(),
+    data,
+  };
+  await fs.promises.writeFile(filePath, JSON.stringify(payload), "utf-8");
 }

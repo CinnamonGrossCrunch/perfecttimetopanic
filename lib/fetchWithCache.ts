@@ -5,7 +5,8 @@ export async function fetchWithCache<T>(
   fetchFn: () => Promise<T>,
   maxAgeMs = 1000 * 60 * 60 * 24 // default: 24 hours
 ): Promise<T> {
-  const cached = readCache(key);
+  const cached = await readCache(key); // <-- add await
+
   const now = Date.now();
 
   if (cached && cached.timestamp && now - cached.timestamp < maxAgeMs) {
