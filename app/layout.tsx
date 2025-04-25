@@ -4,7 +4,7 @@ import "./globals.css";
 import AnimatedBackground from "../components/AnimatedBackground";
 import { Libre_Baskerville } from "next/font/google";
 import {Playfair_Display} from "next/font/google";
-
+import { Analytics } from "@vercel/analytics/react"
 const libre = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -145,6 +145,7 @@ export default function RootLayout({
       >
         <AnimatedBackground /> {/* <-- Add this line */}
         {children}
+        <Analytics />
       </body>
     </html>
   );

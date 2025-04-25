@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.5",
+    "@vercel/analytics": "^1.5.0",
     "abort-controller": "^3.0.0",
     "autoprefixer": "^10.4.21",
     "cheerio": "^1.0.0",
