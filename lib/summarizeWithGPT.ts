@@ -19,7 +19,7 @@ export async function summarizeWithGPT({
   description: string;
 }): Promise<string> {
   try {
-    const prompt = `Summarize the following news story in 1–2 ominous, insightful sentences. Highlight any existential threat to humanity or democracy.\n\nTitle: "${title}"\nDescription: "${description}"`;
+    const prompt = `Summarize the following news story in 1–2 gallows humor warnings. Highlight any threat to humanity or democracy.\n\nTitle: "${title}"\nDescription: "${description}"`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4.1",
@@ -27,7 +27,7 @@ export async function summarizeWithGPT({
         {
           role: "system",
           content:
-            "You are a darkly poetic analyst summarizing news that reveals existential threats to humanity and democracy. Be concise but profound.",
+            "You are a darkly poetic analyst wryly summarizing news that reveals threats to humanity and democracy. Be concise but profound.",
         },
         {
           role: "user",

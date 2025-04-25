@@ -10,13 +10,19 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.5",
+    "abort-controller": "^3.0.0",
     "autoprefixer": "^10.4.21",
+    "cheerio": "^1.0.0",
+    "franc": "^6.2.0",
+    "jsdom": "^26.1.0",
     "next": "15.3.1",
+    "node-fetch": "^3.3.2",
     "openai": "^4.95.1",
     "postcss": "^8.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.0.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "sentiment": "^5.0.2"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
@@ -24,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sentiment": "^5.0.4",
     "tailwindcss": "^4.1.4",
     "typescript": "^5"
   }

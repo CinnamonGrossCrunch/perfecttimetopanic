@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AnimatedBackground from "../components/AnimatedBackground";
+import { Libre_Baskerville } from "next/font/google";
+import {Playfair_Display} from "next/font/google";
 
+const libre = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-libre",
+});
+
+// ...existing imports...
+
+// Removed duplicate RootLayout function
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,6 +39,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <AnimatedBackground /> {/* <-- Add this line */}
         {children}
       </body>
     </html>
