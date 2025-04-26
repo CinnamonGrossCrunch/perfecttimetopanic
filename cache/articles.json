@@ -1,9 +1,9 @@
 {
-  "date": "2025-04-25T09:19:54.574Z",
+  "date": "2025-04-26T01:45:59.443Z",
   "articles": [
     {
-      "title": "On Take Your Child to Work Day, DOGE-led GSA is hosting AI workshops for kids of federal employees threatened with layoffs",
-      "description": "From the 'you can't make this stuff up' dept.",
+      "title": "DOGE's AI-powered Take Your Child to Work Day",
+      "description": "The DOGE-led General Services Administration is hosting AI workshops for kids of federal employees threatened with layoffs",
       "url": "https://www.bloodinthemachine.com/p/on-take-your-child-to-work-day-doge",
       "publishedAt": "Thu, 24 Apr 2025 00:36:16 GMT",
       "source": {
@@ -24,178 +24,238 @@
       "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03f0de0d-6e5c-46c0-8a93-38a52f3a0c09_960x640.jpeg"
     },
     {
-      "title": "We Visited Rumeysa Ozturk in Detention.",
+      "title": "Kennedy’s Remarks on Autism Described My Reality",
+      "description": "I don’t care if my child with autism ever pays taxes, but I do care that she may never have the opportunity to work or live independently.",
+      "url": "https://www.nytimes.com/2025/04/25/opinion/autism-rfk-parent-child.html",
+      "publishedAt": "Sat, 26 Apr 2025 01:21:25 +0000",
+      "source": {
+        "name": "NYT > Opinion"
+      },
+      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
+      "thumbnail": "https://static01.nyt.com/images/2025/04/27/opinion/27may-image/25may-image-facebookJumbo.jpg",
+      "category": "op-ed"
+    },
+    {
+      "title": "First Wave Public Endorsement for Cognitive Security",
+      "description": "To Scholars, Leaders, Thinkers, and Defenders of Human Freedom:\nContinue reading on Medium »",
+      "url": "https://medium.com/@info_7328/first-wave-public-endorsement-for-cognitive-security-a8f83c1fadd5?source=rss------war-5",
+      "publishedAt": "Sat, 26 Apr 2025 00:53:38 GMT",
+      "source": {
+        "name": "War on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/war",
+      "thumbnail": null
+    },
+    {
+      "title": "Our After-Dinner Debate About Larry David’s Satire",
+      "description": "Sampling the outpouring of reader responses to the comedian’s imaginary dinner with Hitler. Also: The law firms’ test; a plea for democracy.",
+      "url": "https://www.nytimes.com/2025/04/25/opinion/larry-david-hitler-trump.html",
+      "publishedAt": "Sat, 26 Apr 2025 00:27:33 +0000",
+      "source": {
+        "name": "NYT > Opinion"
+      },
+      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
+      "thumbnail": "https://static01.nyt.com/images/2025/04/25/opinion/21david1/21david1-facebookJumbo.jpg",
+      "category": "op-ed"
+    },
+    {
+      "title": "India and Pakistan now a days 2025 as war began?",
+      "description": "as everyone knows Indiana don’t bear us as an independent nation so they cash the event.\nContinue reading on Medium »",
+      "url": "https://medium.com/@sidrakhalid_72154/india-and-pakistan-now-a-days-2025-as-war-began-95536e88a514?source=rss------war-5",
+      "publishedAt": "Sat, 26 Apr 2025 00:26:06 GMT",
+      "source": {
+        "name": "War on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/war",
+      "thumbnail": null
+    },
+    {
+      "title": "Hamas Was Part of the Indian Kashmir Attack: The Ruthless Cyber Infiltration No One Saw Coming",
+      "description": "“This isn’t just terrorism. This is next-gen warfare — and it’s coming for every nation with a power grid, a hospital, or a heartbeat.”\nContinue reading on Medium »",
+      "url": "https://medium.com/@Everclear/hamas-was-part-of-the-indian-kashmir-attack-the-ruthless-cyber-infiltration-no-one-saw-coming-bae37dcd0150?source=rss------war-5",
+      "publishedAt": "Fri, 25 Apr 2025 23:15:59 GMT",
+      "source": {
+        "name": "War on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/war",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:926/0*D-DMxxHhPrj3h1xb.jpg"
+    },
+    {
+      "title": "Thoughts About Freedom",
+      "description": "And the telling of a dystopian version of where we are headed\nContinue reading on Medium »",
+      "url": "https://medium.com/@rglongpre/thoughts-about-freedom-7aee66961cbc?source=rss------dystopia-5",
+      "publishedAt": "Fri, 25 Apr 2025 21:41:05 GMT",
+      "source": {
+        "name": "Dystopia on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/dystopia",
+      "thumbnail": "https://miro.medium.com/v2/da:true/resize:fit:1200/0*1Wlg7-q66KtpOIXN"
+    },
+    {
+      "title": "Trump’s pardons aren’t the end of the story in police-chase death",
+      "description": "A D.C. civil suit continues the search for justice for Karon Hylton-Brown.",
+      "url": "https://www.washingtonpost.com/opinions/2025/04/25/karon-hylton-brown-trump-pardons-dc-police-chase-death/",
+      "publishedAt": "Fri, 25 Apr 2025 21:30:10 +0000",
+      "source": {
+        "name": "Opinions"
+      },
+      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
+      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/LCXMYKDB2II6ZP3QLAADGUOGE4_size-normalized.jpg&w=1440",
+      "category": "op-ed"
+    },
+    {
+      "title": "Big, big trouble at ‘60 Minutes’",
+      "description": "Executive Producer Bill Owens steps down, for reasons that are way too predictable.",
+      "url": "https://www.washingtonpost.com/opinions/2025/04/25/60-minutes-corporate-hell/",
+      "publishedAt": "Fri, 25 Apr 2025 20:55:54 +0000",
+      "source": {
+        "name": "Opinions"
+      },
+      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
+      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/IOF7TDRI6II6XHBBHTCQDUEYD4.jpg&w=1440",
+      "category": "op-ed"
+    },
+    {
+      "title": "When is a peace not a peace?",
+      "description": "Plus: Religion and ‘Sinners.’ Scientific and reputational capital.",
+      "url": "https://www.washingtonpost.com/opinions/2025/04/25/ukraine-peace-deal-trump-putin-sinners-tariffs/",
+      "publishedAt": "Fri, 25 Apr 2025 20:28:56 +0000",
+      "source": {
+        "name": "Opinions"
+      },
+      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
+      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/Y2GEDBFEWUS54KG7UZPYPFVH6E_size-normalized.jpg&w=1440",
+      "category": "op-ed"
+    },
+    {
+      "title": "Why is Yale University implicitly endorsing Israeli extremist Ben-Gvir? | Arwa Mahdawi",
+      "description": "Shabtai, a Jewish society based at Yale, hosted the extremist far-right politician convicted of supporting terrorism. Why did Yale allow this?\nLet me start with a statement that should be obvious: deliberately starving 2 million people – half of whom are children – is indefensible. It is not complicated, it is not a nuanced situation that requires a PhD to parse. It is not an unfortunate and unavoidable part of war. It is quite simply indefensible. I would say that it is also very much prohibited by international human rights law, but that doesn’t seem to exist any more, does it?\nAs I write this, no food, water or medicine has been allowed into Gaza for almost two months. It is impossible to know just how bad the situation really is because Israel has imposed a media blackout on the region. However, aid organizations have said: “The Gaza Strip is now likely facing the worst humanitarian crisis in the 18 months” since the war began. Thousands of children are malnourished. Childhood malnutrition, I can’t stress enough, has long-term consequences. An entire generation’s future has been violently stolen from them.\n Continue reading...",
+      "url": "https://www.theguardian.com/commentisfree/2025/apr/25/itamar-ben-gvir-yale-shabtai-israel",
+      "publishedAt": "Fri, 25 Apr 2025 19:08:10 GMT",
+      "source": {
+        "name": "Opinion | The Guardian"
+      },
+      "feedUrl": "https://www.theguardian.com/commentisfree/rss",
+      "thumbnail": "https://i.guim.co.uk/img/media/7da97437e963a44d29e6e25ef0b894eb9df15d27/0_0_6612_3967/master/6612.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctb3BpbmlvbnMucG5n&enable=upscale&s=5c8a9d8fe8860dd35c87aba0234f038b",
+      "category": "op-ed"
+    },
+    {
+      "title": "Are you there, God? I’m lonely.",
+      "description": "Americans have been turning away from organized religion for decades — but recent research suggests that trend might be stalling out. And studies do show that people affiliated with a religion tend to be happier and healthier. So should more people be joining up? And are there ways to make some of the most ancient religions a little more modern, or at least more open to progressive ideas? If not, where else can people find community and a sense of belonging? Drew Goins, Molly Roberts and Shadi Hamid discuss the usefulness, or not, of religion.",
+      "url": "https://www.washingtonpost.com/podcasts/impromptu/are-you-there-god-im-lonely/",
+      "publishedAt": "Fri, 25 Apr 2025 18:28:31 +0000",
+      "source": {
+        "name": "Opinions"
+      },
+      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
+      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://podcast.posttv.com/series/20250425/t_1745605360083_name_impromptu_friday_16x9.jpg&w=1440",
+      "category": "op-ed"
+    },
+    {
+      "title": "The Library Part One: Soldier",
+      "description": "Soldier had seen them; the first day the children had met.\nContinue reading on Medium »",
+      "url": "https://medium.com/@kadewrites2024/the-library-part-one-soldier-21d1579eb99b?source=rss------dystopia-5",
+      "publishedAt": "Fri, 25 Apr 2025 17:16:31 GMT",
+      "source": {
+        "name": "Dystopia on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/dystopia",
+      "thumbnail": "https://miro.medium.com/v2/da:true/resize:fit:1200/0*0Q5gEky4Q2X9cijh"
+    },
+    {
+      "title": "Ukraine has exposed Trump’s true identity: as a vandal, an autocrat, a gangster and a fool | Jonathan Freedland",
+      "description": "This presidency places authoritarian ambition above all – and now the people of Ukraine are paying the price\nTo see the true face of Donald Trump, look no further than Ukraine. Laid bare in his handling of that issue are not only his myriad weaknesses, but also the danger he poses to his own country and the wider world – to say nothing of the battered people of Ukraine itself.\nDon’t be fooled by the mild, vaguely theatrical rebuke Trump issued to Vladimir Putin on Thursday after Moscow unleashed a deadly wave of drone strikes on Kyiv, killing 12 and injuring dozens: “Vladimir, STOP!” Pay attention instead to the fact that, in the nearly 100 days since Trump took office, the US has essentially switched sides in the battle between Putin’s Russia and democratic Ukraine, backing the invaders against the invaded.\nJonathan Freedland is a Guardian columnist and the host of the Politics Weekly America podcast\n100 days of Trump’s presidency, with Jonathan Freedland and guests. On 30 April, join Jonathan Freedland, Kim Darroch, Devika Bhat and Leslie Vinjamuri as they discuss Trump’s presidency on his 100th day in office, live at Conway Hall London and livestreamed globally. Book tickets here or at guardian.live\n Continue reading...",
+      "url": "https://www.theguardian.com/commentisfree/2025/apr/25/ukraine-donald-trump-true-identity-vandal-autocrat-gangster-fool",
+      "publishedAt": "Fri, 25 Apr 2025 16:23:25 GMT",
+      "source": {
+        "name": "Opinion | The Guardian"
+      },
+      "feedUrl": "https://www.theguardian.com/commentisfree/rss",
+      "thumbnail": "https://i.guim.co.uk/img/media/af33a8e1f72049596190acd42c238c59ad9dcb43/0_0_4741_2845/master/4741.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctb3BpbmlvbnMucG5n&enable=upscale&s=37b9bc1e141ce35dadbcd6fc0c61ff57",
+      "category": "op-ed"
+    },
+    {
+      "title": "Letters to the Editor: Enduring 'the whiplash effect' in the face of President Trump's reversals",
+      "description": "'Though the Democratic Party needs to unite and fight eventually, in the meantime a crash helmet, neck brace and Dramamine may have to suffice,' writes an L.A. Times reader.",
+      "url": "https://www.latimes.com/opinion/letters-to-the-editor/story/2025-04-25/enduring-the-whiplash-effect-as-president-trump-switches-up-his-language-once-again",
+      "publishedAt": "Fri, 25 Apr 2025 15:00:06 GMT",
+      "source": {
+        "name": "Opinion Voices"
+      },
+      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
+      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/a2fe181/2147483647/strip/true/crop/4000x2100+0+284/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F19%2F91%2F4b70d3c441cea83a27866d1c8653%2Fhttps-delivery-gettyimages.com%2Fdownloads%2F2210995076",
+      "category": "op-ed"
+    },
+    {
+      "title": "Why does RFK Jr want to put my family on an ‘autism registry’? | Deborah Bloom",
+      "description": "I’m scared about the health secretary’s vow to find the cause behind the so-called ‘autism epidemic’\nI always knew my parents operated on a different wavelength than most.\nFor one, they are both exceptionally smart. My mother is a former mathematician, who studied the various levels of infinity as part of her master’s thesis. My father is a computer programmer who, at 17 years old, was one of the youngest people to ever be able to communicate with ships in morse code. They met at a party for members of Mensa, a club for the highly intelligent.\n Continue reading...",
+      "url": "https://www.theguardian.com/commentisfree/2025/apr/25/rfk-jr-autism-registry",
+      "publishedAt": "Fri, 25 Apr 2025 14:00:37 GMT",
+      "source": {
+        "name": "Opinion | The Guardian"
+      },
+      "feedUrl": "https://www.theguardian.com/commentisfree/rss",
+      "thumbnail": "https://i.guim.co.uk/img/media/01e4ff4684e0805ed8068461265d9f4fb008749c/0_0_1413_848/master/1413.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctb3BpbmlvbnMucG5n&enable=upscale&s=d867e6bb07bc71a0809034e04c4b1e0a",
+      "category": "op-ed"
+    },
+    {
+      "title": "Letters to the Editor: Treatment of Kilmar Abrego Garcia is objectionable even if he isn't innocent",
+      "description": "'This person is innocent until proven guilty,' notes one reader.",
+      "url": "https://www.latimes.com/opinion/letters-to-the-editor/story/2025-04-25/administrations-treatment-of-kilmar-abrego-garcia-is-objectionable-even-if-he-isnt-innocent",
+      "publishedAt": "Fri, 25 Apr 2025 14:00:31 GMT",
+      "source": {
+        "name": "Opinion Voices"
+      },
+      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
+      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/63c9e43/2147483647/strip/true/crop/5472x2873+0+388/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff9%2Fb7%2F91a81907402caf45ac36a6c7fe99%2Fhttps-delivery-gettyimages.com%2Fdownloads%2F2210198987",
+      "category": "op-ed"
+    },
+    {
+      "title": "Letters to the Editor: Media executive's resignation foreshadows increasing threat to the 1st Amendment ",
+      "description": "An L.A. Times reader expresses worry over the departure of a '60 Minutes' executive who did not want to cave to Trump's demands.",
+      "url": "https://www.latimes.com/opinion/letters-to-the-editor/story/2025-04-25/media-executives-resignation-foreshadows-increasing-threat-to-the-1st-amendment",
+      "publishedAt": "Fri, 25 Apr 2025 12:00:39 GMT",
+      "source": {
+        "name": "Opinion Voices"
+      },
+      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
+      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/8d1ffa1/2147483647/strip/true/crop/5296x2780+0+658/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F5d%2F7b%2F5c0f365947a89b1d3fee64845f59%2F465506-la-ct-60-minutes-owens-rl-001c.jpg",
+      "category": "op-ed"
+    },
+    {
+      "title": "Letters to the Editor: The Menendez brothers should spend the rest of their lives in prison",
+      "description": "'Life without parole should mean exactly what a jury rules on and no less,' writes one reader.",
+      "url": "https://www.latimes.com/opinion/letters-to-the-editor/story/2025-04-25/the-menendez-brothers-should-spend-the-rest-of-their-lives-in-prison",
+      "publishedAt": "Fri, 25 Apr 2025 12:00:09 GMT",
+      "source": {
+        "name": "Opinion Voices"
+      },
+      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
+      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/1f4af23/2147483647/strip/true/crop/3001x1576+0+193/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc8%2Ffd%2F96cad4f34c4f8951ae32ab1d7a16%2Fcalifornia-menendez-brothers-60922.jpg",
+      "category": "op-ed"
+    },
+    {
+      "title": "Reading Arendt.",
+      "description": "In her essay Classless Society, Hannah Arendt critically examines the Marxist vision of a classless society, particularly in the light of…\nContinue reading on Medium »",
+      "url": "https://mohammedhananpanakkal.medium.com/reading-arendt-e8f7aae5c1f9?source=rss------totalitarianism-5",
+      "publishedAt": "Fri, 25 Apr 2025 10:00:23 GMT",
+      "source": {
+        "name": "Totalitarianism on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/totalitarianism",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:960/0*2gsZerR7NU6tG-ol.jpg"
+    },
+    {
+      "title": "We Visited Rumeysa Ozturk in Detention",
       "description": "The Constitution is only as strong as our willingness to defend it.",
       "url": "https://www.nytimes.com/2025/04/25/opinion/trump-rumeysa-ozturk-ice.html",
-      "publishedAt": "Fri, 25 Apr 2025 09:02:22 +0000",
+      "publishedAt": "Fri, 25 Apr 2025 09:02:23 +0000",
       "source": {
         "name": "NYT > Opinion"
       },
       "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
       "thumbnail": "https://static01.nyt.com/images/2025/04/25/multimedia/25MarkeyMcGovernPressley-qhvb/25MarkeyMcGovernPressley-qhvb-facebookJumbo.jpg",
       "category": "op-ed"
-    },
-    {
-      "title": "Kennedy’s Remarks on Autism Described My Reality",
-      "description": "I don’t care if my child with autism ever pays taxes — but I do care that she may never have the opportunity to work or live independently.",
-      "url": "https://www.nytimes.com/2025/04/25/opinion/autism-rfk-parent-child.html",
-      "publishedAt": "Fri, 25 Apr 2025 09:02:08 +0000",
-      "source": {
-        "name": "NYT > Opinion"
-      },
-      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
-      "thumbnail": "https://static01.nyt.com/images/2025/04/25/opinion/25may-image/25may-image-facebookJumbo.jpg",
-      "category": "op-ed"
-    },
-    {
-      "title": "What Is the Defining Image of Trump’s First 100 Days?",
-      "description": "Opinion columnists share the piece of media that most defines the first 100 days of Donald Trump’s second term.",
-      "url": "https://www.nytimes.com/video/opinion/100000010121805/100-days-defining-image.html",
-      "publishedAt": "Fri, 25 Apr 2025 09:01:55 +0000",
-      "source": {
-        "name": "NYT > Opinion"
-      },
-      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
-      "thumbnail": "https://static01.nyt.com/images/2025/04/26/arts/op-columnists-100days-media-tressie-thumb/op-columnists-100days-media-tressie-thumb-facebookJumbo.jpg?video-overlay",
-      "category": "op-ed"
-    },
-    {
-      "title": "Hot Cities, High Bills: Rethinking Urban Design to Cut Power Consumption.",
-      "description": "fig 1: Futuristic Green City\nContinue reading on Medium »",
-      "url": "https://greencitymov.medium.com/hot-cities-high-bills-rethinking-urban-design-to-cut-power-consumption-b8a20eae7e5f?source=rss------climate_change-5",
-      "publishedAt": "Fri, 25 Apr 2025 08:33:11 GMT",
-      "source": {
-        "name": "Climate Change on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/climate-change",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*lhdoj0NErE83KvaCZu-dAw.png"
-    },
-    {
-      "title": "Two Molecules Away from Extinction",
-      "description": "The real threat of global warming is not in the permafrost melting. It’s right here in our labs. Lurking for the right moment. Lurking for…\nContinue reading on Medium »",
-      "url": "https://medium.com/@santapansaha/two-molecules-away-from-extinction-627a1d59fbe2?source=rss------climate_change-5",
-      "publishedAt": "Fri, 25 Apr 2025 08:01:03 GMT",
-      "source": {
-        "name": "Climate Change on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/climate-change",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:720/1*oGHOdpRVrHmxiJyHMx81NQ.png"
-    },
-    {
-      "title": "De-extinction Dilemma: Ethics at a Crossroads",
-      "description": "Should we reproduce lost species? My opinion as an ethicist: no!\nContinue reading on Medium »",
-      "url": "https://lawandordnung.medium.com/de-extinction-dilemma-ethics-at-a-crossroads-66b0127f4170?source=rss------ethics-5",
-      "publishedAt": "Fri, 25 Apr 2025 07:17:12 GMT",
-      "source": {
-        "name": "Ethics on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/ethics",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*pK1VI5OVaCY4_QLl9b6YvQ@2x.jpeg"
-    },
-    {
-      "title": "Atomic Shadows and International Security",
-      "description": "Analysis of the bombing of Hiroshima and Nagasaki, the people who burned that day, and the shadows they left behind.\nContinue reading on Medium »",
-      "url": "https://medium.com/@I.D.Reeves/atomic-shadows-and-international-security-eb7e4ea358e6?source=rss------ethics-5",
-      "publishedAt": "Fri, 25 Apr 2025 05:39:22 GMT",
-      "source": {
-        "name": "Ethics on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/ethics",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*Pxgxs64ns8N7eij_uOOXdA.png"
-    },
-    {
-      "title": "Elon Musk is not going to sire humanity’s salvation",
-      "description": "Plus: RFK Jr.’s “radical transparency.” Democratic moderation.",
-      "url": "https://www.washingtonpost.com/opinions/2025/04/24/pronatalism-elon-musk-children-zuckerberg-rfk/",
-      "publishedAt": "Thu, 24 Apr 2025 20:32:11 +0000",
-      "source": {
-        "name": "Opinions"
-      },
-      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
-      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/BXN32WQJ6NCX2GYZGUIJ4F2A4A_size-normalized.jpg&w=1440",
-      "category": "op-ed"
-    },
-    {
-      "title": "Should you get the shingles vaccine? Answering reader questions.",
-      "description": "In addition to protecting against shingles, the vaccine could decrease dementia risk.",
-      "url": "https://www.washingtonpost.com/opinions/2025/04/24/shingles-vaccine-rash-prevention-dementia/",
-      "publishedAt": "Thu, 24 Apr 2025 20:30:38 +0000",
-      "source": {
-        "name": "Opinions"
-      },
-      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
-      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/4IBNQVNNNQRNHZHEZGZDTIF5RM.jpg&w=1440",
-      "category": "op-ed"
-    },
-    {
-      "title": "RFK Jr. called autism a ‘preventable disease.’ He couldn’t be more wrong.",
-      "description": "Readers respond to Robert F. Kennedy Jr.’s rhetoric about autism with their own experiences.",
-      "url": "https://www.washingtonpost.com/opinions/2025/04/24/autism-rfk-jr-hhs-letters/",
-      "publishedAt": "Thu, 24 Apr 2025 18:29:43 +0000",
-      "source": {
-        "name": "Opinions"
-      },
-      "feedUrl": "https://feeds.washingtonpost.com/rss/opinions",
-      "thumbnail": "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/DNYYETP7TXX2V6G7DNXI3FVFBM_size-normalized.jpg&w=1440",
-      "category": "op-ed"
-    },
-    {
-      "title": "Contributor: What the ancient world can teach us about death ",
-      "description": "In antiquity and now, inconsistency and illogicality lie at the heart of the human effort to imagine what happens when we're dead",
-      "url": "https://www.latimes.com/opinion/story/2025-04-24/death-afterlife-heaven-hell-egyptians-greeks-romans",
-      "publishedAt": "Thu, 24 Apr 2025 17:07:34 GMT",
-      "source": {
-        "name": "Opinion Voices"
-      },
-      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
-      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/bfc821c/2147483647/strip/true/crop/3000x1575+0+273/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fac%2F2c%2F980f017045249f768e381634901e%2Fgetty-sarcophagus-figures-for-death-in-antiquity-piece.jpg",
-      "category": "op-ed"
-    },
-    {
-      "title": "Letters to the Editor: Cutting health and other commissions is the wrong way to balance L.A.'s budget ",
-      "description": "The 'pennies' saved by cutting the health commission 'are never going to add up to $1 billion,' argues its president.",
-      "url": "https://www.latimes.com/opinion/letters-to-the-editor/story/2025-04-24/cutting-health-and-other-commissions-is-the-wrong-way-to-balance-l-a-s-budget",
-      "publishedAt": "Thu, 24 Apr 2025 14:00:58 GMT",
-      "source": {
-        "name": "Opinion Voices"
-      },
-      "feedUrl": "https://www.latimes.com/opinion/rss2.0.xml",
-      "thumbnail": "https://ca-times.brightspotcdn.com/dims4/default/ebecd7a/2147483647/strip/true/crop/3600x1890+0+197/resize/1200x630!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fad%2F90%2F085d58dc42eea2e1dd034f9cc79c%2F1503199-me-karen-bass-cmh-09.jpg",
-      "category": "op-ed"
-    },
-    {
-      "title": "How a President Becomes a Dictator: By Executive Order",
-      "description": "130 executive orders. No debate. No oversight. No limits. This is how the Constitution dies — not with a coup, but with a pen.\nContinue reading on Medium »",
-      "url": "https://john-w-whitehead.medium.com/how-a-president-becomes-a-dictator-by-executive-order-f4d6bc8ecb2c?source=rss------dictatorship-5",
-      "publishedAt": "Thu, 24 Apr 2025 11:15:38 GMT",
-      "source": {
-        "name": "Dictatorship on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/dictatorship",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:600/1*JKvfmwjdshqpAxeBYtAS1Q.png"
-    },
-    {
-      "title": "Donald Trump wants celebrities to kiss the ring. Bill Maher did: who’ll be next? | Emma Brockes",
-      "description": "After the apparent defanging of the once critical talkshow host, can the president get more stars onside? Some nuts will be tougher to crack than others\nIf President Trump invited you to the White House, would you go? This is the question US hacks and other media personalities have been asking themselves since the inauguration, an American version of that self-flattering British perennial: when Buckingham Palace calls, will you be buying a fascinator to accept the OBE? In both cases, no matter how pluckily anti-establishment an individual may have been to that point, the answer is often a resounding: you bet!\nFirst, the rationalisations. In the US context, respect for the “office of the president”, for which there is no British equivalent that doesn’t prompt sniggering, is taken seriously enough that if the president calls, you don’t turn him down. There’s the standard argument in favour of engagement over boycott as a more constructive path to account-holding. And there is, for hacks, the perfectly reasonable rationale of pursuing the story. Of course, you’re going to say yes if Trump calls. How could you not?\nEmma Brockes is a Guardian columnist\n Continue reading...",
-      "url": "https://www.theguardian.com/commentisfree/2025/apr/24/donald-trump-celebrities-bill-maher-president",
-      "publishedAt": "Thu, 24 Apr 2025 08:00:02 GMT",
-      "source": {
-        "name": "Opinion | The Guardian"
-      },
-      "feedUrl": "https://www.theguardian.com/commentisfree/rss",
-      "thumbnail": "https://i.guim.co.uk/img/media/67d5f6f8f7e788173d22f8adbe0a65703c29f9d7/0_138_1130_678/master/1130.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctb3BpbmlvbnMucG5n&enable=upscale&s=6a671d7d957be8ef132ba7d8d9b659e5",
-      "category": "op-ed"
-    },
-    {
-      "title": "“We Are All Afraid”",
-      "description": "With just four words to mark her deep concern\nthat the sickness in the soul of the republic\nis a mortal threat that cannot go unmet,\nthe…\nContinue reading on Medium »",
-      "url": "https://medium.com/@mrgarysimons/we-are-all-afraid-4a39365fd2f8?source=rss------dictatorship-5",
-      "publishedAt": "Thu, 24 Apr 2025 03:10:28 GMT",
-      "source": {
-        "name": "Dictatorship on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/dictatorship",
-      "thumbnail": null
     },
     {
       "title": "The pundit's dilemma",
@@ -240,17 +300,6 @@
       },
       "feedUrl": "https://bloodinthemachine.substack.com/feed",
       "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb5f835e5-2c3a-41e6-aff6-2e50d6858403_3587x2721.jpeg"
-    },
-    {
-      "title": "Will this be the Chinese Century?",
-      "description": "Probably yes, though that may not mean what people expect.",
-      "url": "https://www.noahpinion.blog/p/will-this-be-the-chinese-century",
-      "publishedAt": "Thu, 17 Apr 2025 09:48:22 GMT",
-      "source": {
-        "name": "Noahpinion"
-      },
-      "feedUrl": "https://noahpinion.substack.com/feed",
-      "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa13d0065-74e6-44b8-b8e3-85770151e7c8_1096x628.jpeg"
     },
     {
       "title": "The five best Luddite episodes of Black Mirror",

@@ -57,6 +57,7 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   themeColor: "#ffffff",
   keywords: [
+    "PERFECT TIME TO PANIC",
     "bad news",
     "doomscroll",
     "doomscrolling",
@@ -101,6 +102,7 @@ export const metadata: Metadata = {
     "alert",
     "fact checking",
     "media literacy",
+    "NEWS",
     // Media page specific
     "media coverage",
     "news analysis",
