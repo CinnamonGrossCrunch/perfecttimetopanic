@@ -100,11 +100,11 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                   // - shadow, text color, hover effects
                   className="
                     flex flex-col justify-between min-h-[350px] p-6
-                    rounded-3xl bg-white/40 backdrop-blur-sm shadow-glow
+                    rounded-3xl bg-white/80 backdrop-blur-sm shadow-glow
                     text-[#23272f] transition hover:shadow-3xl
                     hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2
                     hover:ring-offset-yellow-100 hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]
-                    hover:bg-white/90
+                    hover:bg-white/70
                   "
                 >
                   <h3
@@ -173,7 +173,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         </footer>
         {/* Mobile: FAB to toggle menu */}
         <button
-          className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-bottom justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
+          className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-bottom center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
           aria-label="Show quick actions"
           onClick={() => setShowMobileButtons((v) => !v)}
           style={{ fontSize: "4rem" }}
@@ -183,8 +183,8 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             style={{
               fontSize: "4rem",
               transform: showMobileButtons
-          ? "rotate(45deg) translateX(-0%) translateY(-65%) scale(1.5)"
-          : "rotate(0deg) translateX(-0%) translateY(-42.5%)",
+          ? "rotate(45deg) translateX(-0%) translateY() scale(1.5)"
+          : "rotate(0deg) translateX(-0%) translateY()",
             }}
           >
             +
@@ -310,9 +310,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             Refresh Feed
           </button>
         </div>
-        ()
-
-              Floating Buttons (desktop or mobile when open)
+     
               <div
                 className={`
                   hidden sm:block fixed right-0 top-7/8 z-50 flex flex-col gap-3 pr-0
@@ -422,8 +420,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                 </button>
               </div>
             </div>
-          );
-        )()
+          
       </div>
   );
 }
