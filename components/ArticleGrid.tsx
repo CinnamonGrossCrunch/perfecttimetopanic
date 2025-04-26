@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type Article = {
   title: string;
@@ -19,11 +18,23 @@ type Props = {
   summaries: string[];
 };
 
+function getPaywallOptionsClassName(show: boolean): string {
+  return `
+    absolute right-full bottom-30 flex bg-white/0 rounded-3xl px-5 py-4 z-50 items-center
+    transition-transform duration-700 ease-out
+    ${show ? "translate-x-0 opacity-100" : "translate-x-[120%] opacity-0 pointer-events-none"}
+    ${show ? "flex-col gap-3" : "flex-row gap-5"}
+  `;
+}
+
 export default function ArticleGrid({ articles, summaries }: Props) {
   const [visibleCount, setVisibleCount] = useState(6);
   const loadMore = () => setVisibleCount((c) => c + 6);
   const [showPaywallOptions, setShowPaywallOptions] = useState(false);
   const [showMobileButtons, setShowMobileButtons] = useState(false);
+  const toggleMobileButtons = useCallback(() => {
+    setShowMobileButtons((v) => !v);
+  }, []);
 
   return (
     <div className="relative min-h-screen font-sans text-foreground overflow-hidden">
@@ -173,24 +184,21 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         </footer>
         {/* Mobile: FAB to toggle menu */}
         <button
-          className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
-          aria-label="Show quick actions"
-          onClick={() => setShowMobileButtons((v) => !v)}
-          style={{ fontSize: "4rem" }}
-        >
-          <span
-            className="inline-block transition-transform duration-500"
-            style={{
-              fontSize: "4rem",
-              transform: showMobileButtons
-              ? "rotate(45deg) translateX(-5%) translateY(-13%) scale(1.5)"
-              : "rotate(0deg) translateX(-0%) translateY(-6%) scale(1)",
-              transformOrigin: "center",
-            }}
-          >
-            +
-          </span>
-        </button>
+  className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
+  aria-label="Show quick actions"
+  onClick={() => setShowMobileButtons((v) => !v)}
+>
+  <span
+    className="inline-block transition-transform duration-500 text-6xl"
+    style={{
+      transform: showMobileButtons
+        ? "rotate(45deg) scale(1.5)"
+        : "rotate(0deg) scale(1)",
+    }}
+  >
+    +
+  </span>
+</button>
 
         {/* Floating Buttons (mobile, slide in from right) */}
         <div
@@ -216,14 +224,10 @@ export default function ArticleGrid({ articles, summaries }: Props) {
               Hitting a Paywall?
             </button>
             <div
-              className={`
-              absolute right-full bottom-30 flex bg-white/0 rounded-3xl px-5 py-4 z-50 items-center
-              transition-transform duration-700 ease-out
-              ${showPaywallOptions ? "translate-x-0 opacity-100" : "translate-x-[120%] opacity-0 pointer-events-none"}
-              ${showPaywallOptions ? "flex-col gap-3" : "flex-row gap-5"}
-              `}
+              className={getPaywallOptionsClassName(showPaywallOptions)}
               style={{
               minWidth: "135px",
+              minHeight: "350px",
               top: "0%",
               transform: "translateY(-105%) translateX(110%)",
               borderRadius: "20rem",
@@ -231,10 +235,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
               backdropFilter: "blur(3px)",
               counterReset: "0",
               boxShadow: "0 0 20px rgba(0, 0, 0, 0.5)",
-              padding: "1rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
+     
               alignItems: "center",
               justifyContent: "center",
               border: "1px solid rgba(255, 255, 255, 0.5)",
