@@ -173,7 +173,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         </footer>
         {/* Mobile: FAB to toggle menu */}
         <button
-          className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-bottom center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
+          className="fixed z-50 bottom-6 right-6 sm:hidden bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
           aria-label="Show quick actions"
           onClick={() => setShowMobileButtons((v) => !v)}
           style={{ fontSize: "4rem" }}
@@ -183,8 +183,9 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             style={{
               fontSize: "4rem",
               transform: showMobileButtons
-          ? "rotate(45deg) translateX(-0%) translateY() scale(1.5)"
-          : "rotate(0deg) translateX(-0%) translateY()",
+          ? "rotate(45deg) scale(1.5)"
+          : "rotate(0deg) scale(1)",
+              transformOrigin: "center",
             }}
           >
             +
