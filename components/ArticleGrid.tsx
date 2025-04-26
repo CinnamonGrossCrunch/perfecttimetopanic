@@ -183,8 +183,8 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             style={{
               fontSize: "4rem",
               transform: showMobileButtons
-          ? "rotate(45deg) scale(1.5)"
-          : "rotate(0deg) scale(1)",
+              ? "rotate(45deg) translateX(-5%) translateY(-13%) scale(1.5)"
+              : "rotate(0deg) translateX(-0%) translateY(-6%) scale(1)",
               transformOrigin: "center",
             }}
           >
@@ -217,7 +217,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             </button>
             <div
               className={`
-              absolute right-full bottom-3 flex bg-white/0 rounded-3xl px-5 py-4 z-50 items-center
+              absolute right-full bottom-30 flex bg-white/0 rounded-3xl px-5 py-4 z-50 items-center
               transition-transform duration-700 ease-out
               ${showPaywallOptions ? "translate-x-0 opacity-100" : "translate-x-[120%] opacity-0 pointer-events-none"}
               ${showPaywallOptions ? "flex-col gap-3" : "flex-row gap-5"}
