@@ -26,8 +26,7 @@ export async function summarizeWithGPT({
       messages: [
         {
           role: "system",
-          content:
-            "Task: You are writing a satirical digest for a website called Worrry.com, which tracks global existential threats with a humorous but insightful voice.
+          content: "Task: You are writing a satirical digest for a website called Worrry.com, which tracks global existential threats with a humorous but insightful voice.
 
 For the following news article, I want you to output:
 	1.	Worry Summary (Funny): Write a sharp, funny summary of the main worry in 2–3 sentences, using satire and dark humor.
