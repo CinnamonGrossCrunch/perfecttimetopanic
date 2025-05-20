@@ -1,19 +1,18 @@
+// lib/fetchWithCache.ts
 import { readCache, writeCache } from "./cacheUtils";
 
 export async function fetchWithCache<T>(
   key: string,
   fetchFn: () => Promise<T>,
-  maxAgeMs = 1000 * 60 * 60 * 24 // default: 24 hours
+  maxAgeMs = 3 * 60 * 60 * 1000 // 3 hours default
 ): Promise<T> {
-  const cached = await readCache(key); // <-- add await
+  const cached = await readCache(key);
 
-  const now = Date.now();
-
-  if (cached && cached.timestamp && now - cached.timestamp < maxAgeMs) {
+  if (cached && cached.timestamp && Date.now() - cached.timestamp < maxAgeMs) {
     return cached.data;
   }
 
   const fresh = await fetchFn();
-  writeCache(key, { timestamp: now, data: fresh });
+  await writeCache(key, { timestamp: Date.now(), data: fresh });
   return fresh;
 }

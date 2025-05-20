@@ -14,10 +14,16 @@ type Article = {
   };
 };
 
+type StructuredSummary = {
+  worry: string;
+  hope: string;
+  action: string;
+};
+
 export default async function Home() {
   const articles: Article[] = await fetchAllSources();
 
-  const summaries = await Promise.all(
+  const summaries: StructuredSummary[] = await Promise.all(
     articles.map((article) =>
       summarizeWithGPT({
         title: article.title,
@@ -26,7 +32,6 @@ export default async function Home() {
     )
   );
 
-  return (
-    <ArticleGrid articles={articles} summaries={summaries} />
-  );
+  return <ArticleGrid articles={articles} summaries={summaries} />;
 }
+// export default function Home() {

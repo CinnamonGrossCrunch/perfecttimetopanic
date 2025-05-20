@@ -1,36 +1,31 @@
-import fs from "fs";
+// lib/cacheUtils.ts
+import fs from "fs/promises";
 import path from "path";
 
-const CACHE_DIR = path.resolve(process.cwd(), ".cache");
+const CACHE_DIR = path.join(process.cwd(), "cache");
 
-export function ensureCacheDir() {
-  if (!fs.existsSync(CACHE_DIR)) {
-    fs.mkdirSync(CACHE_DIR);
-  }
-}
-
-export function getCacheFilePath(name: string) {
-  return path.join(CACHE_DIR, `${name}.json`);
-}
-
-export async function readCache(key: string): Promise<{ timestamp: number; data: any } | null> {
-  ensureCacheDir();
-  const filePath = getCacheFilePath(key);
-  if (!fs.existsSync(filePath)) return null;
+export async function readCache(key: string): Promise<any | null> {
+  const cacheFile = path.join(CACHE_DIR, `${key}.json`);
   try {
-    const raw = await fs.promises.readFile(filePath, "utf-8");
-    return JSON.parse(raw);
+    const data = await fs.readFile(cacheFile, "utf-8");
+    return JSON.parse(data);
   } catch {
     return null;
   }
 }
 
-export async function writeCache(key: string, data: any) {
-  ensureCacheDir();
-  const filePath = getCacheFilePath(key);
-  const payload = {
-    timestamp: Date.now(),
-    data,
-  };
-  await fs.promises.writeFile(filePath, JSON.stringify(payload), "utf-8");
+export async function writeCache(key: string, obj: any) {
+  const cacheFile = path.join(CACHE_DIR, `${key}.json`);
+  await fs.mkdir(CACHE_DIR, { recursive: true });
+  await fs.writeFile(cacheFile, JSON.stringify(obj, null, 2));
+}
+
+export async function clearCache(key: string) {
+  const cacheFile = path.join(CACHE_DIR, `${key}.json`);
+  try {
+    await fs.unlink(cacheFile);
+    return true;
+  } catch {
+    return false;
+  }
 }

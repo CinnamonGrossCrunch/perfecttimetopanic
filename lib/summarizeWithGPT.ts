@@ -1,4 +1,5 @@
 import { OpenAI } from "openai";
+
 console.log("🔍 ENV DEBUG:");
 console.log("KEY:", process.env.OPENAI_API_KEY);
 console.log("PROJECT:", process.env.OPENAI_PROJECT_ID);
@@ -6,10 +7,16 @@ console.log("ORG:", process.env.OPENAI_ORG_ID);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
-  baseURL: "https://api.openai.com/v1", // ← this is the critical change
+  baseURL: "https://api.openai.com/v1",
   project: process.env.OPENAI_PROJECT_ID,
   organization: process.env.OPENAI_ORG_ID,
 });
+
+type StructuredSummary = {
+  worry: string;
+  hope: string;
+  action: string;
+};
 
 export async function summarizeWithGPT({
   title,
@@ -17,21 +24,26 @@ export async function summarizeWithGPT({
 }: {
   title: string;
   description: string;
-}): Promise<string> {
+}): Promise<StructuredSummary> {
   try {
-    const prompt = `Summarize the following news story in 1–2 gallows humor warnings. Highlight any threat to humanity or democracy.\n\nTitle: "${title}"\nDescription: "${description}"`;
+    const prompt = `You're a poetic analyst who captures global threats with dark insight and glimmers of resilience. For the article below, write a JSON object with three fields:
+
+- "worry": The core threat or existential concern (1–2 poetic lines, gallows humor okay)
+- "hope": A sign of resilience, resistance, or redemption (1–2 hopeful lines)
+- "action": A thought, question, or step the reader can take (keep short, actionable, or philosophical)
+
+Respond ONLY with a valid JSON object. Do not add commentary.
+
+Title: "${title}"
+Description: "${description}"`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4.1",
       messages: [
         {
           role: "system",
-          content: "Task: You are writing a satirical digest for a website called Worrry.com, which tracks global existential threats with a humorous but insightful voice.
-
-For the following news article, I want you to output:
-	1.	Worry Summary (Funny): Write a sharp, funny summary of the main worry in 2–3 sentences, using satire and dark humor.
-	2.	Hopeful Spin: Write 1–2 sentences about a hopeful or positive element—progress being made, a silver lining, or why we shouldn’t totally panic.
-	3.	Call to Action: Suggest a simple, tangible thing people can do (donate, read more, advocate, personal change). Include a link if provided.",
+          content:
+            "You are a darkly poetic analyst of global threats, skilled at surfacing worry, hope, and action.",
         },
         {
           role: "user",
@@ -39,16 +51,36 @@ For the following news article, I want you to output:
         },
       ],
       temperature: 0.8,
-      max_tokens: 100,
+      max_tokens: 200,
     });
 
-    const summary = response.choices[0].message.content?.trim();
-    console.log("🧠 GPT summary for:", title);
-    console.log("📝", summary);
+    const raw = response.choices[0].message.content?.trim() ?? "{}";
 
-    return summary || "No summary generated.";
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed.worry && parsed.hope && parsed.action) {
+        console.log("🧠 GPT structured summary for:", title);
+        console.log("📝", parsed);
+        return parsed;
+      } else {
+        throw new Error("Incomplete fields");
+      }
+    } catch (e) {
+      console.warn("⚠️ Failed to parse GPT JSON for:", title);
+      console.warn("↪️ Fallback content:", raw);
+      return {
+        worry: raw,
+        hope: "",
+        action: "",
+      };
+    }
   } catch (err: any) {
     console.error("❌ GPT summarization error:", err.response?.data || err.message || err);
-    return "⚠️ Summary unavailable due to GPT error.";
+    return {
+      worry: "⚠️ Summary unavailable due to GPT error.",
+      hope: "",
+      action: "",
+    };
   }
 }
+  
