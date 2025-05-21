@@ -9,15 +9,17 @@ type Article = {
   description: string;
   url: string;
   publishedAt: string;
+  thumbnail?: string | null;
+  image?: string | null;
   source: {
     name: string;
   };
 };
 
 type StructuredSummary = {
-  worry: string;
-  hope: string;
-  action: string;
+  "the panic": string;
+  "the hope": string;
+  "the action": string;
 };
 
 export default async function Home() {
@@ -34,4 +36,3 @@ export default async function Home() {
 
   return <ArticleGrid articles={articles} summaries={summaries} />;
 }
-// export default function Home() {
