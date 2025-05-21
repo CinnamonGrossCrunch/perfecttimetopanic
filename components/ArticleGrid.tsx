@@ -248,8 +248,12 @@ export default function ArticleGrid({ articles, summaries }: Props) {
     }}
     id="paywall-options-menu"
   >
-    {/* Drop Zone */}
+    {/* Drop Zone: Only show on screens sm and up */}
     <div
+      className={`hidden sm:flex w-full rounded-3xl p-4 flex-col items-center justify-between gap-6 
+        ${isDraggingOver 
+          ? "bg-white/90 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 border-4 border-yellow-300 text-black shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
+          : "bg-yellow-100/20 border-2 border-dashed text-white/70 border-yellow-200"}`}
       onDragOver={(e) => {
         e.preventDefault();
         setIsDraggingOver(true);
@@ -262,31 +266,27 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         if (url) {
           const encodedUrl = encodeURIComponent(url);
           window.open(`https://www.removepaywall.com/search?url=${encodedUrl}`, "_blank");
-          }}}
-          className={` w-full rounded-3xl p-4 flex flex-col items-center justify-between gap-6 
-          ${isDraggingOver 
-            ? "bg-white/90 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 border-4 border-yellow-300 text-black shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
-            : "bg-yellow-100/20 border-2 border-dashed text-white/70 border-yellow-200"}`}
-          style={{
-            transform: "translatex(-8%)",
-          minHeight: "280px",
-          cursor: "help",
-          backdropFilter: "blur(4px)",
-          boxShadow: isDraggingOver ? "0 0 32px 8px rgba(253,224,71,0.7)" : undefined,
-          transition: "box-shadow 0.3s, background 0.3s",
-          }}
-        >
+        }
+      }}
+      style={{
+        transform: "translatex(-8%)",
+        minHeight: "280px",
+        cursor: "help",
+        backdropFilter: "blur(4px)",
+        boxShadow: isDraggingOver ? "0 0 32px 8px rgba(253,224,71,0.7)" : undefined,
+        transition: "box-shadow 0.3s, background 0.3s",
+      }}
+    >
       {/* Message */}
       <div
-        className="hidden sm:flex text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
+        className="text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
         style={{ fontSize: "0.7em" }}
       >
         + Drag an article here <br /> to remove paywall.
       </div>
-
       {/* Icon Buttons Row */}
       <div className="flex flex-row items-center justify-center gap-5">
-        {[
+        {/*
           {
             href: "https://www.icloud.com/shortcuts/373258eb20f64415a2d588075b13755f",
             img: "/Apple-Logosu.png",
@@ -329,6 +329,50 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         ))}
       </div>
     </div>
+    {/* Only show icon buttons on mobile */}
+    <div className="flex sm:hidden flex-row items-center justify-center gap-5 w-full">
+      {/*
+        {
+          href: "https://www.icloud.com/shortcuts/373258eb20f64415a2d588075b13755f",
+          img: "/Apple-Logosu.png",
+          scale: 1.5
+          ,
+          alt: "Apple Shortcut",
+        },
+        {
+          href: "https://chromewebstore.google.com/detail/open-site-in-removepaywal/nfnpoaaallnibpcejlobbajnohipmhnd",
+          img: "/Google_Chrome_icon_(February_2022).svg.png",
+          scale: 1,
+          alt: "Google Chrome",
+        },
+        {
+          href: "https://www.removepaywall.com/",
+          img: "/REMOVE PAYWALL.svg",
+          scale: 1,
+          alt: "Remove Paywall",
+        },
+      ].map(({ href, img, alt, scale }) => (
+        <a
+          key={href}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-yellow-300/50 backdrop-blur-sm shadow-glow hover:shadow-2xl text-white rounded-full p-2 hover:scale-105 transition hover:shadow-3xl rounded-l-full shadow-md hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2 hover:ring-offset-yellow-100 hover:text-black hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/90 "
+          style={{ width: "4rem", height: "4rem", display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          <img
+            src={img}
+            alt={alt}
+            className="object-contain"
+            style={{
+              width: "2rem",
+              height: "2rem",
+              transform: `scale(${scale})`,
+            }}
+          />
+        </a>
+      ))}
+    </div>
   </div>
 
 
@@ -363,7 +407,11 @@ export default function ArticleGrid({ articles, summaries }: Props) {
   </button>
 </div>
     </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
 
-
-  );  
+  );    
 }
