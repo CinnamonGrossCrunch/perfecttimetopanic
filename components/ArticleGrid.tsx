@@ -213,6 +213,10 @@ export default function ArticleGrid({ articles, summaries }: Props) {
   `}
   style={{ willChange: "transform, opacity", fontSize: "1.5em", padding: " 1em" }}
 >
+  <div
+  className="relative flex flex-col gap-4 items-end"
+  style={{ zIndex: 50 }}
+>
   {/* Paywall Toggle */}
   <button
     onClick={() => setShowPaywallOptions((v) => !v)}
@@ -224,31 +228,30 @@ export default function ArticleGrid({ articles, summaries }: Props) {
     Hitting a Paywall?
   </button>
 
-  <div
-    className={getPaywallOptionsClassName(showPaywallOptions)}
-    style={{
-      minWidth: "260px",
-      maxWidth: "320px",
-      minHeight: "350px",
-      top: "0%",
-      transform: "translateY(-85%) translateX(110%)",
-      borderRadius: "3rem",
-      backgroundColor: "rgba(255, 255, 255, 0)",
-      backdropFilter: "blur(0px)",
-      boxShadow: "0 0 20px rgba(0, 0, 0, 0)",
-      border: "1px solid rgba(255, 255, 255, 0)",
-      padding: "1rem",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      gap: "1rem",
-      width: "320px",
-      justifyItems: "center",
-    }}
-    id="paywall-options-menu"
-  >
-    {/* Drop Zone */}
+  {/* Paywall Options Menu */}
+  {showPaywallOptions && (
+    <div
+      className="absolute right-0 bottom-full mb-2" // anchors menu above the button
+      style={{
+        minWidth: "260px",
+        maxWidth: "320px",
+        borderRadius: "3rem",
+        backgroundColor: "rgba(255, 255, 255, 0)",
+        backdropFilter: "blur(0px)",
+        boxShadow: "0 0 20px rgba(0, 0, 0, 0)",
+        border: "1px solid rgba(255, 255, 255, 0)",
+        padding: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1rem",
+        width: "320px",
+        transform: "translateX(5%)",
+        justifyItems: "center",
+      }}
+      id="paywall-options-menu"
+    >
+      {/* Drop Zone */}
     <div
       onDragOver={(e) => {
         e.preventDefault();
@@ -263,13 +266,13 @@ export default function ArticleGrid({ articles, summaries }: Props) {
           const encodedUrl = encodeURIComponent(url);
           window.open(`https://www.removepaywall.com/search?url=${encodedUrl}`, "_blank");
           }}}
-          className={` w-full rounded-3xl p-4 flex flex-col items-center justify-between gap-6 
+          className={` w-full rounded-3xl p-4 flex flex-col items-bottom justify-between gap-6 
           ${isDraggingOver 
             ? "bg-white/90 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 border-4 border-yellow-300 text-black shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
             : "bg-yellow-100/20 border-2 border-dashed text-white/70 border-yellow-200"}`}
           style={{
             transform: "translatex(-8%)",
-          minHeight: "280px",
+          
           cursor: "help",
           backdropFilter: "blur(4px)",
           boxShadow: isDraggingOver ? "0 0 32px 8px rgba(253,224,71,0.7)" : undefined,
@@ -279,13 +282,14 @@ export default function ArticleGrid({ articles, summaries }: Props) {
       {/* Message */}
       <div
         className="hidden sm:flex text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
-        style={{ fontSize: "0.7em" }}
+        style={{ fontSize: "0.7em", minHeight: "180px" }}
+        
       >
         + Drag an article here <br /> to remove paywall.
       </div>
 
       {/* Icon Buttons Row */}
-      <div className="flex flex-row items-center justify-center gap-5">
+      <div className="flex flex-row justify-center gap-5 align-items-bottom bottom-0">
         {[
           {
             href: "https://www.icloud.com/shortcuts/373258eb20f64415a2d588075b13755f",
@@ -295,17 +299,18 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             alt: "Apple Shortcut",
           },
           {
+            href: "https://www.removepaywall.com/",
+            img: "/REMOVE PAYWALL.svg",
+            scale: 1.5,
+            alt: "Remove Paywall",
+          },
+          {
             href: "https://chromewebstore.google.com/detail/open-site-in-removepaywal/nfnpoaaallnibpcejlobbajnohipmhnd",
             img: "/Google_Chrome_icon_(February_2022).svg.png",
             scale: 1,
             alt: "Google Chrome",
           },
-          {
-            href: "https://www.removepaywall.com/",
-            img: "/REMOVE PAYWALL.svg",
-            scale: 1,
-            alt: "Remove Paywall",
-          },
+        
         ].map(({ href, img, alt, scale }) => (
           <a
             key={href}
@@ -329,7 +334,9 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         ))}
       </div>
     </div>
-  </div>
+    </div>
+  )}
+</div>
 
 
 {/* Donate to Journalism */}
