@@ -13,9 +13,9 @@ const openai = new OpenAI({
 });
 
 type StructuredSummary = {
-  worry: string;
-  hope: string;
-  action: string;
+  "the panic": string;
+  "the hope": string;
+  "the action": string;
 };
 
 export async function summarizeWithGPT({
@@ -28,9 +28,9 @@ export async function summarizeWithGPT({
   try {
     const prompt = `You're a poetic analyst who captures global threats with dark insight and glimmers of resilience. For the article below, write a JSON object with three fields:
 
-- "worry": The core threat or existential concern (1–2 poetic lines, gallows humor okay)
-- "hope": A sign of resilience, resistance, or redemption (1–2 hopeful lines)
-- "action": A thought, question, or step the reader can take (keep short, actionable, or philosophical)
+- "the panic": The core threat or existential concern (1–2 poetic lines, gallows humor okay)
+- "the hope": A sign of resilience, resistance, or redemption (1–2 hopeful lines)
+- "the action": Action that a reader can take immediately. always include a clickable hyperlink to a trusted source. (keep short, actionable, and pragmatic) 
 
 Respond ONLY with a valid JSON object. Do not add commentary.
 
@@ -43,7 +43,7 @@ Description: "${description}"`;
         {
           role: "system",
           content:
-            "You are a darkly poetic analyst of global threats, skilled at surfacing worry, hope, and action.",
+            "You are a witty, sardonic, optimistic analyst of sociental and global threats, skilled at surfacing the panic, the hope, and the action.",
         },
         {
           role: "user",
@@ -58,7 +58,7 @@ Description: "${description}"`;
 
     try {
       const parsed = JSON.parse(raw);
-      if (parsed.worry && parsed.hope && parsed.action) {
+      if (parsed["the panic"] && parsed["the hope"] && parsed["the action"]) {
         console.log("🧠 GPT structured summary for:", title);
         console.log("📝", parsed);
         return parsed;
@@ -69,18 +69,17 @@ Description: "${description}"`;
       console.warn("⚠️ Failed to parse GPT JSON for:", title);
       console.warn("↪️ Fallback content:", raw);
       return {
-        worry: raw,
-        hope: "",
-        action: "",
+        "the panic": raw,
+        "the hope": "",
+        "the action": "",
       };
     }
   } catch (err: any) {
     console.error("❌ GPT summarization error:", err.response?.data || err.message || err);
     return {
-      worry: "⚠️ Summary unavailable due to GPT error.",
-      hope: "",
-      action: "",
+      "the panic": "⚠️ Summary unavailable due to GPT error.",
+      "the hope": "",
+      "the action": "",
     };
   }
 }
-  

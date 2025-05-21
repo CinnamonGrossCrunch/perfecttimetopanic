@@ -28,7 +28,15 @@ const OPINION_FEEDS = [
 
 const EXCLUDED_MEDIUM_TAGS = [
   "fiction", "science-fiction", "sci-fi",
-  "video-games", "gaming", "cryptocurrency", "crypto"
+  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy",
+];
+
+const BBC_FEEDS = [
+  "http://feeds.bbci.co.uk/news/rss.xml",
+];
+
+const ALJAZEERA_FEEDS = [
+  "https://www.aljazeera.com/xml/rss/all.xml",
 ];
 
 // Rotate through Medium tags in 3-hour blocks
@@ -73,7 +81,7 @@ function isNegativeAIArticle(article: any): boolean {
   const negativeKeywords = [
     "danger", "threat", "risk", "warning", "catastrophe", "dystopia", "doom", "crisis",
     "collapse", "apocalypse", "existential", "harm", "problem", "panic", "alarm", "fear",
-    "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias"
+    "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias" 
   ];
 
   return (
@@ -131,7 +139,13 @@ export async function fetchAllSources() {
 
   const rotatingMediumTags = rotateTagsEvery3Hours(ALL_MEDIUM_TAGS);
   const mediumFeeds = rotatingMediumTags.map(tag => `https://medium.com/feed/tag/${tag}`);
-  const allFeeds = [...SUBSTACKS, ...mediumFeeds, ...OPINION_FEEDS];
+  const allFeeds = [
+    ...SUBSTACKS,
+    ...mediumFeeds,
+    ...OPINION_FEEDS,
+    ...BBC_FEEDS,
+    ...ALJAZEERA_FEEDS,
+  ];
 
   const rssFeeds = [];
   for (const url of allFeeds) {
@@ -149,7 +163,12 @@ export async function fetchAllSources() {
   const unique = deduplicate(all);
   const englishOnly = unique.filter(isEnglish);
 
-  const filtered = englishOnly
+  // Reject articles with no image or thumbnail
+  const withImage = englishOnly.filter(
+    a => a.thumbnail || a.image
+  );
+
+  const filtered = withImage
     .filter(a => !isFromExcludedMediumTag(a))
     .filter(a => {
       const isAI = a.title?.toLowerCase().includes("ai") || a.description?.toLowerCase().includes("ai");

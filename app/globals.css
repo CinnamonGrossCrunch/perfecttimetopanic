@@ -186,7 +186,13 @@ body {
   }
 
   .dropzone-glow {
-    @apply ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] bg-white text-black;
+    box-shadow: 0 0 32px 8px rgba(253,224,71,0.5);
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5rem;
+    outline: 4px solid #fde047; /* ring-4 ring-yellow-300 */
+    outline-offset: 2px;         /* ring-offset-2 */
+    /* ring-offset-yellow-100 is #fef9c3, but outline-offset doesn't support color, so this is omitted */
   }
 }
 

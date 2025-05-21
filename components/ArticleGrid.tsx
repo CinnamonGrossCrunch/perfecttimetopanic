@@ -15,9 +15,9 @@ type Article = {
 };
 
 type Summary = {
-  worry: string;
-  hope: string;
-  action: string;
+  "the panic": string;
+  "the hope": string;
+  "the action": string;
 };
 
 type Props = {
@@ -77,7 +77,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
       Perfect Time <br /> to Panic.
     </h1>
     <p className="text-lg sm:text-xl text-white/90 max-w-xl mx-auto mt-4">
-      Your curated dashboard of existential threats —<br />Not to spiral, but to stay sharp.<br />Not to fear, but to focus.
+      Your curated dashboard of society's threats —<br />Not to spiral, but to stay sharp.<br />Not to fear, but to focus.
     </p>
   </header> {/* ✅ this was missing in your earlier version */}
 </div> {/* ✅ this closes the outer container properly */}
@@ -91,80 +91,91 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             const summary = summaries[idx];
 
             return (
-  <a
-    key={idx}
-    href={article.url}
-    target="_blank"
-    rel="noopener"
-    draggable
-    onDragStart={(e) => {
-      e.dataTransfer.setData("text/plain", article.url);
-      e.currentTarget.classList.add("dragging");
-    }}
-    onDragEnd={(e) => {
-      e.currentTarget.classList.remove("dragging");
-    }}
-    className="flex flex-col justify-between min-h-[350px] p-6 rounded-3xl bg-white/80 backdrop-blur-sm shadow-glow text-[#23272f] transition hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2 hover:ring-offset-yellow-100 hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/70"
-  >
-    <h3
-      className="text-accent font-serif text-3xl mb-2 line-clamp-2"
-      style={{
-        display: "-webkit-box",
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: "vertical",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      }}
-    >
-      {article.title}
-    </h3>
+              <div
+                key={idx}
+                onClick={() => window.open(article.url, "_blank")}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") window.open(article.url, "_blank");
+                }}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", article.url);
+                  e.currentTarget.classList.add("dragging");
+                }}
+                onDragEnd={(e) => {
+                  e.currentTarget.classList.remove("dragging");
+                }}
+                className="cursor-pointer flex flex-col justify-between min-h-[350px] p-6 rounded-3xl bg-white/80 backdrop-blur-sm shadow-glow text-[#23272f] transition hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2 hover:ring-offset-yellow-100 hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/100"
+              >
+                <h3
+                  className="text-accent font-serif text-3xl mb-2 line-clamp-2"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {article.title}
+                </h3>
 
-    {imgSrc && <img src={imgSrc} alt="" className="w-full h-50 object-cover rounded-3xl mb-4" />}
+                {imgSrc && <img src={imgSrc} alt="" className="w-full h-50 object-cover rounded-3xl mb-4" />}
 
-    <div className="text-md font-serif text-[#000000] flex-1 flex flex-col gap-2">
-      <p>
-        <span className="font-bold">Worry:</span>{" "}
-        {typeof summary?.worry === "string" && summary.worry.trim() !== ""
-          ? summary.worry
-          : article.description}
-      </p>
-      {typeof summary?.hope === "string" && summary.hope.trim() !== "" && (
-        <p>
-          <span className="font-bold">Hope:</span> {summary.hope}
-        </p>
-      )}
-      {typeof summary?.action === "string" && summary.action.trim() !== "" && (
-        <p>
-          <span className="font-bold">Action:</span> {summary.action}
-        </p>
-      )}
-    </div>
+                <div className="text-md font-serif text-[#000000] flex-1 flex flex-col gap-2">
+                  <p>
+                    <span className="font-bold">The Panic:</span>{" "}
+                    {typeof summary?.["the panic"] === "string" && summary["the panic"].trim() !== ""
+                      ? summary["the panic"]
+                      : article.description}
+                  </p>
+                  {typeof summary?.["the hope"] === "string" && summary["the hope"].trim() !== "" && (
+                    <p>
+                      <span className="font-bold">The Hope:</span> {summary["the hope"]}
+                    </p>
+                  )}
+                  {typeof summary?.["the action"] === "string" && summary["the action"].trim() !== "" && (
+                    <>
+                      <p className="font-bold">The Action:</p>
+                      <div
+                        className="text-sm underline text-blue-700 hover:text-blue-900"
+                        dangerouslySetInnerHTML={{ __html: summary["the action"] }}
+                      />
+                    </>
+                  )}
+                </div>
 
-    <p className="text-xs mt-4 text-right text-stone-500 flex items-center justify-end gap-2">
-      {new Date(article.publishedAt).toLocaleDateString()} &middot; {displaySource}
-      {article.url && (
-        <img
-          src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
-            new URL(article.url).hostname
-          )}&sz=32`}
-          alt={`${displaySource} logo`}
-          className="inline-block w-8 h-8 mr-1 align-middle rounded"
-          style={{ background: "#fff" }}
-        />
-      )}
-    </p>
-  </a>
-);
-
+                <p className="text-xs mt-4 text-right text-stone-500 flex items-center justify-end gap-2">
+                  {new Date(article.publishedAt).toLocaleDateString()} &middot; {displaySource}
+                  {article.url && (
+                    <img
+                      src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(
+                        new URL(article.url).hostname
+                      )}&sz=32`}
+                      alt={`${displaySource} logo`}
+                      className="inline-block w-8 h-8 mr-1 align-middle rounded"
+                      style={{ background: "#fff" }}
+                    />
+                  )}
+                </p>
+              </div>
+            );
           })}
         </main>
 
         {/* ===== SEE MORE BUTTON ===== */}
         {visibleCount < articles.length && (
           <div className="text-center mt-10">
-            <button onClick={loadMore} className="px-6 py-2 bg-accent text-white rounded-lg shadow hover:bg-red-500 transition">
-              See More
-            </button>
+            <div className="flex justify-center items-center w-full">
+              <button
+                onClick={loadMore}
+                className="px-6 py-2 bg-yellow-300/80 text-white rounded-full shadow-lg border-2 border-yellow-400 transition  hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2  hover:text-black hover:bg-white/90 flex justify-center items-center w-64 h-16 text-lg font-semibold hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
+              >
+                See More
+              </button>
+            </div>
           </div>
         )}
 
@@ -267,8 +278,8 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         >
       {/* Message */}
       <div
-        className="text-inherit text-center text-sm font-medium leading-snug flex items-center justify-center w-full h-full"
-        style={{ fontSize: "0.5em" }}
+        className="text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
+        style={{ fontSize: "0.7em" }}
       >
         + Drag an article here <br /> to remove paywall.
       </div>
