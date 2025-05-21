@@ -263,7 +263,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
           const encodedUrl = encodeURIComponent(url);
           window.open(`https://www.removepaywall.com/search?url=${encodedUrl}`, "_blank");
           }}}
-          className={`"hidden sm:flex w-full rounded-3xl p-4 flex flex-col items-center justify-between gap-6 
+          className={`hidden sm:flex w-full rounded-3xl p-4 flex flex-col items-center justify-between gap-6 
           ${isDraggingOver 
             ? "bg-white/90 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 border-4 border-yellow-300 text-black shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
             : "bg-yellow-100/20 border-2 border-dashed text-white/70 border-yellow-200"}`}
