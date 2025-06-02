@@ -302,6 +302,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             href: "https://www.removepaywall.com/",
             img: "/REMOVE PAYWALL.svg",
             scale: 1.5,
+            
             alt: "Remove Paywall",
           },
           {

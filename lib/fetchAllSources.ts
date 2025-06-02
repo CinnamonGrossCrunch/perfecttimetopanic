@@ -4,6 +4,7 @@ import { franc } from "franc";
 import Sentiment from "sentiment";
 import { fetchFromGNews } from "./fetchFromGNews";
 import { fetchRSSFeed } from "./fetchRSSFeed";
+import { readCache, writeCache } from "./cacheUtils";
 
 const sentiment = new Sentiment();
 const CACHE_FILE = path.join(process.cwd(), "cache", "articles.json");
@@ -129,10 +130,12 @@ async function writeCache(articles: any[]) {
 }
 
 export async function fetchAllSources() {
-  const cached = await readCache();
-  if (cached) {
-    console.log("📦 Using cached feed");
-    return cached;
+  const cache = await readCache("articles");
+  if (cache && cache.date) {
+    const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
+    if (isRecent) {
+      return cache.articles;
+    }
   }
 
   const gnews = await fetchFromGNews();
