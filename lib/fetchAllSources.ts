@@ -109,25 +109,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 // Cache utilities
-async function readCache() {
-  try {
-    const data = await fs.readFile(CACHE_FILE, "utf-8");
-    const parsed = JSON.parse(data);
-    const isRecent = Date.now() - new Date(parsed.date).getTime() < 3 * 60 * 60 * 1000;
-    return isRecent ? parsed.articles : null;
-  } catch {
-    return null;
-  }
-}
 
-async function writeCache(articles: any[]) {
-  try {
-    await fs.mkdir(path.dirname(CACHE_FILE), { recursive: true });
-    await fs.writeFile(CACHE_FILE, JSON.stringify({ date: new Date(), articles }, null, 2));
-  } catch (err) {
-    console.error("❌ Failed to write cache:", err);
-  }
-}
 
 export async function fetchAllSources() {
   const cache = await readCache("articles");
@@ -201,6 +183,6 @@ export async function fetchAllSources() {
   });
 
   const final = [...topSubstack, ...nonSubstack];
-  await writeCache(final);
+  await writeCache("articles", { date: new Date().toISOString(), articles: final });
   return final;
 }
