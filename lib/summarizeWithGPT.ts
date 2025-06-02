@@ -38,7 +38,7 @@ Title: "${title}"
 Description: "${description}"`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4.1",
+      model: "text-embedding-3-small",
       messages: [
         {
           role: "system",
