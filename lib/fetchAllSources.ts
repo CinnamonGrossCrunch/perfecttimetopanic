@@ -29,7 +29,9 @@ const OPINION_FEEDS = [
 
 const EXCLUDED_MEDIUM_TAGS = [
   "fiction", "science-fiction", "sci-fi",
-  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy",
+  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy", 
+  "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias", "jesus", "god", "satan", "evil", "destruction", "parenting,",
+  "parenting", "parent", "parents", "parental", "parenthood", "parenting advice", "parenting tips", "hope", "optimism", "resilience", "solution", "action", "change", "improvement", "progress" 
 ];
 
 const BBC_FEEDS = [
@@ -66,7 +68,18 @@ function deduplicate(articles: any[]): any[] {
 
 function isFromExcludedMediumTag(article: any): boolean {
   const feedUrl = article.feedUrl?.toLowerCase() || "";
-  return EXCLUDED_MEDIUM_TAGS.some(tag => feedUrl.includes(`/tag/${tag}`));
+  const title = article.title?.toLowerCase() || "";
+  const description = article.description?.toLowerCase() || "";
+  const tags = Array.isArray(article.tags)
+    ? article.tags.map((t: string) => t.toLowerCase()).join(" ")
+    : "";
+
+  return EXCLUDED_MEDIUM_TAGS.some(tag =>
+    feedUrl.includes(`/tag/${tag}`) ||
+    title.includes(tag) ||
+    description.includes(tag) ||
+    tags.includes(tag)
+  );
 }
 
 function isEnglish(article: any): boolean {
@@ -81,8 +94,7 @@ function isNegativeAIArticle(article: any): boolean {
   const aiKeywords = ["ai", "artificial intelligence"];
   const negativeKeywords = [
     "danger", "threat", "risk", "warning", "catastrophe", "dystopia", "doom", "crisis",
-    "collapse", "apocalypse", "existential", "harm", "problem", "panic", "alarm", "fear",
-    "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias" 
+    "collapse", "apocalypse", "existential", "harm", "problem", "panic", "alarm", "fear"
   ];
 
   return (

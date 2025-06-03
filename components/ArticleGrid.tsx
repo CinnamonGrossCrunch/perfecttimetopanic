@@ -47,6 +47,13 @@ export default function ArticleGrid({ articles, summaries }: Props) {
     setShowMobileButtons((v) => !v);
   }, []);
 
+  function markdownToHtml(md: string) {
+    return md.replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">$1</a>'
+    );
+  }
+
   // --- Render ---
   return (
     <div className="relative min-h-screen font-sans text-foreground overflow-hidden">
@@ -141,7 +148,10 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                       <p className="font-bold">The Action:</p>
                       <div
                         className="text-sm underline text-blue-700 hover:text-blue-900"
-                        dangerouslySetInnerHTML={{ __html: summary["the action"] }}
+                        style={{ pointerEvents: "auto" }}
+                        dangerouslySetInnerHTML={{
+                          __html: markdownToHtml(summary["the action"]),
+                        }}
                       />
                     </>
                   )}

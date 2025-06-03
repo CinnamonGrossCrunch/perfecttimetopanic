@@ -38,7 +38,7 @@ Title: "${title}"
 Description: "${description}"`;
 
     const response = await openai.chat.completions.create({
-      model: "text-embedding-3-small",
+      model: "gpt-4.1-nano",
       messages: [
         {
           role: "system",
@@ -54,14 +54,30 @@ Description: "${description}"`;
       max_tokens: 200,
     });
 
-    const raw = response.choices[0].message.content?.trim() ?? "{}";
+    let raw = response.choices[0].message.content?.trim() ?? "{}";
+    raw = raw.replace(/^```json|^```|```$/gim, "").trim();
+
+    function extractField(obj: any, ...keys: string[]) {
+      for (const key of keys) {
+        if (obj[key]) return obj[key];
+      }
+      return "";
+    }
 
     try {
       const parsed = JSON.parse(raw);
-      if (parsed["the panic"] && parsed["the hope"] && parsed["the action"]) {
+      const thePanic = extractField(parsed, "the panic", "the_panic", "thePanic");
+      const theHope = extractField(parsed, "the hope", "the_hope", "theHope");
+      const theAction = extractField(parsed, "the action", "the_action", "theAction");
+
+      if (thePanic && theHope && theAction) {
         console.log("🧠 GPT structured summary for:", title);
         console.log("📝", parsed);
-        return parsed;
+        return {
+          "the panic": thePanic,
+          "the hope": theHope,
+          "the action": theAction,
+        };
       } else {
         throw new Error("Incomplete fields");
       }
