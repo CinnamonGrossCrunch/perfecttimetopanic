@@ -1,6 +1,7 @@
 "use client";
 import { transform } from "next/dist/build/swc/generated-native";
 import { useState, useCallback } from "react";
+import parse, { domToReact, HTMLReactParserOptions, Element } from "html-react-parser";
 
 type Article = {
   title: string;
@@ -50,9 +51,27 @@ export default function ArticleGrid({ articles, summaries }: Props) {
   function markdownToHtml(md: string) {
     return md.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">$1</a>'
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
     );
   }
+
+  const actionLinkParseOptions: HTMLReactParserOptions = {
+    replace(domNode) {
+      if (domNode instanceof Element && domNode.name === "a") {
+        return (
+          <a
+            {...domNode.attribs}
+            onClick={(e) => e.stopPropagation()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-blue-700 hover:text-blue-900"
+          >
+            {domToReact(domNode.children as import("html-react-parser").DOMNode[], actionLinkParseOptions)}
+          </a>
+        );
+      }
+    },
+  };
 
   // --- Render ---
   return (
@@ -146,17 +165,9 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                   {typeof summary?.["the action"] === "string" && summary["the action"].trim() !== "" && (
                     <>
                       <p className="font-bold">The Action:</p>
-                      <div
-                        className="text-sm underline text-blue-700 hover:text-blue-900"
-                        style={{
-                          pointerEvents: "auto",
-                          position: "relative", // or "absolute" if you want it floating
-                          zIndex: 50,
-                        }}
-                        dangerouslySetInnerHTML={{
-                          __html: markdownToHtml(summary["the action"]),
-                        }}
-                      />
+                      <div className="text-sm" style={{ pointerEvents: "auto", zIndex: 50, position: "relative" }}>
+                        {parse(markdownToHtml(summary["the action"]), actionLinkParseOptions)}
+                      </div>
                     </>
                   )}
                 </div>
