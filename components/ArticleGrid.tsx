@@ -114,7 +114,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                 onDragEnd={(e) => {
                   e.currentTarget.classList.remove("dragging");
                 }}
-                className="cursor-pointer flex flex-col justify-between min-h-[350px] p-6 rounded-3xl bg-white/80 backdrop-blur-sm shadow-glow text-[#23272f] transition hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2 hover:ring-offset-yellow-100 hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/100"
+                className="relative cursor-pointer flex flex-col justify-between min-h-[350px] p-6 rounded-3xl bg-white/80 backdrop-blur-sm shadow-glow text-[#23272f] transition hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2 hover:ring-offset-yellow-100 hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/100"
               >
                 <h3
                   className="text-accent font-serif text-3xl mb-2 line-clamp-2"
@@ -148,7 +148,11 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                       <p className="font-bold">The Action:</p>
                       <div
                         className="text-sm underline text-blue-700 hover:text-blue-900"
-                        style={{ pointerEvents: "auto" }}
+                        style={{
+                          pointerEvents: "auto",
+                          position: "relative", // or "absolute" if you want it floating
+                          zIndex: 50,
+                        }}
                         dangerouslySetInnerHTML={{
                           __html: markdownToHtml(summary["the action"]),
                         }}
