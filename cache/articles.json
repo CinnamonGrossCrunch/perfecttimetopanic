@@ -1,5 +1,5 @@
 {
-  "date": "2025-06-09T02:27:24.068Z",
+  "date": "2025-06-09T07:00:07.730Z",
   "articles": [
     {
       "title": "It's OK not to be fat",
@@ -24,10 +24,33 @@
       "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7d08bec6-6609-4fa8-b4b0-978a05b6451d_879x586.jpeg"
     },
     {
+      "title": "Protests intensify in Los Angeles as National Guard troops deployed",
+      "description": "Protests escalate in Los Angeles over Trump’s National Guard deployment amid immigration crackdown.",
+      "url": "https://www.aljazeera.com/gallery/2025/6/9/protests-intensify-in-los-angeles-as-national-guard-troops-deployed?traffic_source=rss",
+      "publishedAt": "Mon, 09 Jun 2025 06:48:26 +0000",
+      "source": {
+        "name": "Al Jazeera – Breaking News, World News and Video from Al Jazeera"
+      },
+      "feedUrl": "https://www.aljazeera.com/xml/rss/all.xml",
+      "thumbnail": "https://www.aljazeera.com/wp-content/uploads/2025/06/AFP__20250609__49MR3GW__v2__HighRes__TopshotUsPoliticsImmigration-1749446063.jpg?resize=1920%2C1440"
+    },
+    {
+      "title": "Here’s What’s Happening in America, in Six (Mostly) Russian Terms",
+      "description": "To help Americans name their new reality, we wrote a phrase book of authoritarianism.",
+      "url": "https://www.nytimes.com/2025/06/09/opinion/america-russia-authoritarian-language.html",
+      "publishedAt": "Mon, 09 Jun 2025 05:00:05 +0000",
+      "source": {
+        "name": "NYT > Opinion"
+      },
+      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
+      "thumbnail": "https://static01.nyt.com/images/2025/06/09/opinion/09kuznetsova-storyev/09kuznetsova-storyev-facebookJumbo.png",
+      "category": "op-ed"
+    },
+    {
       "title": "Trump Calling Troops Into Los Angeles Is the Real Emergency",
       "description": "The president’s use of the National Guard serves his own interests above the country’s.",
       "url": "https://www.nytimes.com/2025/06/08/opinion/los-angeles-protests-national-guard-trump.html",
-      "publishedAt": "Mon, 09 Jun 2025 01:41:05 +0000",
+      "publishedAt": "Mon, 09 Jun 2025 02:45:09 +0000",
       "source": {
         "name": "NYT > Opinion"
       },
@@ -44,19 +67,18 @@
         "name": "BBC News"
       },
       "feedUrl": "http://feeds.bbci.co.uk/news/rss.xml",
-      "thumbnail": "https://ichef.bbci.co.uk/news/1024/branded_news/a2b0/live/964309e0-44c4-11f0-835b-310c7b938e84.jpg"
+      "thumbnail": "https://ichef.bbci.co.uk/news/1024/branded_news/0cdf/live/4c6d6780-44f5-11f0-bace-e1270fc31f5e.jpg"
     },
     {
-      "title": "The Abundance Agenda Has Its Own Theory of Power",
-      "description": "The Democratic future isn’t going to look like the Democratic past.",
-      "url": "https://www.nytimes.com/2025/06/08/opinion/abundance-democrats-future.html",
-      "publishedAt": "Sun, 08 Jun 2025 23:59:04 +0000",
+      "title": "With a federal database being compiled, we can kiss the Fourth Amendment goodbye",
+      "description": "The Felon-in-Chief squatting at 1600 Pennsylvania Avenue is about to fulfill his dream of a dystopic surveillance state.\nContinue reading on Medium »",
+      "url": "https://tedmillar.medium.com/with-a-federal-database-being-compiled-we-can-kiss-the-fourth-amendment-goodbye-b779a6ff3ce9?source=rss------authoritarianism-5",
+      "publishedAt": "Sun, 08 Jun 2025 22:04:05 GMT",
       "source": {
-        "name": "NYT > Opinion"
+        "name": "Authoritarianism on Medium"
       },
-      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
-      "thumbnail": "https://static01.nyt.com/images/2025/06/08/opinion/08klein/08klein-facebookJumbo.jpg",
-      "category": "op-ed"
+      "feedUrl": "https://medium.com/feed/tag/authoritarianism",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:640/0*hOPEie08Jsb31N63.jpeg"
     },
     {
       "title": "Home secretary yet to agree deal days before spending review",
@@ -68,6 +90,17 @@
       },
       "feedUrl": "http://feeds.bbci.co.uk/news/rss.xml",
       "thumbnail": "https://ichef.bbci.co.uk/news/1024/branded_news/fb6f/live/4820c950-44ab-11f0-a488-3b878a6c82cf.jpg"
+    },
+    {
+      "title": "Speaking Freely #53",
+      "description": "Thomas Jefferson • 1743–1826 \n“No provision in our Constitution ought to be dearer to man than that which protects the rights of…\nContinue reading on The Radical Center »",
+      "url": "https://medium.com/the-radical-center/speaking-freely-53-07bc981927b2?source=rss------authoritarianism-5",
+      "publishedAt": "Sun, 08 Jun 2025 20:43:56 GMT",
+      "source": {
+        "name": "Authoritarianism on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/authoritarianism",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*ubSwCrc0_MummsSgdPivjQ.png"
     },
     {
       "title": "What is next for American universities?",
@@ -82,27 +115,26 @@
       "category": "op-ed"
     },
     {
-      "title": "Justice Jackson Just Helped Reset the D.E.I. Debate",
-      "description": "How much should the law treat a person as an individual rather than as a member of a group?",
-      "url": "https://www.nytimes.com/2025/06/08/opinion/supreme-court-dei-racism-jackson.html",
-      "publishedAt": "Sun, 08 Jun 2025 19:01:55 +0000",
+      "title": "The Unforgiving Tyrant",
+      "description": "If there was a word to call someone they never liked, it’d be “tyrant” or “tyrannical asshole”, and no doubt have these words not been…\nContinue reading on Medium »",
+      "url": "https://medium.com/@cameronliamsampie/the-unforgiving-tyrant-b953b205ccad?source=rss------authoritarianism-5",
+      "publishedAt": "Sun, 08 Jun 2025 18:59:03 GMT",
       "source": {
-        "name": "NYT > Opinion"
+        "name": "Authoritarianism on Medium"
       },
-      "feedUrl": "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
-      "thumbnail": "https://static01.nyt.com/images/2025/06/08/obituaries/08french/08french-facebookJumbo.jpg",
-      "category": "op-ed"
+      "feedUrl": "https://medium.com/feed/tag/authoritarianism",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:960/1*1e1aO68liv5fU-cRE3EObg.png"
     },
     {
-      "title": "What are the threats facing Europe?",
-      "description": "UK government plans major defence reforms at the cost of welfare programmes, drawing public anger.",
-      "url": "https://www.aljazeera.com/video/inside-story/2025/6/8/what-are-the-threats-facing-europe?traffic_source=rss",
-      "publishedAt": "Sun, 08 Jun 2025 18:06:57 +0000",
+      "title": "Unmasking the Plan to Undermine American Democracy: Analyzing Project 2025 and the “One Big…",
+      "description": "Over the past few years, a concerted effort has emerged to concentrate power in the U.S. presidency and erode democratic checks and…\nContinue reading on Medium »",
+      "url": "https://medium.com/@kareem.aly/unmasking-the-plan-to-undermine-american-democracy-analyzing-project-2025-and-the-one-big-3e42612283dc?source=rss------authoritarianism-5",
+      "publishedAt": "Sun, 08 Jun 2025 18:43:14 GMT",
       "source": {
-        "name": "Al Jazeera – Breaking News, World News and Video from Al Jazeera"
+        "name": "Authoritarianism on Medium"
       },
-      "feedUrl": "https://www.aljazeera.com/xml/rss/all.xml",
-      "thumbnail": "https://www.aljazeera.com/wp-content/uploads/2025/06/image-1749405333.jpg?resize=1920%2C1080&quality=80"
+      "feedUrl": "https://medium.com/feed/tag/authoritarianism",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*KJnVwTi0Lj_awRNZylo7MA.png"
     },
     {
       "title": "Letters to the Editor: Don't get distracted by the President Trump-Elon Musk breakup circus",
@@ -120,7 +152,7 @@
       "title": "Are Millennials ‘Childless’ or ‘Child Free’?",
       "description": "Readers respond to a guest essay by Michal Leibowitz. Also: Is America no longer a beacon?",
       "url": "https://www.nytimes.com/2025/06/08/opinion/millennials-children.html",
-      "publishedAt": "Sun, 08 Jun 2025 13:00:06 +0000",
+      "publishedAt": "Sun, 08 Jun 2025 13:00:07 +0000",
       "source": {
         "name": "NYT > Opinion"
       },
@@ -210,28 +242,6 @@
       "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff99fd5ff-c037-4ea7-9ca1-840ed5c8d59a_2048x1365.jpeg"
     },
     {
-      "title": "The Totalitarian Personality: A Hidden Disorder of Obedience",
-      "description": "“Psychopaths in sheep’s clothing called ‘rules’.”\nContinue reading on Medium »",
-      "url": "https://medium.com/@xenoartorius/the-totalitarian-personality-a-hidden-disorder-of-obedience-b5189b1e7d7a?source=rss------totalitarianism-5",
-      "publishedAt": "Wed, 28 May 2025 20:52:34 GMT",
-      "source": {
-        "name": "Totalitarianism on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/totalitarianism",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*dOrMoq1W5My4qEHo5d5vfg.png"
-    },
-    {
-      "title": "Navigating the Waters of the Hierarchy & Technocracy, to Reach the Shores of Heterarchy",
-      "description": "Everything is tumbling down and rising up as a reformation\nContinue reading on Medium »",
-      "url": "https://mackenziana.medium.com/navigating-the-waters-of-the-hierarchy-technocracy-to-reach-the-shores-of-heterarchy-05daa03dd1d0?source=rss------totalitarianism-5",
-      "publishedAt": "Sat, 24 May 2025 12:49:37 GMT",
-      "source": {
-        "name": "Totalitarianism on Medium"
-      },
-      "feedUrl": "https://medium.com/feed/tag/totalitarianism",
-      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/0*ey6KYkfIhW2CvwPd.jpeg"
-    },
-    {
       "title": "OpenAI's desperate quest to become an AI monopoly",
       "description": "Plus, the AI-generated journalism crisis comes to print",
       "url": "https://www.bloodinthemachine.com/p/openais-desperate-quest-to-become",
@@ -241,6 +251,50 @@
       },
       "feedUrl": "https://bloodinthemachine.substack.com/feed",
       "thumbnail": "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd3c808ce-b4fd-42bf-995c-3218af7d41d1_1000x750.jpeg"
+    },
+    {
+      "title": "Each Other’s",
+      "description": "“Where we were torn, we are mended, and if there are scars, they will be beautiful. We are each other’s light, each other’s gold, each…\nContinue reading on Medium »",
+      "url": "https://naomi-39481.medium.com/each-others-f68f3120ca0a?source=rss------inequity-5",
+      "publishedAt": "Thu, 24 Apr 2025 14:33:03 GMT",
+      "source": {
+        "name": "Inequity on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/inequity",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:562/1*7EvY4OBkqseEUSS1ygc8sA.jpeg"
+    },
+    {
+      "title": "How to Become a Midwest Civic Leader: Chapter 1",
+      "description": "Chapter 1: Call It a Crisis. Frame It as a Maintenance Issue.\nContinue reading on Medium »",
+      "url": "https://medium.com/@clintonbrown/how-to-become-a-midwest-civic-leader-5080d47c378a?source=rss------inequity-5",
+      "publishedAt": "Fri, 04 Apr 2025 18:00:28 GMT",
+      "source": {
+        "name": "Inequity on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/inequity",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:1200/1*JQv1jYWiDHHmnRpF4S4Cdg.jpeg"
+    },
+    {
+      "title": "NATO Admiral Warns Russia: Any Reckless Move Would Bring “Catastrophic” Consequences",
+      "description": "Admiral warns Moscow: NATO’s overwhelming force ensures any aggression would backfire ‘catastrophically\nContinue reading on Medium »",
+      "url": "https://medium.com/@jayduggy87/nato-admiral-warns-russia-any-reckless-move-would-bring-catastrophic-consequences-6812e82e59fc?source=rss------world_war_iii-5",
+      "publishedAt": "Sat, 29 Mar 2025 04:42:57 GMT",
+      "source": {
+        "name": "World War Iii on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/world-war-iii",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:768/1*rPvZpghpr4UdkWDR_RPX4Q.jpeg"
+    },
+    {
+      "title": "The shaky new world order we didn’t expect",
+      "description": "Remember the Peace Dividend? The Berlin Wallhad fallen, the Soviet Union was no more, history had come to an end, and the United States…\nContinue reading on Medium »",
+      "url": "https://malwarwick-98471.medium.com/the-shaky-new-world-order-we-didnt-expect-569bb03e708b?source=rss------world_war_iii-5",
+      "publishedAt": "Wed, 22 Jan 2025 16:46:01 GMT",
+      "source": {
+        "name": "World War Iii on Medium"
+      },
+      "feedUrl": "https://medium.com/feed/tag/world-war-iii",
+      "thumbnail": "https://miro.medium.com/v2/resize:fit:565/0*XkovBUzEaYjMFuyn.jpg"
     },
     {
       "title": "California’s controversial AI bill worries about nuclear war, catastrophic harm",

@@ -260,7 +260,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         maxWidth: "320px",
         borderRadius: "3rem",
         backgroundColor: "rgba(255, 255, 255, 0)",
-        backdropFilter: "blur(0px)",
+        backdropFilter: "blur(10px)",
         boxShadow: "0 0 20px rgba(0, 0, 0, 0)",
         border: "1px solid rgba(255, 255, 255, 0)",
         padding: "1rem",
@@ -288,25 +288,30 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         if (url) {
           const encodedUrl = encodeURIComponent(url);
           window.open(`https://www.removepaywall.com/search?url=${encodedUrl}`, "_blank");
-          }}}
-          className={` w-full rounded-3xl p-4 flex flex-col items-bottom justify-between gap-6 
-          ${isDraggingOver 
-            ? "bg-white/90 ring-4 ring-yellow-300 ring-offset-2 ring-offset-yellow-100 border-4 border-yellow-300 text-black shadow-[0_0_32px_8px_rgba(253,224,71,0.5)]"
-            : "bg-yellow-100/20 border-2 border-dashed text-white/70 border-yellow-200"}`}
-          style={{
-            transform: "translatex(-8%)",
-          
-          cursor: "help",
-          backdropFilter: "blur(4px)",
-          boxShadow: isDraggingOver ? "0 0 32px 8px rgba(253,224,71,0.7)" : undefined,
-          transition: "box-shadow 0.3s, background 0.3s",
-          }}
-        >
+        }
+      }}
+      className={`
+        w-full rounded-3xl p-4 flex flex-col items-bottom justify-between gap-6
+        ${isDraggingOver
+          ? "bg-white/60 text-black backdrop-blur-lg"
+          : "bg-yellow-100/20 border-2 backdrop-blur-sm border-dashed text-white/70 border-yellow-200"}
+      `}
+      style={{
+        transform: "translatex(-8%)",
+        cursor: "help",
+        backdropFilter: isDraggingOver ? "blur(12px)" : "blur(4px)",
+        boxShadow: isDraggingOver ? "0 0 32px 8px rgba(255, 255, 255, 0.7)" : undefined,
+        transition: "box-shadow 0.3s, background 0.3s, backdrop-filter 0.3s",
+        border: isDraggingOver
+          ? "none"
+          : "3px dashed rgba(253, 224, 71, 0.9)",
+        position: "relative",
+      }}
+    >
       {/* Message */}
       <div
         className="hidden sm:flex text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
         style={{ fontSize: "0.7em", minHeight: "180px" }}
-        
       >
         + Drag an article here <br /> to remove paywall.
       </div>
@@ -357,6 +362,24 @@ export default function ArticleGrid({ articles, summaries }: Props) {
           </a>
         ))}
       </div>
+      {/* Rainbow border animation overlay */}
+      {isDraggingOver && (
+        <span
+          className="pointer-events-none absolute inset-0 rounded-3xl rainbow-border-animate"
+          style={{ zIndex: 10, boxSizing: "border-box" }}
+          aria-hidden="true"
+        >
+          <span
+            className="absolute inset-0 rounded-3xl pointer-events-none"
+            style={{
+              background: "conic-gradient(red, orange, yellow, green, blue, indigo, violet, red)",
+              filter: "blur(24px)",
+              opacity: 0.7,
+              zIndex: 5,
+            }}
+          />
+        </span>
+      )}
     </div>
     </div>
   )}
@@ -393,8 +416,8 @@ export default function ArticleGrid({ articles, summaries }: Props) {
     Refresh Feed
   </button>
 </div>
+     {/*HIDDEN TO DO PANEL
 
-{/* FloatingToDoPanel aligned just above the "+" button and moves up with floating menus */}
 <div
   className="fixed z-50 right-6 transition-all duration-500"
   style={{
@@ -410,7 +433,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
 >
   <FloatingToDoPanel height={showPaywallOptions ? "250px" : "500px"} />
 </div>
-
-</div> // <-- main wrapper div
+*/}
+    </div> // <-- main wrapper div
   );  
 }

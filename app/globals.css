@@ -219,3 +219,53 @@ body {
   transition: transform 0.2s ease-in-out;
   opacity: 1  ;
 }
+
+/* Rainbow border with fully transparent center, only 10px border visible, with outer rainbow glow */
+.rainbow-border-animate {
+  position: absolute;
+  scale: 1.03;
+  border-radius: 1.1em;
+  pointer-events: none;
+  z-index: 10;
+  border: none;
+  background:
+    conic-gradient(
+      red,
+      orange,
+      yellow,
+      green,
+      blue,
+      indigo,
+      violet,
+      red
+    );
+  animation: rainbow-spin 1.5s ease-in infinite ;
+  box-sizing: border-box;
+  /* Rectangle mask: only 10px border visible */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  padding: 5px; /* Ensures the mask leaves a 10px border */
+  background-clip: border-box;
+  opacity: 1;
+  /* --- Outer rainbow glow --- */
+  box-shadow:
+    0 0 24px 8px red,
+    8px 8px 32px 12px orange,
+    -8px 8px 40px 16px yellow,
+    8px -8px 48px 20px green,
+    -8px -8px 56px 24px blue,
+    12px 0 64px 28px indigo,
+    0 12px 72px 32px violet;
+}
+
+@keyframes rainbow-spin {
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
