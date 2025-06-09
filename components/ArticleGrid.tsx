@@ -1,7 +1,8 @@
 "use client";
 import { transform } from "next/dist/build/swc/generated-native";
 import { useState, useCallback } from "react";
-import parse, { domToReact, HTMLReactParserOptions, Element } from "html-react-parser";
+import FloatingToDoPanel from "@/components/FloatingToDoPanel";
+
 
 type Article = {
   title: string;
@@ -51,30 +52,13 @@ export default function ArticleGrid({ articles, summaries }: Props) {
   function markdownToHtml(md: string) {
     return md.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+      '<a href="$2" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">$1</a>'
     );
   }
 
-  const actionLinkParseOptions: HTMLReactParserOptions = {
-    replace(domNode) {
-      if (domNode instanceof Element && domNode.name === "a") {
-        return (
-          <a
-            {...domNode.attribs}
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-blue-700 hover:text-blue-900"
-          >
-            {domToReact(domNode.children as import("html-react-parser").DOMNode[], actionLinkParseOptions)}
-          </a>
-        );
-      }
-    },
-  };
-
   // --- Render ---
   return (
+    
     <div className="relative min-h-screen font-sans text-foreground overflow-hidden">
       {/* ===== HEADER ===== */}
       <div className="fixed top-0 left-0 w-full h-16 bg-white/00 shadow- z-1000 flex items-center justify-between px-6" style={{ backdropFilter: "blur(2px)" }}>
@@ -97,7 +81,6 @@ export default function ArticleGrid({ articles, summaries }: Props) {
       </div>
 
       {/* ===== TITLE AREA ===== */}
-      
       <div className="relative z-20">
   <header className="relative max-w-8xl mx-auto text-center pt-20 px-6">
     <h1 className="text-6xl sm:text-6xl md:text-8xl lg:text-9xl font-['Fair_Play',serif] text-[#FFF8E0] drop-shadow-xl glow-3xl yellow-300" style={{ letterSpacing: "0.0em", wordBreak: "break-word" }}>
@@ -166,9 +149,17 @@ export default function ArticleGrid({ articles, summaries }: Props) {
                   {typeof summary?.["the action"] === "string" && summary["the action"].trim() !== "" && (
                     <>
                       <p className="font-bold">The Action:</p>
-                      <div className="text-sm" style={{ pointerEvents: "auto", zIndex: 50, position: "relative" }}>
-                        {parse(markdownToHtml(summary["the action"]), actionLinkParseOptions)}
-                      </div>
+                      <div
+                        className="text-sm underline text-blue-700 hover:text-blue-900"
+                        style={{
+                          pointerEvents: "auto",
+                          position: "relative", // or "absolute" if you want it floating
+                          zIndex: 50,
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html: markdownToHtml(summary["the action"]),
+                        }}
+                      />
                     </>
                   )}
                 </div>
@@ -217,17 +208,23 @@ export default function ArticleGrid({ articles, summaries }: Props) {
 <button
   className="text-xs transition hover:shadow-3xl hover:ring-4 hover:ring-yellow-300 hover:ring-offset-2  hover:shadow-[0_0_32px_8px_rgba(253,224,71,0.5)] hover:bg-white/70 fixed z-50 bottom-6 right-6 bg-yellow-300/80 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg border-2 border-yellow-400 transition hover:bg-yellow-400"
   aria-label="Show quick actions"
-  onClick={() => setShowMobileButtons((v) => !v)}
->
-<img
-  src="/plus-icon.svg"
-  alt="Toggle menu"
-  className="transition-transform duration-500 w-8 h-8 "
-  style={{
-    filter: showMobileButtons ? "invert(0)" : "invert(1)",
-    transform: showMobileButtons ? "rotate(45deg) scale(1.8)" : "rotate(0deg) scale(2.0)",
+  onClick={() => {
+    setShowMobileButtons((v) => {
+      // If closing the FAB, also close paywall popup
+      if (v) setShowPaywallOptions(false);
+      return !v;
+    });
   }}
-/>
+>
+  <img
+    src="/plus-icon.svg"
+    alt="Toggle menu"
+    className="transition-transform duration-500 w-8 h-8 "
+    style={{
+      filter: showMobileButtons ? "invert(0)" : "invert(1)",
+      transform: showMobileButtons ? "rotate(45deg) scale(1.8)" : "rotate(0deg) scale(2.0)",
+    }}
+  />
 </button>
 
 {/* Floating Buttons (slide in from right) */}
@@ -396,8 +393,24 @@ export default function ArticleGrid({ articles, summaries }: Props) {
     Refresh Feed
   </button>
 </div>
-    </div>
 
+{/* FloatingToDoPanel aligned just above the "+" button and moves up with floating menus */}
+<div
+  className="fixed z-50 right-6 transition-all duration-500"
+  style={{
+    maxWidth: "360px",
+    width: "90vw",
+    marginRight: "-1rem",
+    bottom: showPaywallOptions
+      ? "51rem"
+      : showMobileButtons
+      ? "25rem"
+      : "7.5rem",
+  }}
+>
+  <FloatingToDoPanel height={showPaywallOptions ? "250px" : "500px"} />
+</div>
 
+</div> // <-- main wrapper div
   );  
 }

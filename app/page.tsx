@@ -1,4 +1,8 @@
 export const runtime = "nodejs";
+// import FloatingToDoPanel from "@/components/FloatingToDoPanel";
+
+// Inside your main return:
+// <FloatingToDoPanel />
 
 import { fetchAllSources } from "../lib/fetchAllSources";
 import { summarizeWithGPT } from "../lib/summarizeWithGPT";
