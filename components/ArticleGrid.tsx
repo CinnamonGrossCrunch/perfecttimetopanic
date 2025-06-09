@@ -259,8 +259,9 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         minWidth: "260px",
         maxWidth: "320px",
         borderRadius: "3rem",
-        backgroundColor: "rgba(255, 255, 255, 0)",
-        backdropFilter: "blur(10px)",
+        backgroundClip: "padding-box",
+        backdropFilter: "blur(20px)",
+    
         boxShadow: "0 0 20px rgba(0, 0, 0, 0)",
         border: "1px solid rgba(255, 255, 255, 0)",
         padding: "1rem",
@@ -269,7 +270,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         alignItems: "center",
         gap: "1rem",
         width: "320px",
-        transform: "translateX(5%)",
+        transform: "translateX(3%)",
         justifyItems: "center",
       }}
       id="paywall-options-menu"
@@ -290,27 +291,30 @@ export default function ArticleGrid({ articles, summaries }: Props) {
           window.open(`https://www.removepaywall.com/search?url=${encodedUrl}`, "_blank");
         }
       }}
-      className={`
-        w-full rounded-3xl p-4 flex flex-col items-bottom justify-between gap-6
-        ${isDraggingOver
-          ? "bg-white/60 text-black backdrop-blur-lg"
-          : "bg-yellow-100/20 border-2 backdrop-blur-sm border-dashed text-white/70 border-yellow-200"}
-      `}
-      style={{
-        transform: "translatex(-8%)",
-        cursor: "help",
-        backdropFilter: isDraggingOver ? "blur(12px)" : "blur(4px)",
-        boxShadow: isDraggingOver ? "0 0 32px 8px rgb(255, 255, 255)" : undefined,
-        transition: "box-shadow 0.3s, background 0.3s, backdrop-filter 0.3s",
-        border: isDraggingOver
-          ? "none"
-          : "3px dashed rgba(253, 224, 71, 0.9)",
-        position: "relative",
-      }}
-    >
+        className={`
+          w-full rounded-3xl p-4 flex flex-col items-bottom justify-between gap-6
+          ${isDraggingOver
+            ? "bg-white/90 text-black "
+            : "bg-yellow-100/20 border-2 backdrop-blur-sm border-dashed text-white/100 border-yellow-200"}
+          drop-shadow-XL
+          transition-all duration-300 ease-in-out
+        `}
+        style={{
+          transform: "translatex(-8%)",
+          cursor: "help",
+          backdropFilter: isDraggingOver ? "blur(12px)" : "blur(4px)",
+          boxShadow: isDraggingOver ? "0 0 15px 18px rgb(255, 255, 255)" : undefined,
+          transition: "box-shadow 0.3s, background 0.3s, backdrop-filter 0.3s",
+          border: isDraggingOver
+            ? "none"
+            : "3px dashed  rgba(253, 224, 71, 0.9)",
+          position: "relative",
+          textShadow: "0 3px 5px rgba(0,0,0,0.55)" // <-- text shadow only
+        }}
+          >
       {/* Message */}
       <div
-        className="hidden sm:flex text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full"
+        className="hidden sm:flex text-inherit text-center text-lg font-medium leading-snug flex items-center justify-center w-full h-full "
         style={{ fontSize: "0.7em", minHeight: "180px" }}
       >
         + Drag an article here <br /> to remove paywall.
@@ -374,8 +378,9 @@ export default function ArticleGrid({ articles, summaries }: Props) {
             style={{
               background: "conic-gradient(red, orange, yellow, green, blue, indigo, violet, red)",
               filter: "blur(24px)",
-              opacity: 0.7,
+              opacity: 1,
               zIndex: 5,
+              
             }}
           />
         </span>
