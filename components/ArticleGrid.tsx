@@ -97,6 +97,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
       </div>
 
       {/* ===== TITLE AREA ===== */}
+      
       <div className="relative z-20">
   <header className="relative max-w-8xl mx-auto text-center pt-20 px-6">
     <h1 className="text-6xl sm:text-6xl md:text-8xl lg:text-9xl font-['Fair_Play',serif] text-[#FFF8E0] drop-shadow-xl glow-3xl yellow-300" style={{ letterSpacing: "0.0em", wordBreak: "break-word" }}>
