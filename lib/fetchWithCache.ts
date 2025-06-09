@@ -1,10 +1,13 @@
 // lib/fetchWithCache.ts
 import { readCache, writeCache } from "./cacheUtils";
 
+// 24 hours in milliseconds
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
 export async function fetchWithCache<T>(
   key: string,
   fetchFn: () => Promise<T>,
-  maxAgeMs = 3 * 60 * 60 * 1000 // 3 hours default
+  maxAgeMs = ONE_DAY_MS // default to 1 day
 ): Promise<T> {
   const cached = await readCache(key);
 
