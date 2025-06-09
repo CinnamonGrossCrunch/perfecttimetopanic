@@ -300,7 +300,7 @@ export default function ArticleGrid({ articles, summaries }: Props) {
         transform: "translatex(-8%)",
         cursor: "help",
         backdropFilter: isDraggingOver ? "blur(12px)" : "blur(4px)",
-        boxShadow: isDraggingOver ? "0 0 32px 8px rgba(255, 255, 255, 0.7)" : undefined,
+        boxShadow: isDraggingOver ? "0 0 32px 8px rgb(255, 255, 255)" : undefined,
         transition: "box-shadow 0.3s, background 0.3s, backdrop-filter 0.3s",
         border: isDraggingOver
           ? "none"
