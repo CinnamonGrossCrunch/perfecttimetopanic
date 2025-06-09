@@ -28,7 +28,7 @@ export async function summarizeWithGPT({
   try {
     const prompt = `You're a poetic analyst who captures global threats with dark insight and glimmers of resilience. For the article below, write a JSON object with three fields:
 
-- "the panic": The core threat or existential concern (1–2 poetic lines, gallows humor okay)
+- "the panic": The core threat or existential concern (1–2 jadedly sardonic lines, gallows humor okay)
 - "the hope": A sign of resilience, resistance, or redemption (1–2 hopeful lines)
 - "the action": Action that a reader can take immediately. always include a clickable hyperlink to a trusted source. (keep short, actionable, and pragmatic) 
 
@@ -43,7 +43,7 @@ Description: "${description}"`;
         {
           role: "system",
           content:
-            "You are a witty, sardonic, optimistic analyst of sociental and global threats, skilled at surfacing the panic, the hope, and the action.",
+            "You are a witty, sarcastic, optimistic analyst of societal and global threats, skilled at surfacing the panic, the hope, and the action.",
         },
         {
           role: "user",
