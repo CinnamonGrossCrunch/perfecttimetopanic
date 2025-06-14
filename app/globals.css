@@ -223,7 +223,7 @@ body {
 /* Rainbow border with fully transparent center, only 10px border visible, with outer rainbow glow */
 .rainbow-border-animate {
   position: absolute;
-  border-radius: 1.2em;
+  border-radius: 1.8em;
   pointer-events: none;
   z-index: 10;
   border: none;
@@ -238,7 +238,7 @@ body {
       violet,
       red
     );
-  animation: rainbow-spin 1.5s ease-in infinite ;
+  animation: rainbow-spin 2s linear infinite ;
   box-sizing: border-box;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box, 
@@ -248,7 +248,7 @@ body {
     linear-gradient(#000 0 0) content-box, 
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  padding: 3px;
+  padding: 5px;
   background-clip: border-box;
   opacity: 1;
   box-shadow:
@@ -260,7 +260,47 @@ body {
     12px 0 64px 28px indigo,
     0 12px 72px 32px violet;
 }
-
+/* Rainbow border with fully transparent center, only 10px border visible, with outer rainbow glow */
+.red-border-animate {
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 10;
+  border: none;
+  background:
+    conic-gradient(
+      black,
+      black,
+      black,
+      black,
+      black,
+      indigo,
+      violet,
+      red
+    );
+  animation: rainbow-spin 2s linear infinite ;
+  box-sizing: border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  padding: 30px;
+  background-clip: border-box;
+  opacity: 1;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 24px 8px black,
+    8px 8px 32px 12px black,
+    -8px 8px 40px 16px black,
+    8px -8px 48px 20px black,
+    -8px -8px 56px 24px black,
+    12px 0 64px 28px indigo,
+    0 12px 72px 32px violet;
+}
 @keyframes rainbow-spin {
   100% {
     filter: hue-rotate(360deg);
