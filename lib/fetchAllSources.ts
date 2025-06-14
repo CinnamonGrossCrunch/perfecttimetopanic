@@ -4,7 +4,7 @@ import { franc } from "franc";
 import Sentiment from "sentiment";
 import { fetchFromGNews } from "./fetchFromGNews";
 import { fetchRSSFeed } from "./fetchRSSFeed";
-import { readCache, writeCache } from "./cacheUtils";
+import { readCache, writeCache, clearCache } from "./cacheUtils";
 
 const sentiment = new Sentiment();
 const CACHE_FILE = path.join(process.cwd(), "cache", "articles.json");
@@ -129,6 +129,9 @@ export async function fetchAllSources() {
     const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
     if (isRecent) {
       return cache.articles;
+    } else {
+      // Cache is old, delete it
+      await clearCache("articles");
     }
   }
 
