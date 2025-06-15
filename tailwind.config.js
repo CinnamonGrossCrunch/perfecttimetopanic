@@ -5,6 +5,10 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  corePlugins: {
+    filter: true,
+    backdropFilter: true,
+  },
   theme: {
     extend: {
       fontFamily: {

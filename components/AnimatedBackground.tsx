@@ -111,7 +111,7 @@ const AnimatedBackground: React.FC = () => {
                     position: "absolute",
                     inset: 0,
                     background: "radial-gradient(circle at center, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
-                    pointerEvents: "none",
+                    pointerEvents: "auto",
                     zIndex: 3,
                 }}
             />
@@ -122,7 +122,7 @@ const AnimatedBackground: React.FC = () => {
                     inset: 0,
                     background: "linear-gradient(to top, rgb(8, 4, 1) 40%, rgba(19, 9, 2, 0) 100%)",
                     opacity: 1, // Adjusted opacity for the dark gradient
-                    pointerEvents: "none",
+                    pointerEvents: "auto",
                     zIndex: 3,
                 }}
             

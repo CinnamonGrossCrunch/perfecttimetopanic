@@ -7,11 +7,12 @@ import { fetchRSSFeed } from "./fetchRSSFeed";
 import { readCache, writeCache, clearCache } from "./cacheUtils";
 
 const sentiment = new Sentiment();
-const CACHE_FILE = path.join(process.cwd(), "cache", "articles.json");
 
 const SUBSTACKS = [
   "https://bloodinthemachine.substack.com/feed",
   "https://noahpinion.substack.com/feed",
+  "https://hamiltonnolan.substack.com/feed",
+
 ];
 
 const ALL_MEDIUM_TAGS = [
@@ -27,13 +28,6 @@ const OPINION_FEEDS = [
   "https://www.latimes.com/opinion/rss2.0.xml"
 ];
 
-const EXCLUDED_MEDIUM_TAGS = [
-  "fiction", "science-fiction", "sci-fi",
-  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy", 
-  "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias", "jesus", "god", "satan", "evil", "destruction", "parenting,",
-  "parenting", "parent", "parents", "parental", "parenthood", "parenting advice", "parenting tips", "hope", "optimism", "resilience", "solution", "action", "change", "improvement", "progress" 
-];
-
 const BBC_FEEDS = [
   "http://feeds.bbci.co.uk/news/rss.xml",
 ];
@@ -42,7 +36,19 @@ const ALJAZEERA_FEEDS = [
   "https://www.aljazeera.com/xml/rss/all.xml",
 ];
 
-// Rotate through Medium tags in 3-hour blocks
+// ✅ Your rss.app existential threat feed
+const RSS_APP_FEEDS = [
+  "https://rss.app/rss-feed?keyword=existential%20threat&region=US&lang=en",
+];
+
+const EXCLUDED_MEDIUM_TAGS = [
+  "fiction", "science-fiction", "sci-fi",
+  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy", 
+  "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias", "jesus", "god", "satan", "evil", "destruction", "parenting,",
+  "parenting", "parent", "parents", "parental", "parenthood", "parenting advice", "parenting tips", "hope", "optimism", "resilience", "solution", "action", "change", "improvement", "progress" 
+];
+
+// Medium tags rotation logic
 function rotateTagsEvery3Hours(tags: string[], buckets = 4) {
   const now = new Date();
   const index = Math.floor((now.getUTCHours() % 24) / 3) % buckets;
@@ -73,7 +79,6 @@ function isFromExcludedMediumTag(article: any): boolean {
   const tags = Array.isArray(article.tags)
     ? article.tags.map((t: string) => t.toLowerCase()).join(" ")
     : "";
-
   return EXCLUDED_MEDIUM_TAGS.some(tag =>
     feedUrl.includes(`/tag/${tag}`) ||
     title.includes(tag) ||
@@ -90,13 +95,11 @@ function isEnglish(article: any): boolean {
 function isNegativeAIArticle(article: any): boolean {
   const text = [article.title, article.description, article.content].filter(Boolean).join(" ").toLowerCase();
   const sentimentResult = sentiment.analyze(text);
-
   const aiKeywords = ["ai", "artificial intelligence"];
   const negativeKeywords = [
     "danger", "threat", "risk", "warning", "catastrophe", "dystopia", "doom", "crisis",
     "collapse", "apocalypse", "existential", "harm", "problem", "panic", "alarm", "fear"
   ];
-
   return (
     aiKeywords.some(ai => text.includes(ai)) &&
     sentimentResult.score < -1 &&
@@ -120,9 +123,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// Cache utilities
-
-
+// Main fetchAllSources function
 export async function fetchAllSources() {
   const cache = await readCache("articles");
   if (cache && cache.date) {
@@ -130,21 +131,21 @@ export async function fetchAllSources() {
     if (isRecent) {
       return cache.articles;
     } else {
-      // Cache is old, delete it
       await clearCache("articles");
     }
   }
 
   const gnews = await fetchFromGNews();
-
   const rotatingMediumTags = rotateTagsEvery3Hours(ALL_MEDIUM_TAGS);
   const mediumFeeds = rotatingMediumTags.map(tag => `https://medium.com/feed/tag/${tag}`);
+
   const allFeeds = [
     ...SUBSTACKS,
     ...mediumFeeds,
     ...OPINION_FEEDS,
     ...BBC_FEEDS,
     ...ALJAZEERA_FEEDS,
+    ...RSS_APP_FEEDS, // 👈 Your new feed!
   ];
 
   const rssFeeds = [];
@@ -180,16 +181,17 @@ export async function fetchAllSources() {
   const medium = filtered.filter(a => mediumFeeds.some(url => a.feedUrl?.startsWith(url)));
   const opeds = filtered.filter(a => a.category === "op-ed");
   const gnewsOnly = filtered.filter(a => a.source?.name?.toLowerCase().includes("gnews"));
+  const rssApp = filtered.filter(a => RSS_APP_FEEDS.some(url => a.feedUrl?.startsWith(url)));
   const other = filtered.filter(
-    a => !substack.includes(a) && !medium.includes(a) && !opeds.includes(a) && !gnewsOnly.includes(a)
+    a => !substack.includes(a) && !medium.includes(a) && !opeds.includes(a) && !gnewsOnly.includes(a) && !rssApp.includes(a)
   );
 
   const topSubstack = substack
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 2);
+    .slice(0, 1);
 
   const remainingSubstack = substack.filter(a => !topSubstack.includes(a));
-  const nonSubstack = [...opeds, ...remainingSubstack, ...medium, ...gnewsOnly, ...other];
+  const nonSubstack = [...opeds, ...rssApp, ...remainingSubstack, ...medium, ...gnewsOnly, ...other];
 
   nonSubstack.sort((a, b) => {
     const pop = (b.popularity ?? 0) - (a.popularity ?? 0);
