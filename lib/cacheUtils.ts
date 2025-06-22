@@ -1,8 +1,14 @@
 // lib/cacheUtils.ts
 import fs from "fs/promises";
 import path from "path";
+import { Redis } from "@upstash/redis";
 
 const CACHE_DIR = path.join(process.cwd(), "cache");
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
 
 export async function readCache(key: string): Promise<any | null> {
   const cacheFile = path.join(CACHE_DIR, `${key}.json`);
@@ -28,4 +34,16 @@ export async function clearCache(key: string) {
   } catch {
     return false;
   }
+}
+
+export async function redisReadCache(key: string) {
+  return await redis.get(key);
+}
+
+export async function redisWriteCache(key: string, value: any) {
+  await redis.set(key, value);
+}
+
+export async function redisClearCache(key: string) {
+  await redis.del(key);
 }
