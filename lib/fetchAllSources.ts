@@ -4,7 +4,7 @@ import { franc } from "franc";
 import Sentiment from "sentiment";
 import { fetchFromGNews } from "./fetchFromGNews";
 import { fetchRSSFeed } from "./fetchRSSFeed";
-import { readCache, writeCache, clearCache } from "./cacheUtils";
+import { redisReadCache, redisWriteCache, redisClearCache } from "./cacheUtils";
 
 const sentiment = new Sentiment();
 
@@ -125,13 +125,13 @@ function shuffle<T>(arr: T[]): T[] {
 
 // Main fetchAllSources function
 export async function fetchAllSources() {
-  const cache = await readCache("articles");
+  const cache = await redisReadCache("articles");
   if (cache && cache.date) {
     const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
     if (isRecent) {
       return cache.articles;
     } else {
-      await clearCache("articles");
+      await redisClearCache("articles");
     }
   }
 
@@ -200,6 +200,6 @@ export async function fetchAllSources() {
   });
 
   const final = [...topSubstack, ...nonSubstack];
-  await writeCache("articles", { date: new Date().toISOString(), articles: final });
+  await redisWriteCache("articles", { date: new Date().toISOString(), articles: final });
   return final;
 }
