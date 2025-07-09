@@ -124,12 +124,17 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 // Main fetchAllSources function
+type ArticleCache = {
+  date: string;
+  articles: any[];
+};
+
 export async function fetchAllSources() {
-  const cache = await redisReadCache("articles");
-  if (cache && cache.date) {
-    const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
+  const cache = await redisReadCache("articles") as ArticleCache | null;
+  if (cache && typeof cache === "object" && "date" in cache) {
+    const isRecent = Date.now() - new Date((cache as any).date).getTime() < 3 * 60 * 60 * 1000;
     if (isRecent) {
-      return cache.articles;
+      return (cache as any).articles;
     } else {
       await redisClearCache("articles");
     }
