@@ -11,7 +11,7 @@ export async function fetchWithCache<T>(
   fetchFn: () => Promise<T>,
   maxAgeMs = ONE_DAY_MS // default to 1 day
 ): Promise<T> {
-  const cached: CacheEntry<T> = await redisReadCache(key);
+  const cached: CacheEntry<T> = await redisReadCache(key) as CacheEntry<T>;
 
   if (cached && cached.timestamp && Date.now() - cached.timestamp < maxAgeMs) {
     return cached.data;
