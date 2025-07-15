@@ -1,10 +1,5 @@
 import { OpenAI } from "openai";
 
-console.log("🔍 ENV DEBUG:");
-console.log("KEY:", process.env.OPENAI_API_KEY);
-console.log("PROJECT:", process.env.OPENAI_PROJECT_ID);
-console.log("ORG:", process.env.OPENAI_ORG_ID);
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
   baseURL: "https://api.openai.com/v1",
@@ -25,33 +20,42 @@ export async function summarizeWithGPT({
   title: string;
   description: string;
 }): Promise<StructuredSummary> {
-  try {
-    const prompt = `You're a poetic analyst who captures global threats with dark insight and glimmers of resilience. For the article below, write a JSON object with three fields:
+  const prompt = `Your task is to neutrally and accurately summarize the article provided below into a structured JSON object with the following three fields:
 
-- "the panic": The core threat or existential concern (a sardonic natural language sentence  comprising 7 words in the explicit format of "Noun(s) verb adverb adjective preposition definite-article(or indefinite-aricle) noun." , with a "well, fuck." tone of voice. )
-- "the hope": A sign of resilience, resistance, or redemption (1–2 hopeful lines)
-- "the action": Action that a reader can take immediately. always include a clickable hyperlink to a trusted source. (keep short, actionable, and pragmatic) 
+- "the panic": Concisely state in 12 words or less the primary concern or issue raised by the author. If the author does not emphasize a significant issue, briefly note the context or question addressed with the appropriate gravity.
 
-Respond ONLY with a valid JSON object. Do not add commentary.
+- "the hope": Summarize in 12 words or lessthe author's perspective on optimism, solutions, or positive insights provided. Keep faithful to the author's original tone (cautious, confident, etc.).
+
+- "the action": Recommend, in 12 words or less,  a specific, pragmatic action or takeaway mentioned or implied by the author. Include a clickable hyperlink to a relevant, trustworthy source for further reading or action.
+
+Respond ONLY with a valid JSON object in this exact format:
+{
+  "the panic": "...",
+  "the hope": "...",
+  "the action": "..."
+}
+
+Do not include any commentary, explanation, or markdown.
 
 Title: "${title}"
 Description: "${description}"`;
 
+  try {
     const response = await openai.chat.completions.create({
       model: "gpt-4.1-nano",
       messages: [
         {
           role: "system",
           content:
-            "You are a witty, sarcastic, optimistic analyst of societal and global threats, skilled at surfacing the panic, the hope, and the action.",
+            "You are a cynical, analytical assistant tasked with summarizing articles into clear, grudgingly balanced, and contextually accurate structured summaries.",
         },
         {
           role: "user",
           content: prompt,
         },
       ],
-      temperature: 0.8,
-      max_tokens: 200,
+      temperature: 0.5,
+      max_tokens: 700,
     });
 
     let raw = response.choices[0].message.content?.trim() ?? "{}";
