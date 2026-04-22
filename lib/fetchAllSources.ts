@@ -131,10 +131,10 @@ type ArticleCache = {
 
 export async function fetchAllSources() {
   const cache = await redisReadCache("articles") as ArticleCache | null;
-  if (cache && typeof cache === "object" && "date" in cache) {
-    const isRecent = Date.now() - new Date((cache as any).date).getTime() < 3 * 60 * 60 * 1000;
+  if (cache && cache.date) {
+    const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
     if (isRecent) {
-      return (cache as any).articles;
+      return cache.articles;
     } else {
       await redisClearCache("articles");
     }
