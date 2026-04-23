@@ -1,90 +1,125 @@
-import fs from "fs/promises";
-import path from "path";
 import { franc } from "franc";
-import Sentiment from "sentiment";
 import { fetchFromGNews } from "./fetchFromGNews";
 import { fetchRSSFeed } from "./fetchRSSFeed";
-import { redisReadCache, redisWriteCache, redisClearCache } from "./cacheUtils";
 
-const sentiment = new Sentiment();
-
+// Curated Substacks — high signal. Custom-domain Substacks are also supported
+// (they expose /feed at their own domain); add with the full URL.
 const SUBSTACKS = [
-  "https://bloodinthemachine.substack.com/feed",
-  "https://noahpinion.substack.com/feed",
-  "https://hamiltonnolan.substack.com/feed",
+  // Tech / labor / AI critique
+  "https://bloodinthemachine.substack.com/feed", // Brian Merchant
+  "https://readmax.substack.com/feed", // Max Read
 
+  // Economics / policy
+  "https://noahpinion.substack.com/feed", // Noah Smith
+  "https://mattstoller.substack.com/feed", // Matt Stoller, BIG — antitrust
+  "https://paulkrugman.substack.com/feed", // Paul Krugman
+  "https://hamiltonnolan.substack.com/feed", // Hamilton Nolan — labor
+
+  // Authoritarianism / democracy / rule of law
+  "https://heathercoxrichardson.substack.com/feed", // Letters from an American
+  "https://snyder.substack.com/feed", // Timothy Snyder — Thinking about…
+  "https://lucid.substack.com/feed", // Ruth Ben-Ghiat — Lucid
+  "https://joycevance.substack.com/feed", // Joyce Vance — Civil Discourse
+  "https://contrarian.substack.com/feed", // Jennifer Rubin et al. — The Contrarian
+  "https://messagebox.substack.com/feed", // Dan Pfeiffer — The Message Box
+  "https://statuskuo.substack.com/feed", // Jay Kuo — The Status Kuo
+
+  // Climate
+  "https://billmckibben.substack.com/feed", // Bill McKibben — The Crucial Years
+  "https://www.volts.wtf/feed", // David Roberts — Volts (climate & energy)
+  "https://heated.world/feed", // Emily Atkin — HEATED
+
+  // Geopolitics / war
+  "https://phillipspobrien.substack.com/feed", // Phillips O'Brien
+
+  // Corporate accountability / tech critique (custom domains)
+  "https://popular.info/feed", // Judd Legum — Popular Information
+  "https://www.wheresyoured.at/feed", // Ed Zitron — Where's Your Ed At
+  "https://www.programmablemutter.com/feed", // Henry Farrell — Programmable Mutter
 ];
 
-const ALL_MEDIUM_TAGS = [
-  "dystopia", "fear", "authoritarianism", "climate-change",
-  "war", "pandemic", "world-war-iii", "dictatorship",
-  "totalitarianism", "discrimination", "inequity", "ethics"
+// BBC topic-specific feeds (world/politics/science replace the firehose "all news" feed).
+const BBC_FEEDS = [
+  "https://feeds.bbci.co.uk/news/world/rss.xml",
+  "https://feeds.bbci.co.uk/news/politics/rss.xml",
+  "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
 ];
 
+// Guardian opinion + topic sections.
+const GUARDIAN_FEEDS = [
+  "https://www.theguardian.com/commentisfree/rss",
+  "https://www.theguardian.com/environment/rss",
+  "https://www.theguardian.com/us-news/us-politics/rss",
+];
+
+// Other opinion columns (classifier filters non-threat pieces).
 const OPINION_FEEDS = [
   "https://rss.nytimes.com/services/xml/rss/nyt/Opinion.xml",
   "https://feeds.washingtonpost.com/rss/opinions",
-  "https://www.theguardian.com/commentisfree/rss",
-  "https://www.latimes.com/opinion/rss2.0.xml"
+  "https://www.latimes.com/opinion/rss2.0.xml",
 ];
 
-const BBC_FEEDS = [
-  "http://feeds.bbci.co.uk/news/rss.xml",
+// Investigative / specialty outlets — largely open-licensed, on-topic by design.
+const INVESTIGATIVE_FEEDS = [
+  "https://www.propublica.org/feeds/propublica/main",
+  "https://theintercept.com/feed/?lang=en",
+  "https://www.democracynow.org/democracynow.rss",
+  "https://grist.org/feed/",
+  "https://restofworld.org/feed/latest/",
+  "https://www.lawfaremedia.org/feeds/articles",
+  "https://www.motherjones.com/feed/",
 ];
 
-const ALJAZEERA_FEEDS = [
+// Mainstream news — firehoses gated by the relevance classifier.
+const MAINSTREAM_FEEDS = [
+  // Al Jazeera (back — was dropped with the rest of the firehose feeds)
   "https://www.aljazeera.com/xml/rss/all.xml",
+  // NPR topic feeds
+  "https://feeds.npr.org/1001/rss.xml", // News
+  "https://feeds.npr.org/1002/rss.xml", // World
+  "https://feeds.npr.org/1014/rss.xml", // Politics
+  // Other political/policy mainstream
+  "https://thehill.com/feed/",
+  "https://www.theatlantic.com/feed/channel/politics/",
+  "https://www.theatlantic.com/feed/channel/technology/",
+  "https://www.vox.com/rss/index.xml",
+  "https://www.foreignaffairs.com/rss.xml",
 ];
 
-// ✅ Your rss.app existential threat feed
+// Research signal — AI risk / computers-and-society preprints.
+const RESEARCH_FEEDS = [
+  "https://export.arxiv.org/rss/cs.CY",
+  "https://export.arxiv.org/rss/cs.AI",
+];
+
+// rss.app existential-threat keyword feed (kept).
 const RSS_APP_FEEDS = [
   "https://rss.app/rss-feed?keyword=existential%20threat&region=US&lang=en",
 ];
 
-const EXCLUDED_MEDIUM_TAGS = [
-  "fiction", "science-fiction", "sci-fi",
-  "video-games", "gaming", "cryptocurrency", "crypto", "poetry", "fantasy", 
-  "disaster", "out of control", "uncontrollable", "killer", "weapon", "misuse", "bias", "jesus", "god", "satan", "evil", "destruction", "parenting,",
-  "parenting", "parent", "parents", "parental", "parenthood", "parenting advice", "parenting tips", "hope", "optimism", "resilience", "solution", "action", "change", "improvement", "progress" 
+const ALL_FEEDS = [
+  ...SUBSTACKS,
+  ...BBC_FEEDS,
+  ...GUARDIAN_FEEDS,
+  ...OPINION_FEEDS,
+  ...INVESTIGATIVE_FEEDS,
+  ...MAINSTREAM_FEEDS,
+  ...RESEARCH_FEEDS,
+  ...RSS_APP_FEEDS,
 ];
-
-// Medium tags rotation logic
-function rotateTagsEvery3Hours(tags: string[], buckets = 4) {
-  const now = new Date();
-  const index = Math.floor((now.getUTCHours() % 24) / 3) % buckets;
-  const split = Array.from({ length: buckets }, (_, i) =>
-    tags.filter((_, j) => j % buckets === i)
-  );
-  return split[index];
-}
 
 function normalizeUrl(url: string): string {
   return url?.split("?")[0].split("#")[0].trim().toLowerCase();
 }
 
-function deduplicate(articles: any[]): any[] {
-  const seen = new Set();
-  return articles.filter(article => {
-    const id = normalizeUrl(article.url || article.link || "");
+function deduplicate<T extends { url?: string; link?: string }>(articles: T[]): T[] {
+  const seen = new Set<string>();
+  return articles.filter((a) => {
+    const id = normalizeUrl(a.url || a.link || "");
     if (!id || seen.has(id)) return false;
     seen.add(id);
     return true;
   });
-}
-
-function isFromExcludedMediumTag(article: any): boolean {
-  const feedUrl = article.feedUrl?.toLowerCase() || "";
-  const title = article.title?.toLowerCase() || "";
-  const description = article.description?.toLowerCase() || "";
-  const tags = Array.isArray(article.tags)
-    ? article.tags.map((t: string) => t.toLowerCase()).join(" ")
-    : "";
-  return EXCLUDED_MEDIUM_TAGS.some(tag =>
-    feedUrl.includes(`/tag/${tag}`) ||
-    title.includes(tag) ||
-    description.includes(tag) ||
-    tags.includes(tag)
-  );
 }
 
 function isEnglish(article: any): boolean {
@@ -92,119 +127,62 @@ function isEnglish(article: any): boolean {
   return franc(text, { minLength: 10 }) === "eng";
 }
 
-function isNegativeAIArticle(article: any): boolean {
-  const text = [article.title, article.description, article.content].filter(Boolean).join(" ").toLowerCase();
-  const sentimentResult = sentiment.analyze(text);
-  const aiKeywords = ["ai", "artificial intelligence"];
-  const negativeKeywords = [
-    "danger", "threat", "risk", "warning", "catastrophe", "dystopia", "doom", "crisis",
-    "collapse", "apocalypse", "existential", "harm", "problem", "panic", "alarm", "fear"
-  ];
-  return (
-    aiKeywords.some(ai => text.includes(ai)) &&
-    sentimentResult.score < -1 &&
-    negativeKeywords.some(neg => text.includes(neg))
-  );
-}
-
 function tagOpEd(article: any): any {
-  if (OPINION_FEEDS.some(url => article.feedUrl?.startsWith(url))) {
+  const opinionRoots = [...OPINION_FEEDS, ...GUARDIAN_FEEDS.filter((u) => u.includes("commentisfree"))];
+  if (opinionRoots.some((url) => article.feedUrl?.startsWith(url))) {
     return { ...article, category: "op-ed" };
   }
   return article;
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+/**
+ * Run async `fn` over `items` with a max concurrency. Preserves input order.
+ */
+async function parallelMap<T, U>(
+  items: T[],
+  limit: number,
+  fn: (item: T, index: number) => Promise<U>
+): Promise<U[]> {
+  const results: U[] = new Array(items.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (true) {
+      const i = cursor++;
+      if (i >= items.length) return;
+      try {
+        results[i] = await fn(items[i], i);
+      } catch {
+        results[i] = undefined as unknown as U;
+      }
+    }
+  });
+  await Promise.all(workers);
+  return results;
 }
 
-// Main fetchAllSources function
-type ArticleCache = {
-  date: string;
-  articles: any[];
-};
-
+/**
+ * Gather raw candidate articles from all sources. No caching, no classification, no summarization —
+ * those happen in buildFeed. Returns deduped, English-only articles that have an image.
+ */
 export async function fetchAllSources() {
-  const cache = await redisReadCache("articles") as ArticleCache | null;
-  if (cache && cache.date) {
-    const isRecent = Date.now() - new Date(cache.date).getTime() < 3 * 60 * 60 * 1000; // 3 hours
-    if (isRecent) {
-      return cache.articles;
-    } else {
-      await redisClearCache("articles");
-    }
-  }
+  const [gnews, rssBatches] = await Promise.all([
+    fetchFromGNews().catch((e) => {
+      console.error("❌ GNews fetch failed:", e);
+      return [];
+    }),
+    parallelMap(ALL_FEEDS, 4, async (url) => {
+      try {
+        return await fetchRSSFeed(url);
+      } catch (err) {
+        console.error("❌ RSS fetch failed:", url, err);
+        return [];
+      }
+    }),
+  ]);
 
-  const gnews = await fetchFromGNews();
-  const rotatingMediumTags = rotateTagsEvery3Hours(ALL_MEDIUM_TAGS);
-  const mediumFeeds = rotatingMediumTags.map(tag => `https://medium.com/feed/tag/${tag}`);
-
-  const allFeeds = [
-    ...SUBSTACKS,
-    ...mediumFeeds,
-    ...OPINION_FEEDS,
-    ...BBC_FEEDS,
-    ...ALJAZEERA_FEEDS,
-    ...RSS_APP_FEEDS, // 👈 Your new feed!
-  ];
-
-  const rssFeeds = [];
-  for (const url of allFeeds) {
-    try {
-      const feed = await fetchRSSFeed(url);
-      rssFeeds.push(feed);
-    } catch (err) {
-      console.error("❌ RSS fetch failed:", url, err);
-      rssFeeds.push([]);
-    }
-    await new Promise(res => setTimeout(res, 500)); // throttle
-  }
-
-  const all = [...gnews, ...rssFeeds.flat()];
+  const all = [...gnews, ...rssBatches.flat()];
   const unique = deduplicate(all);
   const englishOnly = unique.filter(isEnglish);
-
-  // Reject articles with no image or thumbnail
-  const withImage = englishOnly.filter(
-    a => a.thumbnail || a.image
-  );
-
-  const filtered = withImage
-    .filter(a => !isFromExcludedMediumTag(a))
-    .filter(a => {
-      const isAI = a.title?.toLowerCase().includes("ai") || a.description?.toLowerCase().includes("ai");
-      return !isAI || isNegativeAIArticle(a);
-    })
-    .map(tagOpEd);
-
-  const substack = filtered.filter(a => SUBSTACKS.some(url => a.feedUrl?.startsWith(url)));
-  const medium = filtered.filter(a => mediumFeeds.some(url => a.feedUrl?.startsWith(url)));
-  const opeds = filtered.filter(a => a.category === "op-ed");
-  const gnewsOnly = filtered.filter(a => a.source?.name?.toLowerCase().includes("gnews"));
-  const rssApp = filtered.filter(a => RSS_APP_FEEDS.some(url => a.feedUrl?.startsWith(url)));
-  const other = filtered.filter(
-    a => !substack.includes(a) && !medium.includes(a) && !opeds.includes(a) && !gnewsOnly.includes(a) && !rssApp.includes(a)
-  );
-
-  const topSubstack = substack
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 1);
-
-  const remainingSubstack = substack.filter(a => !topSubstack.includes(a));
-  const nonSubstack = [...opeds, ...rssApp, ...remainingSubstack, ...medium, ...gnewsOnly, ...other];
-
-  nonSubstack.sort((a, b) => {
-    const pop = (b.popularity ?? 0) - (a.popularity ?? 0);
-    if (pop !== 0) return pop;
-    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-  });
-
-  const final = [...topSubstack, ...nonSubstack];
-  await redisWriteCache("articles", { date: new Date().toISOString(), articles: final });
-  return final;
+  const withImage = englishOnly.filter((a) => a.thumbnail || a.image);
+  return withImage.map(tagOpEd);
 }

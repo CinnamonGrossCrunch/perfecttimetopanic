@@ -1,10 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AnimatedBackground from "../components/AnimatedBackground";
 import { Libre_Baskerville } from "next/font/google";
 import {Playfair_Display} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react"
+
+// Prefer the canonical public URL; fall back to Vercel's preview URL, then localhost.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
 const libre = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -24,20 +31,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
+
 export const metadata: Metadata = {
-  title: "Perfect Time To Panic",
-  description: "A Gross Domestic Production",
+  metadataBase: new URL(siteUrl),
+  title: "Worrry",
+  description: "Worrry. Bad news, well paced.",
   openGraph: {
-    title: "Perfect Time To Panic",
-    description: "A Gross Domestic Production",
-    url: "https://yourdomain.com",
-    siteName: "Perfect Time To Panic",
+    title: "Worrry",
+    description: "Bad news, well paced.",
+    url: siteUrl,
+    siteName: "Worrry",
     images: [
       {
         url: "/PTTP2.jpg",
         width: 1200,
         height: 630,
-        alt: "Perfect Time To Panic",
+        alt: "Worrry",
       },
     ],
     locale: "en_US",
@@ -45,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Perfect Time To Panic",
-    description: "A Gross Domestic Production",
+    title: "Worrry",
+    description: "Bad news, well paced.",
     images: ["/PTTP2.jpg"],
   },
   icons: {
@@ -55,7 +67,6 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  themeColor: "#ffffff",
   keywords: [
     "PERFECT TIME TO PANIC",
     "bad news",

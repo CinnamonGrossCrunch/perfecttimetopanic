@@ -30,7 +30,7 @@ export async function fetchRSSFeed(feedUrl: string) {
     const feed = await parser.parseURL(feedUrl);
 
     const articles = await Promise.all(
-      (feed.items || []).slice(0, 5).map(async (item) => {
+      (feed.items || []).slice(0, 8).map(async (item) => {
         const url = item.link || "";
         const ogImage = await fetchOGImage(url);
 

@@ -1,39 +1,28 @@
 export const runtime = "nodejs";
+export const revalidate = 0;
 
-
-import { fetchAllSources } from "../lib/fetchAllSources";
-import { summarizeWithGPT } from "../lib/summarizeWithGPT";
 import ArticleGrid from "../components/ArticleGrid";
+import { redisReadCache } from "../lib/cacheUtils";
+import { buildFeed, type Feed } from "../lib/buildFeed";
 
-type Article = {
-  title: string;
-  description: string;
-  url: string;
-  publishedAt: string;
-  thumbnail?: string | null;
-  image?: string | null;
-  source: {
-    name: string;
-  };
-};
-
-type StructuredSummary = {
-  "the panic": string;
-  "the hope": string;
-  "the action": string;
-};
+// Consider the cache stale after this much time. The cron refreshes every ~2h; this is a
+// safety net so a stuck cron doesn't serve week-old news forever.
+const MAX_AGE_MS = 6 * 60 * 60 * 1000;
 
 export default async function Home() {
-  const articles: Article[] = await fetchAllSources();
+  let feed = (await redisReadCache("feed")) as Feed | null;
 
-  const summaries: StructuredSummary[] = await Promise.all(
-    articles.map((article) =>
-      summarizeWithGPT({
-        title: article.title,
-        description: article.description,
-      })
-    )
+  const ageMs = feed ? Date.now() - new Date(feed.generatedAt).getTime() : Infinity;
+  if (!feed || ageMs > MAX_AGE_MS) {
+    console.log("[page] feed cache cold or stale — rebuilding inline");
+    feed = await buildFeed();
+  }
+
+  return (
+    <ArticleGrid
+      articles={feed.articles}
+      summaries={feed.summaries}
+      editorial={feed.editorial ?? null}
+    />
   );
-
-  return <ArticleGrid articles={articles} summaries={summaries} />;
 }
