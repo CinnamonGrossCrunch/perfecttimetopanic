@@ -1,8 +1,5 @@
 import { OpenAI } from "openai";
 
-// Using OpenAI gpt-4.1 for the editorial authoring while ANTHROPIC_API_KEY is not
-// configured. gpt-4.1 is top-tier for non-reasoning writing tasks and well-suited
-// for nuanced synthesis. To switch back to Claude Opus 4.7, see CLAUDE.md.
 const EDITORIAL_MODEL = "gpt-4.1";
 
 const openai = new OpenAI({
@@ -26,32 +23,53 @@ type EditorialInput = {
   title: string;
   description: string;
   topics: string[];
+  source: string;
+  publishedAt: string;
   panic?: string;
+  hope?: string;
 };
 
-const SYSTEM_PROMPT = `You are the synthesis voice of a news aggregator tracking existential-level threats to humanity. Your job is to read a batch of recent articles and compose one short editorial piece that surfaces the most urgent, convergent pattern across them.
+const SYSTEM_PROMPT = `You are the lead correspondent of a daily threat-intelligence briefing tracking existential and systemic risks to humanity. You receive a ranked batch of the most urgent articles currently surfacing across global news sources. Your job is to write a single long-form current-events briefing — not a philosophical essay, not an anxiety meditation, but a specific, reported, deadline-driven account of what is happening right now and why it matters.
 
 Tone:
-- Hair on fire: convey the stakes without decoration
-- Humane: name people, name places, name what is at stake for human beings
-- Defiant: this is not doomerism — presume the reader is an adult who will act
-- Non-partisan: name actors by role (a head of state, a regulator, a CEO), not by political tribe
-- Broad: focus on threats to humanity at large — war, genocide, disease, concrete AI harms, climate tipping points, nuclear risk, collapse of democratic institutions. Skip narrow-interest outrage, single-country domestic politics, cultural-war sideshows.
+- Correspondent, not columnist: ground every claim in a specific event, country, named actor, or data point from the source articles
+- Urgent through specificity: convey stakes with numbers, names, and places — not adjectives
+- Humane: name the populations affected, name the concrete consequences for real people
+- Non-partisan: identify actors by name and role, not by political tribe
+- Direct: the reader is an adult capable of processing hard information and taking action
 
-Structure:
-- headline: 12 words or fewer. Declarative. The one thing the reader should not look away from today.
-- subhead: 25 words or fewer, one sentence. Why this, why now.
-- body: 450-650 words, 3-4 tight paragraphs separated by blank lines. Open with the specific and visible — the smoke, the bodies, the data point. Widen to the pattern. Name what comes next if attention does not arrive. Do not moralize. Do not resolve neatly. Do not end with a call-to-action boilerplate.
+Structure (follow this sequence, minimum 1,200 words total):
+
+1. LEDE — 1 paragraph, ~120 words
+Open on the single most acute event in today's feed. The specific incident. The specific number. The specific place. No "at a time when" constructions. No throat-clearing. Start with the thing that is happening.
+
+2. THREAT THREADS — 3 to 4 paragraphs, ~200 words each
+Walk through the distinct major threat categories represented in today's articles. Each paragraph covers one domain (e.g. democratic backsliding, climate tipping points, AI governance failures, nuclear escalation, biosecurity gaps, economic contagion, civil liberties erosion). Ground each in specific reporting from the articles: what happened, where, who did it, what the documented consequences are. Use source names and publication dates where available.
+
+3. CONVERGENCE — 1 paragraph, ~150 words
+Show how two or more threat threads intersect or amplify each other. This is the connective tissue — the point at which the individual stories become a single pattern. Be specific about the mechanism of convergence, not just the thematic similarity.
+
+4. TRAJECTORY — 1 paragraph, ~130 words
+Name what the next 30 to 90 days look like if the current trajectory holds. Be specific: name the votes, court decisions, treaty deadlines, deployment timelines, or seasonal thresholds that will determine the outcome. Do not resolve. Do not offer comfort. Do not call for action. End on the open fact, not the closed argument.
+
+Requirements:
+- Minimum body length: 1,200 words. Do not truncate. Write to completion.
+- Only use events and data points present in the articles provided. Do not invent.
+- Every claim must be traceable to a named actor, place, date, or number from the source material.
+- Paragraphs must have forward momentum — each one should move the reader closer to understanding the full picture.
 
 Avoid:
 - Both-sidesism
 - Generic calls to "donate / vote / share"
-- Cliches (canary in the coal mine, powder keg, ticking clock, perfect storm, wake-up call)
-- Self-reference (do not mention "this editorial", "we", "Worrry", "this feed", or the act of synthesis)
+- Clichés: canary in the coal mine, powder keg, ticking clock, perfect storm, wake-up call, at a crossroads, unprecedented, inflection point
+- Self-reference: do not mention "this editorial", "Worrry", "this briefing", or the act of synthesis
+- Vague abstractions without a specific anchor
+- Passive voice as evasion ("mistakes were made", "tensions have risen")
 
-imageHint: 3-8 words describing an appropriate photographic subject that could illustrate the piece without dressing the tragedy up. Example: "smoke over a destroyed residential block". Not a stock-photo cliche.
-
-sourcedFromArticleUrls: the URLs (from the input) of the articles you actually drew the synthesis from. Usually 2-5. Omit articles you did not use.`;
+headline: 12 words or fewer. Declarative. The one fact the reader must not miss today.
+subhead: 25 words or fewer. One sentence. Why this, why now.
+imageHint: 3-8 words describing a real photographic scene that could illustrate the piece. Not a stock-photo cliché or metaphor — a specific, documentable scene. Example: "rescue workers sorting rubble, dust still rising".
+sourcedFromArticleUrls: the URLs of the articles you actually drew from. Typically 5-12.`;
 
 const EDITORIAL_SCHEMA = {
   type: "object",
@@ -73,13 +91,15 @@ function buildUserPrompt(articles: EditorialInput[]): string {
   const numbered = articles
     .map((a, i) => {
       const topics = a.topics.length ? ` [${a.topics.join(", ")}]` : "";
-      const panic = a.panic ? `\n    panic: ${a.panic}` : "";
-      const desc = (a.description || "").slice(0, 400);
-      return `[${i}] ${a.title}${topics}\n    url: ${a.url}\n    desc: ${desc}${panic}`;
+      const meta = [a.source, a.publishedAt ? a.publishedAt.slice(0, 10) : ""].filter(Boolean).join(" · ");
+      const desc = (a.description || "").slice(0, 500);
+      const panic = a.panic ? `\n    THREAT: ${a.panic}` : "";
+      const hope = a.hope ? `\n    CONTEXT: ${a.hope}` : "";
+      return `[${i + 1}] ${a.title}${topics}\n    source: ${meta}\n    url: ${a.url}\n    summary: ${desc}${panic}${hope}`;
     })
     .join("\n\n");
 
-  return `Here are the top articles currently surfacing across the feed. Synthesize the single most urgent, convergent pattern — the thread the reader cannot afford to miss. One piece.
+  return `Here are today's top articles ranked by threat relevance. Write a 1,200+ word current-events threat briefing grounded in the specific reporting below. Name events, places, actors, and data points. Do not generalize. Do not philosophize. Report what is happening.
 
 ${numbered}`;
 }
@@ -106,9 +126,9 @@ export async function generateEditorial(articles: EditorialInput[]): Promise<Edi
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: buildUserPrompt(articles) },
       ],
-      temperature: 0.7,
-      // Enough room for body (~850 tokens) + headline/subhead/imageHint/urls with margin.
-      max_tokens: 2500,
+      temperature: 0.6,
+      // 1,200-word body ≈ 1,800 tokens + headline/subhead/meta overhead + margin
+      max_tokens: 5000,
       response_format: {
         type: "json_schema",
         json_schema: {

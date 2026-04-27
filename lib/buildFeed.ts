@@ -26,7 +26,7 @@ export type Feed = {
 
 const MIN_SCORE = 5; // 5 = adjacent, 6-7 = relevant, 8-10 = central. Below 5 is unrelated.
 const MAX_ARTICLES = 60; // cap summarization spend per refresh
-const EDITORIAL_INPUT_SIZE = 20; // top-N articles fed to the editorial
+const EDITORIAL_INPUT_SIZE = 25; // top-N articles fed to the editorial
 
 function sourceLabel(a: Article): string {
   if (a.feedUrl) {
@@ -107,7 +107,10 @@ export async function buildFeed(): Promise<Feed> {
     title: a.title,
     description: a.description,
     topics: a.relevance?.topics ?? [],
+    source: sourceLabel(a),
+    publishedAt: a.publishedAt,
     panic: summaries[i]?.["the panic"],
+    hope: summaries[i]?.["the hope"],
   }));
   const editorial = await generateEditorial(editorialInput);
 
