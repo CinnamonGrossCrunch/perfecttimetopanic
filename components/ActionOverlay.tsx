@@ -41,7 +41,7 @@ export function ActionOverlay() {
             return !v;
           });
         }}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-colors hover:bg-red-700"
+        className="fixed bottom-6 right-6 z-50 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-colors hover:bg-red-700"
       >
         <svg
           aria-hidden="true"
@@ -58,7 +58,7 @@ export function ActionOverlay() {
       </button>
 
       <div
-        className={`fixed bottom-24 right-6 z-50 flex w-[280px] flex-col items-stretch gap-3 transition-all duration-300 ease-out ${
+        className={`fixed bottom-24 right-6 z-50 hidden lg:flex w-[280px] flex-col items-stretch gap-3 transition-all duration-300 ease-out ${
           showMenu
             ? "translate-y-0 opacity-100 pointer-events-auto"
             : "translate-y-4 opacity-0 pointer-events-none"
