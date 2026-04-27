@@ -43,13 +43,18 @@ export function ActionOverlay() {
         }}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-colors hover:bg-red-700"
       >
-        <span
+        <svg
           aria-hidden="true"
-          className="text-3xl font-light leading-none transition-transform duration-300"
-          style={{ transform: showMenu ? "rotate(45deg)" : "rotate(0deg)" }}
+          viewBox="0 0 24 24"
+          className={`h-6 w-6 transition-transform duration-300 ${showMenu ? "rotate-45" : "rotate-0"}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
         >
-          +
-        </span>
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
       </button>
 
       <div
