@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Editorial } from "../lib/worrryEditorial";
 import { ImageFallback } from "./ImageFallback";
 
@@ -15,6 +15,91 @@ function relativeTime(iso: string): string {
   if (hr < 24) return `${hr}h ago`;
   const day = Math.floor(hr / 24);
   return `${day}d ago`;
+}
+
+function renderWithCitations(text: string): React.ReactNode[] {
+  return text.split(/(\[\d+\])/).map((part, i) => {
+    const match = part.match(/^\[(\d+)\]$/);
+    if (match) {
+      return (
+        <sup key={i} className="ml-[1px] text-[10px] font-bold text-red-600">
+          {part}
+        </sup>
+      );
+    }
+    return part;
+  });
+}
+
+function AudioPlayer({ headline, body }: { headline: string; body: string }) {
+  const [state, setState] = useState<"idle" | "loading" | "playing" | "paused" | "error">("idle");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  async function handlePlay() {
+    if (state === "playing" && audioRef.current) {
+      audioRef.current.pause();
+      setState("paused");
+      return;
+    }
+    if (state === "paused" && audioRef.current) {
+      audioRef.current.play();
+      setState("playing");
+      return;
+    }
+
+    setState("loading");
+    try {
+      const res = await fetch("/api/editorial-audio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ headline, body }),
+      });
+      if (!res.ok) throw new Error("audio fetch failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => setState("idle");
+      audio.play();
+      setState("playing");
+    } catch {
+      setState("error");
+    }
+  }
+
+  const label =
+    state === "loading" ? "Generating audio…"
+    : state === "playing" ? "Pause"
+    : state === "paused" ? "Resume"
+    : state === "error" ? "Audio unavailable"
+    : "Listen to editorial";
+
+  const icon =
+    state === "loading" ? (
+      <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
+    ) : state === "playing" ? (
+      <span className="flex gap-[3px] items-end h-3">
+        <span className="w-[3px] h-full bg-red-600 animate-[soundbar_0.8s_ease-in-out_infinite]" />
+        <span className="w-[3px] h-[60%] bg-red-600 animate-[soundbar_0.8s_ease-in-out_0.2s_infinite]" />
+        <span className="w-[3px] h-[80%] bg-red-600 animate-[soundbar_0.8s_ease-in-out_0.4s_infinite]" />
+      </span>
+    ) : (
+      <svg className="h-3 w-3 fill-red-600" viewBox="0 0 12 12" aria-hidden="true">
+        <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
+      </svg>
+    );
+
+  return (
+    <button
+      type="button"
+      onClick={handlePlay}
+      disabled={state === "loading" || state === "error"}
+      className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700 disabled:opacity-50"
+    >
+      {icon}
+      {label}
+    </button>
+  );
 }
 
 export function EditorialCard({
@@ -35,19 +120,19 @@ export function EditorialCard({
     .filter(Boolean);
   const [lede, ...rest] = paragraphs;
 
+  const footnotes = editorial.footnotes ?? [];
+
   return (
     <article className="flex flex-col">
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gray-200">
         {showImage && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={imageUrl!}
-              alt=""
-              onError={() => setImgFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </>
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imageUrl!}
+            alt=""
+            onError={() => setImgFailed(true)}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         )}
         {showFallback && <ImageFallback />}
         <span className="absolute left-0 top-0 inline-flex items-center gap-2 bg-red-600 px-3 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.22em] text-white">
@@ -57,9 +142,12 @@ export function EditorialCard({
       </div>
 
       <div className="mt-5">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500">
-          By Worrry editorial · {relativeTime(editorial.generatedAt)}
-        </p>
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500">
+            By Worrry editorial · {relativeTime(editorial.generatedAt)}
+          </p>
+          <AudioPlayer headline={editorial.headline} body={editorial.body} />
+        </div>
 
         <h2 className="mt-3 font-['Libre_Baskerville',serif] text-[40px] font-bold leading-[1.05] tracking-tight text-gray-900 md:text-[52px]">
           {editorial.headline}
@@ -70,7 +158,9 @@ export function EditorialCard({
         </p>
 
         {lede && (
-          <p className="mt-5 text-[16px] leading-[1.65] text-gray-800">{lede}</p>
+          <p className="mt-5 text-[16px] leading-[1.65] text-gray-800">
+            {renderWithCitations(lede)}
+          </p>
         )}
 
         {rest.length > 0 && (
@@ -83,9 +173,32 @@ export function EditorialCard({
               <div className="min-h-0 overflow-hidden">
                 <div className="flex flex-col gap-4 pt-4 text-[16px] leading-[1.65] text-gray-800">
                   {rest.map((p, i) => (
-                    <p key={i}>{p}</p>
+                    <p key={i}>{renderWithCitations(p)}</p>
                   ))}
                 </div>
+
+                {footnotes.length > 0 && (
+                  <div className="mt-8 border-t border-gray-200 pt-5">
+                    <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-gray-500">
+                      Sources
+                    </p>
+                    <ol className="flex flex-col gap-2">
+                      {footnotes.map((fn) => (
+                        <li key={fn.number} className="flex gap-2 text-[12px] leading-snug text-gray-600">
+                          <span className="shrink-0 font-bold text-red-600">[{fn.number}]</span>
+                          <a
+                            href={fn.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="transition-colors hover:text-red-600 hover:underline"
+                          >
+                            {fn.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -9,12 +9,19 @@ const openai = new OpenAI({
   organization: process.env.OPENAI_ORG_ID,
 });
 
+export type Footnote = {
+  number: number;
+  title: string;
+  url: string;
+};
+
 export type Editorial = {
   headline: string;
   subhead: string;
   body: string;
   imageHint: string;
   generatedAt: string;
+  footnotes: Footnote[];
   sourcedFromArticleUrls: string[];
 };
 
@@ -68,8 +75,11 @@ Avoid:
 
 headline: 12 words or fewer. Declarative. The one fact the reader must not miss today.
 subhead: 25 words or fewer. One sentence. Why this, why now.
-imageHint: 3-8 words describing a real photographic scene that could illustrate the piece. Not a stock-photo cliché or metaphor — a specific, documentable scene. Example: "rescue workers sorting rubble, dust still rising".
-sourcedFromArticleUrls: the URLs of the articles you actually drew from. Typically 5-12.`;
+Citations: when you reference a specific fact, event, or data point drawn from one of the source articles, place a numeric marker inline in the text: [1], [2], etc. Do not cite every sentence — only anchor claims that are specific and verifiable. Aim for 6-14 citations across the piece. Each marker must correspond to an entry in the footnotes array.
+
+footnotes: an array of objects, one per citation marker used in the body. Each object: { number (integer matching the inline marker), title (the article headline, under 100 characters), url (the article URL) }. Order by number ascending.
+sourcedFromArticleUrls: flat array of the same URLs for backward compatibility.
+imageHint: 3-8 words describing a real photographic scene that could illustrate the piece. Not a stock-photo cliché or metaphor — a specific, documentable scene. Example: "rescue workers sorting rubble, dust still rising".`;
 
 const EDITORIAL_SCHEMA = {
   type: "object",
@@ -78,12 +88,25 @@ const EDITORIAL_SCHEMA = {
     subhead: { type: "string" },
     body: { type: "string" },
     imageHint: { type: "string" },
+    footnotes: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          number: { type: "integer" },
+          title: { type: "string" },
+          url: { type: "string" },
+        },
+        required: ["number", "title", "url"],
+        additionalProperties: false,
+      },
+    },
     sourcedFromArticleUrls: {
       type: "array",
       items: { type: "string" },
     },
   },
-  required: ["headline", "subhead", "body", "imageHint", "sourcedFromArticleUrls"],
+  required: ["headline", "subhead", "body", "imageHint", "footnotes", "sourcedFromArticleUrls"],
   additionalProperties: false,
 } as const;
 
