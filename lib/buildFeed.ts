@@ -1,7 +1,7 @@
 import { fetchAllSources } from "./fetchAllSources";
 import { classifyRelevance, type Relevance } from "./classifyRelevance";
 import { summarizeWithGPT, type StructuredSummary } from "./summarizeWithGPT";
-import { generateEditorial, type Editorial } from "./worrryEditorial";
+import { generateEditorial, generateEditorialAudio, type Editorial } from "./worrryEditorial";
 import { redisWriteCache } from "./cacheUtils";
 
 export type Article = {
@@ -112,7 +112,11 @@ export async function buildFeed(): Promise<Feed> {
     panic: summaries[i]?.["the panic"],
     hope: summaries[i]?.["the hope"],
   }));
-  const editorial = await generateEditorial(editorialInput);
+  let editorial = await generateEditorial(editorialInput);
+  if (editorial) {
+    const audioUrl = await generateEditorialAudio(editorial);
+    editorial = { ...editorial, audioUrl };
+  }
 
   const feed: Feed = {
     generatedAt: new Date().toISOString(),

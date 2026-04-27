@@ -1,4 +1,5 @@
 import { OpenAI } from "openai";
+import { put } from "@vercel/blob";
 
 const EDITORIAL_MODEL = "gpt-4.1";
 
@@ -23,6 +24,7 @@ export type Editorial = {
   generatedAt: string;
   footnotes: Footnote[];
   sourcedFromArticleUrls: string[];
+  audioUrl: string | null;
 };
 
 type EditorialInput = {
@@ -168,7 +170,7 @@ export async function generateEditorial(articles: EditorialInput[]): Promise<Edi
       return null;
     }
 
-    const parsed = JSON.parse(raw) as Omit<Editorial, "generatedAt">;
+    const parsed = JSON.parse(raw) as Omit<Editorial, "generatedAt" | "audioUrl">;
 
     console.log(
       `[editorial] generated via ${EDITORIAL_MODEL} ` +
@@ -178,9 +180,53 @@ export async function generateEditorial(articles: EditorialInput[]): Promise<Edi
     return {
       ...parsed,
       generatedAt: new Date().toISOString(),
+      audioUrl: null,
     };
   } catch (err: any) {
     console.error("[editorial] generation failed:", err?.message ?? err);
+    return null;
+  }
+}
+
+function stripCitationsForAudio(text: string): string {
+  return text.replace(/\[\d+\]/g, "").replace(/\s{2,}/g, " ").trim();
+}
+
+/**
+ * Generate a TTS mp3 for the editorial and upload to Vercel Blob.
+ * Returns the public URL, or null if TTS or Blob is not configured.
+ */
+export async function generateEditorialAudio(editorial: Editorial): Promise<string | null> {
+  if (!process.env.OPENAI_API_KEY || !process.env.BLOB_READ_WRITE_TOKEN) {
+    console.log("[editorial-audio] missing API key or Blob token — skipping");
+    return null;
+  }
+
+  const script = `${stripCitationsForAudio(editorial.headline)}.\n\n${stripCitationsForAudio(editorial.body)}`;
+  const truncated = script.length > 4096 ? script.slice(0, 4093) + "…" : script;
+
+  try {
+    const mp3 = await openai.audio.speech.create({
+      model: "tts-1-hd",
+      voice: "fable",
+      input: truncated,
+      speed: 1.15,
+      response_format: "mp3",
+    });
+
+    const buffer = Buffer.from(await mp3.arrayBuffer());
+    const filename = `editorial-${editorial.generatedAt.slice(0, 10)}.mp3`;
+
+    const blob = await put(filename, buffer, {
+      access: "public",
+      contentType: "audio/mpeg",
+      addRandomSuffix: false,
+    });
+
+    console.log(`[editorial-audio] uploaded to Blob: ${blob.url}`);
+    return blob.url;
+  } catch (err: any) {
+    console.error("[editorial-audio] failed:", err?.message ?? err);
     return null;
   }
 }

@@ -21,8 +21,8 @@ function stripCitations(text: string): string {
   return text.replace(/\[\d+\]/g, "").replace(/\s{2,}/g, " ").trim();
 }
 
-function AudioPlayer({ headline, body }: { headline: string; body: string }) {
-  const [state, setState] = useState<"idle" | "loading" | "playing" | "paused" | "error">("idle");
+function AudioPlayer({ audioUrl }: { audioUrl: string }) {
+  const [state, setState] = useState<"idle" | "loading" | "playing" | "paused">("idle");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   async function handlePlay() {
@@ -38,30 +38,21 @@ function AudioPlayer({ headline, body }: { headline: string; body: string }) {
     }
 
     setState("loading");
-    try {
-      const res = await fetch("/api/editorial-audio", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ headline, body }),
-      });
-      if (!res.ok) throw new Error("audio fetch failed");
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.onended = () => setState("idle");
+    const audio = new Audio(audioUrl);
+    audioRef.current = audio;
+    audio.oncanplay = () => {
       audio.play();
       setState("playing");
-    } catch {
-      setState("error");
-    }
+    };
+    audio.onended = () => setState("idle");
+    audio.onerror = () => setState("idle");
+    audio.load();
   }
 
   const label =
-    state === "loading" ? "Generating audio…"
+    state === "loading" ? "Loading…"
     : state === "playing" ? "Pause"
     : state === "paused" ? "Resume"
-    : state === "error" ? "Audio unavailable"
     : "Listen to editorial";
 
   const icon =
@@ -83,7 +74,7 @@ function AudioPlayer({ headline, body }: { headline: string; body: string }) {
     <button
       type="button"
       onClick={handlePlay}
-      disabled={state === "loading" || state === "error"}
+      disabled={state === "loading"}
       className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700 disabled:opacity-50"
     >
       {icon}
@@ -136,7 +127,7 @@ export function EditorialCard({
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500">
             By Worrry editorial · {relativeTime(editorial.generatedAt)}
           </p>
-          <AudioPlayer headline={editorial.headline} body={editorial.body} />
+          {editorial.audioUrl && <AudioPlayer audioUrl={editorial.audioUrl} />}
         </div>
 
         <h2 className="mt-3 font-['Libre_Baskerville',serif] text-[40px] font-bold leading-[1.05] tracking-tight text-gray-900 md:text-[52px]">
@@ -157,7 +148,7 @@ export function EditorialCard({
           <>
             <div
               className={`grid transition-[grid-template-rows] duration-700 ease-out motion-reduce:transition-none ${expanded ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"}`}
-              aria-hidden={!expanded ? true : undefined}
+              aria-hidden={!expanded}
             >
               <div className="min-h-0 overflow-hidden">
                 <div className="flex flex-col gap-4 pt-4 text-[16px] leading-[1.65] text-gray-800">
@@ -194,7 +185,7 @@ export function EditorialCard({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded ? true : false}
+              aria-expanded={expanded}
               className="mt-5 inline-flex items-center gap-2 border-b-2 border-red-600 pb-1 text-[12px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700"
             >
               {expanded ? "Collapse" : "Read the full editorial"}
