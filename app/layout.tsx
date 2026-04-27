@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.worrry.com";
 
@@ -182,6 +183,12 @@ export default function RootLayout({
       >
         {children}
         <Analytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3284986298224942"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
