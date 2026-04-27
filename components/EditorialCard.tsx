@@ -17,18 +17,8 @@ function relativeTime(iso: string): string {
   return `${day}d ago`;
 }
 
-function renderWithCitations(text: string): React.ReactNode[] {
-  return text.split(/(\[\d+\])/).map((part, i) => {
-    const match = part.match(/^\[(\d+)\]$/);
-    if (match) {
-      return (
-        <sup key={i} className="ml-[1px] text-[10px] font-bold text-red-600">
-          {part}
-        </sup>
-      );
-    }
-    return part;
-  });
+function stripCitations(text: string): string {
+  return text.replace(/\[\d+\]/g, "").replace(/\s{2,}/g, " ").trim();
 }
 
 function AudioPlayer({ headline, body }: { headline: string; body: string }) {
@@ -159,21 +149,20 @@ export function EditorialCard({
 
         {lede && (
           <p className="mt-5 text-[16px] leading-[1.65] text-gray-800">
-            {renderWithCitations(lede)}
+            {stripCitations(lede)}
           </p>
         )}
 
         {rest.length > 0 && (
           <>
             <div
-              className="grid transition-[grid-template-rows] duration-700 ease-out motion-reduce:transition-none"
-              style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
-              aria-hidden={!expanded}
+              className={`grid transition-[grid-template-rows] duration-700 ease-out motion-reduce:transition-none ${expanded ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"}`}
+              aria-hidden={!expanded ? true : undefined}
             >
               <div className="min-h-0 overflow-hidden">
                 <div className="flex flex-col gap-4 pt-4 text-[16px] leading-[1.65] text-gray-800">
                   {rest.map((p, i) => (
-                    <p key={i}>{renderWithCitations(p)}</p>
+                    <p key={i}>{stripCitations(p)}</p>
                   ))}
                 </div>
 
@@ -205,7 +194,7 @@ export function EditorialCard({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
+              aria-expanded={expanded ? true : false}
               className="mt-5 inline-flex items-center gap-2 border-b-2 border-red-600 pb-1 text-[12px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700"
             >
               {expanded ? "Collapse" : "Read the full editorial"}
