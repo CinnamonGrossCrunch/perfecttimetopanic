@@ -1,25 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
-import { Libre_Baskerville } from "next/font/google";
-import {Playfair_Display} from "next/font/google";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
-// Prefer the canonical public URL; fall back to Vercel's preview URL, then localhost.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ? process.env.NEXT_PUBLIC_SITE_URL
-  : process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.worrry.com";
+
 const libre = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-libre",
 });
 
-// ...existing imports...
-
-// Removed duplicate RootLayout function
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,23 +23,92 @@ const geistMono = Geist_Mono({
 
 export const viewport: Viewport = {
   themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "Worrry",
-  description: "Worrry. Bad news, well paced.",
+  metadataBase: new URL(SITE_URL),
+  applicationName: "Worrry",
+  title: {
+    default: "Worrry — Bad News: Good Timing.",
+    template: "%s | Worrry",
+  },
+  description:
+    "Worrry tracks the systemic threats to human rights, democracy, and global welfare. One curated briefing, refreshed every 2 hours. No doomscrolling. Reveal, Rethink, Respond.",
+  keywords: [
+    "Worrry",
+    "systemic threats",
+    "global threats news",
+    "democracy erosion",
+    "authoritarianism news",
+    "climate crisis news",
+    "AI risk",
+    "artificial intelligence threats",
+    "human rights news",
+    "surveillance state",
+    "disinformation news",
+    "biosecurity",
+    "pandemic risk",
+    "nuclear threat",
+    "war news",
+    "economic collapse",
+    "curated news briefing",
+    "news aggregator",
+    "doomscrolling alternative",
+    "civic awareness",
+    "existential risk",
+    "independent journalism",
+    "investigative journalism",
+    "media literacy",
+    "global news briefing",
+    "world news",
+    "geopolitics",
+    "accountability journalism",
+    "press freedom",
+    "civil rights news",
+    "fact-based reporting",
+    "political news",
+    "environmental news",
+    "technology ethics",
+    "misinformation",
+    "information warfare",
+    "human welfare",
+    "social justice",
+    "governance",
+    "news curation",
+    "threat intelligence",
+  ],
+  authors: [{ name: "Matt Gross", url: SITE_URL }],
+  creator: "Matt Gross",
+  publisher: "Worrry",
+  category: "news",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Worrry",
-    description: "Bad news, well paced.",
-    url: siteUrl,
+    title: "Worrry — Bad News: Good Timing.",
+    description:
+      "Track the systemic threats to human rights, democracy, and global welfare. One curated briefing, refreshed every 2 hours. No doomscrolling.",
+    url: SITE_URL,
     siteName: "Worrry",
     images: [
       {
         url: "/PTTP2.jpg",
         width: 1200,
         height: 630,
-        alt: "Worrry",
+        alt: "Worrry — Bad News: Good Timing.",
       },
     ],
     locale: "en_US",
@@ -56,9 +116,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Worrry",
-    description: "Bad news, well paced.",
+    title: "Worrry — Bad News: Good Timing.",
+    description:
+      "Track systemic threats to democracy, human rights & global welfare. One curated briefing, no doomscrolling.",
     images: ["/PTTP2.jpg"],
+    site: "@worrry",
+    creator: "@worrry",
   },
   icons: {
     icon: "/favicon.ico",
@@ -66,83 +129,39 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  keywords: [
-    "PERFECT TIME TO PANIC",
-    "bad news",
-    "doomscroll",
-    "doomscrolling",
-    "resistance",
-    "authoritarianism",
-    "news aggregator",
-    "current events",
-    "politics",
-    "media",
-    "crisis",
-    "activism",
-    "democracy",
-    "social justice",
-    "breaking news",
-    "protest",
-    "freedom",
-    "dissent",
-    "information",
-    "news feed",
-    "society",
-    "civil rights",
-    "press freedom",
-    "misinformation",
-    "disinformation",
-    "censorship",
-    "propaganda",
-    "human rights",
-    "government",
-    "corruption",
-    "oppression",
-    "surveillance",
-    "whistleblower",
-    "transparency",
-    "journalism",
-    "independent media",
-    "public opinion",
-    "world news",
-    "global issues",
-    "conflict",
-    "unrest",
-    "emergency",
-    "alert",
-    "fact checking",
-    "media literacy",
-    "NEWS",
-    // Media page specific
-    "media coverage",
-    "news analysis",
-    "media bias",
-    "media watchdog",
-    "media criticism",
-    "media landscape",
-    "media outlets",
-    "news sources",
-    "media influence",
-    "media trends",
-    "media monitoring",
-    "media reporting",
-    "media ethics",
-    "media transparency",
-    "media accountability",
-    "media consumption",
-    "digital media",
-    "online news",
-    "alternative media",
-    "mainstream media",
-    "media platforms",
-    "news curation",
-    "news commentary",
-    "media review",
-    "media page",
-    "media hub",
-    "media roundup"
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Worrry",
+      description:
+        "Track the systemic threats to human rights, democracy, and global welfare. One curated briefing. No doomscrolling.",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": ["Organization", "NewsMediaOrganization"],
+      "@id": `${SITE_URL}/#organization`,
+      name: "Worrry",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/PTTP2.jpg`,
+        width: 1200,
+        height: 630,
+      },
+      description:
+        "Worrry tracks the systemic threats to human rights, democracy, and global welfare. One curated briefing. No doomscrolling.",
+      founder: { "@type": "Person", name: "Matt Gross" },
+      publishingPrinciples: `${SITE_URL}/about`,
+      masthead: `${SITE_URL}/about`,
+    },
   ],
-  // ...other meta fields
 };
 
 export default function RootLayout({
@@ -152,8 +171,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${libre.variable} antialiased`}
       >
         {children}
         <Analytics />

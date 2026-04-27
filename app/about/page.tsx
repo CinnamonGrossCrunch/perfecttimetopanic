@@ -1,4 +1,26 @@
+import type { Metadata } from "next";
 import { SiteHeader } from "../../components/SiteHeader";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Worrry was built to track systemic threats to human rights, democracy, and global welfare — and convert collective anxiety into resilience. A note from the founder, Matt Gross.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Worrry — A Note from the Editor",
+    description:
+      "Worrry tracks systemic threats to human rights, democracy, and global welfare. Learn about the mission, the framework, and the philosophy: Reveal, Rethink, Respond.",
+    url: "https://www.worrry.com/about",
+    type: "article",
+  },
+  twitter: {
+    title: "About Worrry — A Note from the Editor",
+    description:
+      "Worrry tracks systemic threats to human rights, democracy, and global welfare. Reveal, Rethink, Respond.",
+  },
+};
 
 export default function AboutPage() {
   return (

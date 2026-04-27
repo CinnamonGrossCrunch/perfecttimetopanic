@@ -1,0 +1,24 @@
+{
+  "name": "Worrry",
+  "short_name": "Worrry",
+  "description": "Track the systemic threats to human rights, democracy, and global welfare. Bad News: Good Timing.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5ef",
+  "theme_color": "#ffffff",
+  "lang": "en-US",
+  "categories": ["news", "politics"],
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
