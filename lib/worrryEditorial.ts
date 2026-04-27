@@ -208,7 +208,7 @@ export async function generateEditorialAudio(editorial: Editorial): Promise<stri
   try {
     const mp3 = await openai.audio.speech.create({
       model: "tts-1-hd",
-      voice: "fable",
+      voice: "onyx",
       input: truncated,
       speed: 1.15,
       response_format: "mp3",
