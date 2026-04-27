@@ -30,24 +30,29 @@ The page should never run the pipeline except as a cold-start safety net.
 - **Section sub-page** [app/section/\[slug\]/page.tsx](app/section/[slug]/page.tsx) — filters the feed by a single topic (e.g. `/section/democracy-in-crisis`).
 - **Region sub-page** [app/region/\[slug\]/page.tsx](app/region/[slug]/page.tsx) — filters by subject geography (e.g. `/region/middle-east`).
 
-#### Homepage layout (ProPublica-style tiered hierarchy)
+#### Homepage layout (ProPublica broadsheet — 3-6-3 grid)
 
-The homepage [`<ArticleGrid>`](components/ArticleGrid.tsx) is vertically tiered — NOT grouped by topic. The topic grouping lives on the sub-pages.
+[`<ArticleGrid>`](components/ArticleGrid.tsx) is a **Server Component** (no `"use client"`). Layout from top to bottom:
 
-1. **Hero tier** — the single top-scored article, rendered as a wide `<ArticleCard variant="hero">` (image left ~45%, content right).
-2. **Featured Stories** — next `FEATURED_COUNT` (6) articles in a 2-column grid of `<ArticleCard variant="compact">`.
-3. **More Stories** — next `MORE_COUNT` (15) articles as `<ListCard>` — a dense single-column list with 88px square thumbnail (or `W.` fallback), topic/source/time meta, title, one-line excerpt.
-4. **Browse by threat** — `<TopicsNav>` — tile grid of topic sections with article counts linking to `/section/<slug>`.
+1. **Masthead** — date kicker → serif `Worrry.` wordmark (~104px) → italic tagline → 4px solid black rule.
+2. **Above-the-fold 3-6-3 grid** (`grid grid-cols-1 lg:grid-cols-12`):
+   - **Left rail** (`lg:col-span-3`) — `Latest Threats` section header + `LEFT_RAIL_COUNT` (4) `<ListCard variant="rail-text">` (text-only, no thumbnail).
+   - **Center stage** (`lg:col-span-6`) — `<EditorialCard>` when present, else `<ArticleCard variant="hero">` from the top-scored article.
+   - **Right rail** (`lg:col-span-3`) — `Featured` section header + `RIGHT_RAIL_COUNT` (4) `<ListCard variant="rail-thumb">` (60px thumbnail), then a `Respond / Reclaim` block of static text links.
+3. **More Coverage** — next `SECONDARY_COUNT` (6) articles in a `grid md:grid-cols-2 lg:grid-cols-3` of `<ArticleCard variant="compact">`.
+4. **Briefs** — next `MORE_COUNT` (12) articles in a 2-col `<ListCard>` grid.
+5. **Browse by threat** — `<TopicsNav>` tile grid linking to `/section/<slug>`.
 
-Layout knobs are the `FEATURED_COUNT` / `MORE_COUNT` constants at the top of [ArticleGrid.tsx](components/ArticleGrid.tsx).
+Layout constants at the top of [ArticleGrid.tsx](components/ArticleGrid.tsx): `LEFT_RAIL_COUNT`, `RIGHT_RAIL_COUNT`, `SECONDARY_COUNT`, `MORE_COUNT`.
 
 #### Shared components
 
-- [`<SiteHeader variant="home" | "page">`](components/SiteHeader.tsx) — fixed thin header. `home` hides the wordmark (rendered huge in the hero below); `page` shows "Worrry" centered. Left side always has the red globe-icon dropdown with region links.
-- [`<EditorialCard>`](components/EditorialCard.tsx) — flagship piece at the top of the homepage. Truncated to a lede on load; expands in-place via the modern CSS Grid `grid-template-rows: 0fr → 1fr` trick (no JS height measurement).
-- [`<ArticleCard variant="hero" | "compact">`](components/ArticleCard.tsx) — landscape card. Image left on `md+`, stacked on mobile. Meta row (TOPIC · SOURCE · relative time) → serif title wrapped in an `<a>` → Panic/Hope/Action arc.
-- [`<ListCard>`](components/ListCard.tsx) — dense horizontal list row. Uses the same helpers as ArticleCard via [lib/cardHelpers.ts](lib/cardHelpers.ts). No Panic/Hope/Action — just title + excerpt + meta.
-- [`<SectionView>`](components/SectionView.tsx) — **used on the sub-pages only**: one hero card + 2-col grid of compact cards. Section header is a link to `/section/<slug>`. Not used on the homepage anymore.
+- [`<SiteHeader variant="home" | "page">`](components/SiteHeader.tsx) — fixed thin white header (`bg-white/95 border-b border-gray-300`). `home` hides the center wordmark (masthead renders it below); `page` shows `Worrry.` in serif. Left: red globe dropdown with region links. Right: article count.
+- [`<EditorialCard>`](components/EditorialCard.tsx) — flagship piece occupying the center col-span-6. Flat article block (no card chrome): 16:9 image with anchored red `Worrry Editorial` chip, oversized serif headline, italic subhead, lede. Expands in-place via CSS Grid `grid-template-rows: 0fr → 1fr` trick. `"use client"` (expand state).
+- [`<ArticleCard variant="hero" | "compact">`](components/ArticleCard.tsx) — **vertical stack** layout for both variants (image on top, content below). `hero`: `aspect-[16/9]` image, `text-3xl md:text-4xl` headline. `compact`: `aspect-[4/3]` image, `text-xl` headline. Red kicker tag, Panic left-rule, Hope italic, sharp-corner red Action button. `"use client"` (drag + image-error state).
+- [`<ListCard variant="default" | "rail-text" | "rail-thumb">`](components/ListCard.tsx) — `default`: 88px thumbnail + title + excerpt (used in Briefs). `rail-text`: text-only, no thumbnail (left rail). `rail-thumb`: 60px thumbnail + title (right rail). `"use client"` (drag + image-error state).
+- [`<ActionOverlay>`](components/ActionOverlay.tsx) — isolated `"use client"` component mounted at the bottom of `ArticleGrid`. Owns the red `+` FAB, paywall drag-drop target, and quick-action chip menu. Keeps all interactive state out of the Server Component grid.
+- [`<SectionView>`](components/SectionView.tsx) — **used on the sub-pages only**: one hero card + 2-col grid of compact cards. Not used on the homepage.
 - [`<ImageFallback>`](components/ImageFallback.tsx) — the `W.` placeholder. Rendered whenever `imgSrc` is missing OR the `<img>` fires `onError`.
 
 ### Data flow: sections, topics, geographies
@@ -59,9 +64,9 @@ An article's classifier output is `{ score, topics[], geographies[] }`. **An art
 
 ### Panic/Hope/Action visual arc (on [`<ArticleCard>`](components/ArticleCard.tsx))
 
-- **Panic**: red 3px left-rule, body weight — the hook. Falls back to `article.description` if the summary is empty.
-- **Hope**: italic, muted (`text-white/55`) — counterweight. Hidden if empty.
-- **Action**: parsed from the `[text](url)` markdown in the summary. Link present → red CTA button with arrow. No link → italic body text. Uses a real `<a>` with `stopPropagation` on click/mousedown to prevent the outer card click (and the card's drag-to-paywall) from hijacking.
+- **Panic**: red 3px left-rule (`border-red-600`), body weight — the hook. Falls back to `article.description` if the summary is empty.
+- **Hope**: italic, muted (`text-gray-500`) — counterweight. Hidden if empty.
+- **Action**: parsed from the `[text](url)` markdown in the summary. Link present → solid red CTA button (sharp corners) with arrow. No link → italic body text. Uses a real `<a>` with `stopPropagation` on click/mousedown to prevent the outer card click (and the card's drag-to-paywall) from hijacking.
 
 ### Ingestion pipeline — [lib/buildFeed.ts](lib/buildFeed.ts)
 
@@ -87,7 +92,7 @@ An article's classifier output is `{ score, topics[], geographies[] }`. **An art
 - `BBC_FEEDS` — world / politics / science_and_environment
 - `GUARDIAN_FEEDS` — commentisfree, environment, us-politics
 - `OPINION_FEEDS` — NYT, WaPo, LAT
-- `INVESTIGATIVE_FEEDS` — ProPublica, Intercept, Democracy Now, Grist, Rest of World, Lawfare, Mother Jones
+- `INVESTIGATIVE_FEEDS` — ProPublica, Intercept, Democracy Now, Grist, Rest of World, Lawfare, Mother Jones, EFF, NTI, Amnesty International
 - `MAINSTREAM_FEEDS` — Al Jazeera, NPR, The Hill, Atlantic, Vox, Foreign Affairs (firehoses — classifier filters)
 - `RESEARCH_FEEDS` — arXiv cs.CY, cs.AI
 - `RSS_APP_FEEDS` — rss.app existential-threat keyword feed
@@ -129,9 +134,9 @@ Both use a 7s `AbortController` timeout and `cheerio` to read `meta[property="og
 ## Conventions
 
 - **Path alias** — `tsconfig.json` maps `@/*` to the project root.
-- **Client vs server boundary** — components under `components/` use `"use client"`. Server components in `app/` are all under `runtime = "nodejs"` (required — `lib/` uses Node APIs + the OpenAI / Anthropic SDKs).
-- **Tailwind v4** — [app/globals.css](app/globals.css) uses `@import "tailwindcss"`. Arbitrary values are fine (`tracking-[-0.02em]`, `grid-rows-[0fr]`). Custom colors/fonts in [tailwind.config.js](tailwind.config.js).
-- **Fonts** — Fair Play (big hero wordmark, inline `fontFamily`, falls back to serif) + Libre Baskerville (body/title) + Geist (default sans) + Playfair Display.
+- **Client vs server boundary** — `ArticleGrid` is a Server Component; individual cards (`ArticleCard`, `ListCard`, `EditorialCard`) and `ActionOverlay` are `"use client"` (drag handlers, image-error state, expand state). Server components in `app/` are under `runtime = "nodejs"` (required — `lib/` uses Node APIs + OpenAI / Anthropic SDKs).
+- **Tailwind v4** — [app/globals.css](app/globals.css) uses `@import "tailwindcss"`. Arbitrary values are fine. Custom colors/fonts in [tailwind.config.js](tailwind.config.js). Theme: `--background: #f7f5ef` (paper off-white), `--foreground: #111827` (deep slate), `text-red-600` for all accents.
+- **Fonts** — Libre Baskerville (headlines, masthead wordmark, section caps) + Geist (default sans, meta/body) + Playfair Display (available, not currently used in primary layout). Fair Play is no longer used.
 
 ## Required environment variables
 
@@ -154,17 +159,17 @@ Both use a 7s `AbortController` timeout and `cheerio` to read `meta[property="og
 
 ## Future TODOs
 
-- **Dynamic ProPublica-style homepage hierarchy** — the current design has a big editorial + uniform sections. The user's vision is a more varied mosaic (big hero + right sidebar, below-fold 3-column layouts, etc.). Needs a layout schema that assigns articles to slots of different sizes. Non-trivial. Screenshots for reference were shown when the user made the request.
-- **Intelligent free-use image sourcing for the editorial** — currently uses the top article's OG image. The editorial carries an `imageHint` field from Claude that describes a better editorial image. Integrate with Unsplash or Wikimedia API to pull a matching free-use image, respecting attribution.
-- **Article open in iframe/modal** — the user wants clicks to open articles in an embedded frame rather than a new tab, for page retention and future annotations. Most news sites set `X-Frame-Options: DENY` / `frame-ancestors` — needs a graceful-fallback-to-new-tab strategy. Also needs a modal architecture that doesn't break the existing drag-to-paywall flow.
+- **Sub-page light-mode conversion** — `app/section/[slug]/page.tsx`, `app/region/[slug]/page.tsx`, and [`<SectionView>`](components/SectionView.tsx) still have dark wrappers. The cards inside them are now light-themed (they share `ArticleCard`/`ListCard`), so there's a visible mismatch. Convert the wrapper chrome (section headers, page bg) to match the broadsheet palette.
+- **Intelligent free-use image sourcing for the editorial** — currently uses the top article's OG image. The editorial carries an `imageHint` field that describes a better editorial image. Integrate with Unsplash or Wikimedia API to pull a matching free-use image, respecting attribution.
+- **Article open in iframe/modal** — clicks currently open in a new tab. Most news sites set `X-Frame-Options: DENY` / `frame-ancestors` — needs graceful fallback. Also needs a modal architecture that doesn't break the drag-to-paywall flow.
 - **Auto-sorting evolution** — ranking currently uses classifier score then date. Future: freshness decay, source authority weighting, cross-topic convergence signals, user-facing dials.
 - **Accountability topic** — ProPublica / Intercept / Mother Jones pieces about corruption and regulatory capture often score <5 because they don't cleanly match the current 9 topics. Consider adding an `accountability` classification target.
-- **Per-section pagination** — currently all articles for a topic render on the homepage (if there are 10+ in one section, the homepage grows long). The section sub-pages already handle the "show everything" case.
-- **Background refresh** — the animated red/orange/black gradient is intentionally kept for now. A flat dark navy would likely read as more editorial. Easy swap in [components/AnimatedBackground.tsx](components/AnimatedBackground.tsx) or replace entirely.
-- **OG image rebrand** — [app/layout.tsx](app/layout.tsx) still references `/PTTP2.jpg` as the OG / Twitter card image. Replace with a "Worrry" image when available.
+- **Per-section pagination** — section sub-pages already handle the "show everything" case; the Briefs tier on the homepage could link to them instead of rendering all 12 inline.
+- **OG image rebrand** — [app/layout.tsx](app/layout.tsx) still references `/PTTP2.jpg` as the OG / Twitter card image. Replace with a Worrry broadsheet image when available.
 
 ## Gotchas / dead code
 
+- [components/AnimatedBackground.tsx](components/AnimatedBackground.tsx) — the dark red/orange animated gradient. No longer imported after the broadsheet refactor. Safe to delete.
 - [components/FloatingToDoPanel.jsx](components/FloatingToDoPanel.jsx) is plain JSX, persists to `localStorage`, and is currently not imported anywhere. Dead weight.
 - [app/api/route.ts](app/api/route.ts) + [app/api/\[...all\]/](app/api/) — the catchall directory is empty and the top-level route returns 404. Real API route is `/api/cron/ingest`.
 - [react-todo-list/](react-todo-list/) is a git submodule — separate vendored project, not part of the Next.js app.

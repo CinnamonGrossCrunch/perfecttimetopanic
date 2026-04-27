@@ -6,13 +6,7 @@ import { REGIONS } from "../lib/regions";
 
 type Variant = "home" | "page";
 
-export function SiteHeader({
-  variant,
-  articleCount,
-}: {
-  variant: Variant;
-  articleCount?: number;
-}) {
+export function SiteHeader({ variant }: { variant: Variant }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -86,12 +80,41 @@ export function SiteHeader({
           )}
         </div>
 
-        {/* Right: article count */}
-        <div className="min-w-[100px] text-right text-[10.5px] font-medium uppercase tracking-[0.2em] text-gray-500">
-          {typeof articleCount === "number" ? `${articleCount} tracked` : ""}
+        {/* Right: about link (home only) */}
+        <div className="flex min-w-[100px] justify-end">
+          {isHome && (
+            <Link
+              href="/about"
+              aria-label="About Worrry"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-red-600 transition-colors hover:bg-gray-100 hover:text-red-700"
+            >
+              <InfoIcon />
+            </Link>
+          )}
         </div>
       </div>
     </header>
+  );
+}
+
+function InfoIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
   );
 }
 

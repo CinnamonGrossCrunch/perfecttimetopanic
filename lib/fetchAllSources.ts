@@ -68,6 +68,9 @@ const INVESTIGATIVE_FEEDS = [
   "https://restofworld.org/feed/latest/",
   "https://www.lawfaremedia.org/feeds/articles",
   "https://www.motherjones.com/feed/",
+  "https://www.eff.org/rss/updates.xml", // EFF — digital rights, surveillance, civil liberties
+  "https://www.nti.org/feed/", // NTI — nuclear, biological, chemical threat analysis
+  "https://www.amnesty.org/en/latest/news/feed/", // Amnesty International — human rights
 ];
 
 // Mainstream news — firehoses gated by the relevance classifier.

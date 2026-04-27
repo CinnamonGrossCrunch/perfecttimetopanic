@@ -80,7 +80,7 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
 
   return (
     <div className="relative min-h-screen bg-[var(--background)] font-sans text-gray-900">
-      <SiteHeader variant="home" articleCount={articles.length} />
+      <SiteHeader variant="home" />
 
       <main className="mx-auto max-w-[1280px] px-6 pt-20 pb-24">
         {/* ===== MASTHEAD ===== */}

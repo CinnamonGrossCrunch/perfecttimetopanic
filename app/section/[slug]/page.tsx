@@ -46,7 +46,7 @@ export default async function SectionPage({
 
   return (
     <div className="relative min-h-screen font-sans text-foreground">
-      <SiteHeader variant="page" articleCount={items.length} />
+      <SiteHeader variant="page" />
 
       <main className="relative mx-auto max-w-6xl px-6 pt-24 pb-32">
         <div className="mt-4">
