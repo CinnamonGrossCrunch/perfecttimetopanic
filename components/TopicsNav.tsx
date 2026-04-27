@@ -9,7 +9,7 @@ export function TopicsNav({ counts }: { counts: Record<string, number> }) {
 
   return (
     <section className="mt-16">
-      <h2 className="mb-6 border-b border-white/10 pb-3 font-['Libre_Baskerville',serif] text-[22px] font-bold text-[#f9f3e6]">
+      <h2 className="mb-6 border-b-4 border-black pb-3 font-['Libre_Baskerville',serif] text-2xl font-bold uppercase tracking-wider text-gray-900">
         Browse by threat
       </h2>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -17,12 +17,12 @@ export function TopicsNav({ counts }: { counts: Record<string, number> }) {
           <Link
             key={s.slug}
             href={`/section/${s.slug}`}
-            className="group flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-[#15100e]/60 px-4 py-3 transition-colors hover:border-white/30 hover:bg-[#1a1412]/80"
+            className="group flex items-center justify-between gap-3 border border-gray-300 bg-white px-4 py-3 transition-colors hover:border-red-600 hover:bg-gray-50"
           >
-            <span className="font-['Libre_Baskerville',serif] text-[15px] font-bold text-[#f9f3e6] transition-colors group-hover:text-white">
+            <span className="font-['Libre_Baskerville',serif] text-[15px] font-bold text-gray-900 transition-colors group-hover:text-red-600">
               {s.label}
             </span>
-            <span className="flex-shrink-0 text-[11px] font-medium tracking-[0.12em] text-white/40">
+            <span className="flex-shrink-0 text-[11px] font-medium tracking-[0.12em] text-gray-500">
               {counts[s.topic]}
             </span>
           </Link>

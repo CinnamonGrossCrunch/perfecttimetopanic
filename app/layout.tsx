@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AnimatedBackground from "../components/AnimatedBackground";
 import { Libre_Baskerville } from "next/font/google";
 import {Playfair_Display} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react"
@@ -156,7 +155,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AnimatedBackground /> {/* <-- Add this line */}
         {children}
         <Analytics />
       </body>

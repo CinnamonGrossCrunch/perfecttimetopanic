@@ -37,8 +37,8 @@ export function SiteHeader({
   const isHome = variant === "home";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-white/5 bg-black/55 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-gray-300 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-6 py-3">
         {/* Left: globe dropdown */}
         <div ref={containerRef} className="relative">
           <button
@@ -47,16 +47,16 @@ export function SiteHeader({
             aria-expanded={open ? "true" : "false"}
             aria-label="Browse by region"
             onClick={() => setOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-red-500 transition-colors hover:bg-white/10 hover:text-red-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-red-600 transition-colors hover:bg-gray-100 hover:text-red-700"
           >
             <GlobeIcon />
           </button>
           {open && (
             <div
               role="menu"
-              className="absolute left-0 top-full mt-2 min-w-[200px] overflow-hidden rounded-xl border border-white/10 bg-[#15100e]/95 backdrop-blur-md shadow-2xl"
+              className="absolute left-0 top-full mt-2 min-w-[200px] overflow-hidden border border-gray-300 bg-white shadow-lg"
             >
-              <div className="px-4 pt-3 pb-2 text-[10.5px] uppercase tracking-[0.18em] text-white/40">
+              <div className="border-b border-gray-200 px-4 pt-3 pb-2 text-[10.5px] font-bold uppercase tracking-[0.18em] text-gray-500">
                 Threats by region
               </div>
               {REGIONS.map((r) => (
@@ -65,7 +65,7 @@ export function SiteHeader({
                   href={`/region/${r.slug}`}
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-2 text-sm text-white/85 transition-colors hover:bg-white/10 hover:text-white"
+                  className="block px-4 py-2 text-sm text-gray-900 transition-colors hover:bg-gray-100 hover:text-red-600"
                 >
                   {r.label}
                 </Link>
@@ -74,20 +74,20 @@ export function SiteHeader({
           )}
         </div>
 
-        {/* Center: wordmark (only on sub-pages; the homepage renders a huge one below the header) */}
+        {/* Center: wordmark (only on sub-pages; the homepage renders the masthead below the header) */}
         <div className="flex-1 text-center">
           {!isHome && (
             <Link
               href="/"
-              className="font-['Fair_Play',serif] text-2xl leading-none tracking-tight text-[#FFF8E0] transition-opacity hover:opacity-80"
+              className="font-['Libre_Baskerville',serif] text-2xl font-bold leading-none tracking-tight text-gray-900 transition-opacity hover:opacity-70"
             >
-              Worrry
+              Worrry<span className="text-red-600">.</span>
             </Link>
           )}
         </div>
 
         {/* Right: article count */}
-        <div className="min-w-[100px] text-right text-[10.5px] uppercase tracking-[0.2em] text-white/35">
+        <div className="min-w-[100px] text-right text-[10.5px] font-medium uppercase tracking-[0.2em] text-gray-500">
           {typeof articleCount === "number" ? `${articleCount} tracked` : ""}
         </div>
       </div>

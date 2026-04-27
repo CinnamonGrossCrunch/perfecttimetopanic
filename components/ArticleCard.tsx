@@ -40,13 +40,10 @@ export function ArticleCard({
   const sourceName = article.source?.name ?? "Unknown";
   const time = relativeTime(article.publishedAt);
 
-  // Show the primary topic tag (first in the array). Additional topics are available
-  // on article.relevance.topics but intentionally not rendered on the card to avoid clutter.
   const primaryTopic = article.relevance?.topics?.[0];
   const section = sectionByTopic(primaryTopic);
   const topicLabel = section?.shortTag ?? null;
 
-  const metaBits = [topicLabel, sourceName.toUpperCase(), time].filter(Boolean);
   const action = summary?.["the action"]?.trim() ? parseAction(summary["the action"]) : null;
 
   return (
@@ -63,49 +60,37 @@ export function ArticleCard({
         if ((e.target as HTMLElement).closest("a")) return;
         window.open(article.url, "_blank");
       }}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-[#15100e]/75 backdrop-blur-md ring-1 ring-white/5 transition-all duration-200 hover:ring-white/20 hover:bg-[#1a1412]/80 ${
-        isHero
-          ? "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"
-          : "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]"
-      }`}
+      className="group flex cursor-pointer flex-col"
     >
       <div
-        className={`relative w-full overflow-hidden bg-black/30 ${
-          isHero ? "aspect-[16/10] md:aspect-auto md:h-full" : "aspect-[4/3] md:aspect-auto md:h-full"
+        className={`relative w-full overflow-hidden bg-gray-200 ${
+          isHero ? "aspect-[16/9]" : "aspect-[4/3]"
         }`}
       >
         {showFallback ? (
           <ImageFallback />
         ) : (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={imgSrc!}
-              alt=""
-              loading="lazy"
-              onError={() => setImgFailed(true)}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-          </>
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={imgSrc!}
+            alt=""
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          />
         )}
       </div>
 
-      <div className={`flex flex-col gap-3 ${isHero ? "p-6 md:p-8" : "p-5 md:p-6"}`}>
-        {metaBits.length > 0 && (
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[10.5px] font-medium tracking-[0.18em] text-white/50">
-            {metaBits.map((b, i) => (
-              <span key={i} className="flex items-center gap-2">
-                {i > 0 && <span aria-hidden="true" className="text-white/25">·</span>}
-                <span className={i === 0 && topicLabel ? "text-red-300/90" : ""}>{b}</span>
-              </span>
-            ))}
+      <div className={`flex flex-col ${isHero ? "mt-5 gap-4" : "mt-3 gap-2.5"}`}>
+        {topicLabel && (
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-red-600">
+            {topicLabel}
           </p>
         )}
 
         <h3
-          className={`font-['Libre_Baskerville',serif] font-bold leading-[1.2] text-[#f9f3e6] ${
-            isHero ? "text-2xl md:text-[26px]" : "text-[19px] md:text-[20px]"
+          className={`font-['Libre_Baskerville',serif] font-bold leading-[1.15] text-gray-900 ${
+            isHero ? "text-3xl md:text-4xl" : "text-xl"
           }`}
         >
           <a
@@ -115,26 +100,34 @@ export function ArticleCard({
             draggable={false}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            className="outline-none hover:text-white focus-visible:underline focus-visible:decoration-red-400"
+            className="outline-none transition-colors hover:text-red-700 focus-visible:underline"
           >
             {article.title}
           </a>
         </h3>
 
         {summary && (
-          <div className="mt-1 flex flex-col gap-3 text-[14.5px] leading-relaxed">
+          <div
+            className={`flex flex-col gap-2 leading-[1.55] text-gray-700 ${
+              isHero ? "text-[16px]" : "text-[14px]"
+            }`}
+          >
             {(summary["the panic"] || article.description) && (
-              <p className="border-l-[3px] border-red-500/80 pl-3 text-white/90">
+              <p className="border-l-[3px] border-red-600 pl-3">
                 {summary["the panic"]?.trim() ? summary["the panic"] : article.description}
               </p>
             )}
             {summary["the hope"]?.trim() && (
-              <p className="pl-3 italic text-white/55">{summary["the hope"]}</p>
+              <p className="pl-3 italic text-gray-500">{summary["the hope"]}</p>
             )}
           </div>
         )}
 
-        {action && action.href && (
+        <p className="text-[10.5px] font-medium uppercase tracking-[0.16em] text-gray-500">
+          {sourceName} · {time}
+        </p>
+
+        {action?.href && (
           <a
             href={action.href}
             target="_blank"
@@ -142,14 +135,14 @@ export function ArticleCard({
             draggable={false}
             onMouseDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
-            className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-red-600/90 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-red-500"
+            className="mt-1 inline-flex w-fit items-center gap-2 bg-red-600 px-4 py-2 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-red-700"
           >
             {action.text}
             <span aria-hidden="true">→</span>
           </a>
         )}
         {action && !action.href && (
-          <p className="mt-1 text-[14px] italic text-white/70">{action.text}</p>
+          <p className="text-[14px] italic text-gray-600">{action.text}</p>
         )}
       </div>
     </article>

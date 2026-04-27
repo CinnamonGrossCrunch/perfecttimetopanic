@@ -6,12 +6,16 @@ import { relativeTime } from "../lib/cardHelpers";
 import { ImageFallback } from "./ImageFallback";
 import type { Article, Summary } from "./ArticleCard";
 
+type Variant = "default" | "rail-text" | "rail-thumb";
+
 export function ListCard({
   article,
   summary,
+  variant = "default",
 }: {
   article: Article;
   summary: Summary | undefined;
+  variant?: Variant;
 }) {
   const imgSrc = article.thumbnail || article.image || null;
   const [imgFailed, setImgFailed] = useState(false);
@@ -22,9 +26,12 @@ export function ListCard({
   const primaryTopic = article.relevance?.topics?.[0];
   const section = sectionByTopic(primaryTopic);
   const topicLabel = section?.shortTag ?? null;
-  const metaBits = [topicLabel, sourceName.toUpperCase(), time].filter(Boolean);
 
   const excerpt = (summary?.["the panic"]?.trim() || article.description || "").trim();
+
+  const isRailText = variant === "rail-text";
+  const isRailThumb = variant === "rail-thumb";
+  const isRail = isRailText || isRailThumb;
 
   return (
     <article
@@ -40,14 +47,20 @@ export function ListCard({
         if ((e.target as HTMLElement).closest("a")) return;
         window.open(article.url, "_blank");
       }}
-      className="group flex cursor-pointer gap-5 border-b border-white/5 py-5 transition-colors hover:bg-white/[0.03]"
+      className={`group flex cursor-pointer gap-4 border-b border-gray-300 transition-colors hover:bg-gray-100 ${
+        isRail ? "py-3" : "py-5"
+      }`}
     >
-      <div className="relative h-[88px] w-[88px] flex-shrink-0 overflow-hidden rounded-lg bg-black/30">
-        {showFallback ? (
-          <ImageFallback />
-        ) : (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+      {!isRailText && (
+        <div
+          className={`relative flex-shrink-0 overflow-hidden bg-gray-200 ${
+            isRailThumb ? "h-[60px] w-[60px]" : "h-[88px] w-[88px]"
+          }`}
+        >
+          {showFallback ? (
+            <ImageFallback />
+          ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={imgSrc!}
               alt=""
@@ -55,23 +68,22 @@ export function ListCard({
               onError={() => setImgFailed(true)}
               className="absolute inset-0 h-full w-full object-cover"
             />
-          </>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
-        {metaBits.length > 0 && (
-          <p className="flex flex-wrap items-center gap-x-2 text-[10px] font-medium tracking-[0.18em] text-white/50">
-            {metaBits.map((b, i) => (
-              <span key={i} className="flex items-center gap-2">
-                {i > 0 && <span aria-hidden="true" className="text-white/25">·</span>}
-                <span className={i === 0 && topicLabel ? "text-red-300/90" : ""}>{b}</span>
-              </span>
-            ))}
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
+        {topicLabel && (
+          <p className="text-[9.5px] font-bold uppercase tracking-[0.2em] text-red-600">
+            {topicLabel}
           </p>
         )}
 
-        <h3 className="font-['Libre_Baskerville',serif] text-[17px] font-bold leading-snug text-[#f9f3e6] line-clamp-2">
+        <h3
+          className={`font-['Libre_Baskerville',serif] font-bold leading-snug text-gray-900 line-clamp-3 ${
+            isRail ? "text-[15px]" : "text-[17px]"
+          }`}
+        >
           <a
             href={article.url}
             target="_blank"
@@ -79,15 +91,19 @@ export function ListCard({
             draggable={false}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            className="outline-none hover:text-white"
+            className="outline-none transition-colors hover:text-red-700"
           >
             {article.title}
           </a>
         </h3>
 
-        {excerpt && (
-          <p className="text-[13.5px] leading-snug text-white/65 line-clamp-1">{excerpt}</p>
+        {!isRail && excerpt && (
+          <p className="text-[13.5px] leading-snug text-gray-600 line-clamp-2">{excerpt}</p>
         )}
+
+        <p className="text-[9.5px] font-medium uppercase tracking-[0.16em] text-gray-500">
+          {sourceName} · {time}
+        </p>
       </div>
     </article>
   );
