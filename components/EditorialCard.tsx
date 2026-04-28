@@ -21,11 +21,45 @@ function stripCitations(text: string): string {
   return text.replace(/\[\d+\]/g, "").replace(/\s{2,}/g, " ").trim();
 }
 
-function AudioPlayer({ audioUrl }: { audioUrl: string }) {
+function fmt(s: number): string {
+  if (!Number.isFinite(s) || s < 0) return "0:00";
+  return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+}
+
+function AudioPlayer({
+  audioUrl,
+  headline,
+  body,
+}: {
+  audioUrl: string | null;
+  headline: string;
+  body: string;
+}) {
+  const [resolvedUrl, setResolvedUrl] = useState<string | null>(audioUrl);
   const [state, setState] = useState<"idle" | "loading" | "playing" | "paused">("idle");
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  async function handlePlay() {
+  async function getUrl(): Promise<string | null> {
+    if (resolvedUrl) return resolvedUrl;
+    try {
+      const res = await fetch("/api/editorial-audio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ headline, body }),
+      });
+      if (!res.ok) return null;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      setResolvedUrl(url);
+      return url;
+    } catch {
+      return null;
+    }
+  }
+
+  async function handlePlayPause() {
     if (state === "playing" && audioRef.current) {
       audioRef.current.pause();
       setState("paused");
@@ -36,50 +70,97 @@ function AudioPlayer({ audioUrl }: { audioUrl: string }) {
       setState("playing");
       return;
     }
-
     setState("loading");
-    const audio = new Audio(audioUrl);
+    const url = await getUrl();
+    if (!url) { setState("idle"); return; }
+    const audio = new Audio(url);
     audioRef.current = audio;
-    audio.oncanplay = () => {
-      audio.play();
-      setState("playing");
-    };
-    audio.onended = () => setState("idle");
-    audio.onerror = () => setState("idle");
+    audio.addEventListener("loadedmetadata", () => setDuration(audio.duration));
+    audio.addEventListener("timeupdate", () => setCurrentTime(audio.currentTime));
+    audio.addEventListener("canplay", () => { audio.play(); setState("playing"); });
+    audio.addEventListener("ended", () => { setState("idle"); setCurrentTime(0); });
+    audio.addEventListener("error", () => setState("idle"));
     audio.load();
   }
 
-  const label =
-    state === "loading" ? "Loading…"
-    : state === "playing" ? "Pause"
-    : state === "paused" ? "Resume"
-    : "Listen to editorial";
+  function skip(secs: number) {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + secs));
+  }
 
-  const icon =
-    state === "loading" ? (
-      <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-red-600 border-t-transparent" />
-    ) : state === "playing" ? (
-      <span className="flex gap-[3px] items-end h-3">
-        <span className="w-[3px] h-full bg-red-600 animate-[soundbar_0.8s_ease-in-out_infinite]" />
-        <span className="w-[3px] h-[60%] bg-red-600 animate-[soundbar_0.8s_ease-in-out_0.2s_infinite]" />
-        <span className="w-[3px] h-[80%] bg-red-600 animate-[soundbar_0.8s_ease-in-out_0.4s_infinite]" />
-      </span>
-    ) : (
-      <svg className="h-3 w-3 fill-red-600" viewBox="0 0 12 12" aria-hidden="true">
-        <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
-      </svg>
-    );
+  function handleSeek(e: React.ChangeEvent<HTMLInputElement>) {
+    const t = Number(e.target.value);
+    if (audioRef.current) audioRef.current.currentTime = t;
+    setCurrentTime(t);
+  }
+
+  const canSkip = state === "playing" || state === "paused";
 
   return (
-    <button
-      type="button"
-      onClick={handlePlay}
-      disabled={state === "loading"}
-      className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700 disabled:opacity-50"
-    >
-      {icon}
-      {label}
-    </button>
+    <div className="flex flex-col gap-2 border border-gray-200 bg-gray-50 px-4 py-3">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => skip(-15)}
+          disabled={!canSkip}
+          aria-label="Back 15 seconds"
+          className="shrink-0 text-[11px] font-bold text-gray-500 transition-colors hover:text-red-600 disabled:opacity-30"
+        >
+          ←15s
+        </button>
+
+        <button
+          type="button"
+          onClick={handlePlayPause}
+          disabled={state === "loading"}
+          aria-label={state === "playing" ? "Pause" : "Play"}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-600 text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+        >
+          {state === "loading" ? (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          ) : state === "playing" ? (
+            <svg className="h-3.5 w-3.5" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+              <rect x="1.5" y="1" width="3.5" height="10" rx="1" />
+              <rect x="7" y="1" width="3.5" height="10" rx="1" />
+            </svg>
+          ) : (
+            <svg className="h-3.5 w-3.5 translate-x-[1px]" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+              <path d="M2 1.5l9 4.5-9 4.5V1.5z" />
+            </svg>
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => skip(15)}
+          disabled={!canSkip}
+          aria-label="Forward 15 seconds"
+          className="shrink-0 text-[11px] font-bold text-gray-500 transition-colors hover:text-red-600 disabled:opacity-30"
+        >
+          15s→
+        </button>
+
+        <span className="font-mono text-[11px] text-gray-500">
+          {fmt(currentTime)}{duration > 0 ? ` / ${fmt(duration)}` : ""}
+        </span>
+
+        <span className="ml-auto text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">
+          Listen
+        </span>
+      </div>
+
+      <input
+        type="range"
+        min={0}
+        max={duration || 100}
+        step={0.5}
+        value={currentTime}
+        onChange={handleSeek}
+        disabled={!canSkip}
+        aria-label="Audio position"
+        className="w-full cursor-pointer accent-red-600 disabled:opacity-30"
+      />
+    </div>
   );
 }
 
@@ -116,21 +197,25 @@ export function EditorialCard({
           />
         )}
         {showFallback && <ImageFallback />}
-        <span className="absolute left-0 top-0 inline-flex items-center gap-2 bg-red-600 px-3 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.22em] text-white">
+        <span className="absolute left-0 top-0 hidden lg:inline-flex items-center gap-2 bg-red-600 px-3 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.22em] text-white">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
           Worrry Editorial
         </span>
       </div>
 
       <div className="mt-5">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col gap-2">
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500">
             By Worrry editorial · {relativeTime(editorial.generatedAt)}
           </p>
-          {editorial.audioUrl && <AudioPlayer audioUrl={editorial.audioUrl} />}
+          <AudioPlayer
+            audioUrl={editorial.audioUrl}
+            headline={editorial.headline}
+            body={editorial.body}
+          />
         </div>
 
-        <h2 className="mt-3 font-['Libre_Baskerville',serif] text-[40px] font-bold leading-[1.05] tracking-tight text-gray-900 md:text-[52px]">
+        <h2 className="mt-3 line-clamp-2 lg:line-clamp-none font-['Libre_Baskerville',serif] text-[40px] font-bold leading-[1.05] tracking-tight text-gray-900 md:text-[52px]">
           {editorial.headline}
         </h2>
 
@@ -148,7 +233,7 @@ export function EditorialCard({
           <>
             <div
               className={`grid transition-[grid-template-rows] duration-700 ease-out motion-reduce:transition-none ${expanded ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]"}`}
-              aria-hidden={!expanded}
+              aria-hidden={expanded ? false : true}
             >
               <div className="min-h-0 overflow-hidden">
                 <div className="flex flex-col gap-4 pt-4 text-[16px] leading-[1.65] text-gray-800">
@@ -185,7 +270,7 @@ export function EditorialCard({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
+              aria-expanded={expanded ? true : false}
               className="mt-5 inline-flex items-center gap-2 border-b-2 border-red-600 pb-1 text-[12px] font-bold uppercase tracking-[0.18em] text-red-600 transition-colors hover:text-red-700"
             >
               {expanded ? "Collapse" : "Read the full editorial"}

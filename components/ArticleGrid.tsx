@@ -14,7 +14,7 @@ type Props = {
 
 type Item = { article: Article; summary: Summary | undefined };
 
-const LEFT_RAIL_COUNT = 4;
+const LEFT_RAIL_COUNT = 5;
 const RIGHT_RAIL_COUNT = 4;
 const SECONDARY_COUNT = 6;
 const MORE_COUNT = 12;
@@ -63,7 +63,9 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
   const heroFromArticles = items[0];
 
   let cursor = 1;
-  const leftRail = items.slice(cursor, cursor + LEFT_RAIL_COUNT);
+  const leftRail = [...items.slice(cursor, cursor + LEFT_RAIL_COUNT)].sort(
+    (a, b) => new Date(b.article.publishedAt).getTime() - new Date(a.article.publishedAt).getTime()
+  );
   cursor += LEFT_RAIL_COUNT;
   const rightRail = items.slice(cursor, cursor + RIGHT_RAIL_COUNT);
   cursor += RIGHT_RAIL_COUNT;
@@ -84,7 +86,7 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
 
       <main className="mx-auto max-w-[1280px] px-6 pt-20 pb-24">
         {/* ===== MASTHEAD ===== */}
-        <section className="border-b-4 border-black pt-8 pb-6 text-center">
+        <section className="hidden lg:block border-b-4 border-black pt-8 pb-6 text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-gray-500">
             {todayLong()}
           </p>
@@ -104,8 +106,8 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
           <>
             {/* ===== ABOVE-THE-FOLD: 3 - 6 - 3 ===== */}
             <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8">
-              {/* LEFT RAIL — text-only stack */}
-              <aside className="lg:col-span-3 lg:border-r lg:border-gray-300 lg:pr-6">
+              {/* LEFT RAIL — text-only stack, desktop only */}
+              <aside className="hidden lg:block lg:col-span-3 lg:border-r lg:border-gray-300 lg:pr-6">
                 <RailHeader>Latest Threats</RailHeader>
                 <div className="flex flex-col">
                   {leftRail.map(({ article, summary }, i) => (
@@ -132,6 +134,19 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
                 ) : null}
               </div>
 
+              {/* MOBILE ONLY: Latest Threats collapsible */}
+              <details className="lg:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between border-b-2 border-black pb-2 font-['Libre_Baskerville',serif] text-[13px] font-bold uppercase tracking-[0.18em] text-gray-900 [&::-webkit-details-marker]:hidden">
+                  Latest Threats
+                  <span className="text-red-600" aria-hidden="true">▾</span>
+                </summary>
+                <div className="mt-4 flex flex-col">
+                  {leftRail.map(({ article, summary }, i) => (
+                    <ListCard key={i} article={article} summary={summary} variant="rail-text" />
+                  ))}
+                </div>
+              </details>
+
               {/* RIGHT RAIL — thumbnail stack + Respond/Reclaim */}
               <aside className="lg:col-span-3 lg:border-l lg:border-gray-300 lg:pl-6">
                 <RailHeader>Featured</RailHeader>
@@ -147,7 +162,6 @@ export default function ArticleGrid({ articles, summaries, editorial }: Props) {
                 </div>
 
                 <div className="mt-8">
-                  <RailHeader>Respond / Reclaim</RailHeader>
                   <ul className="flex flex-col">
                     {[
                       {

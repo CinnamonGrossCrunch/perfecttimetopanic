@@ -17,13 +17,10 @@ export function TopicsNav({ counts }: { counts: Record<string, number> }) {
           <Link
             key={s.slug}
             href={`/section/${s.slug}`}
-            className="group flex items-center justify-between gap-3 border border-gray-300 bg-white px-4 py-3 transition-colors hover:border-red-600 hover:bg-gray-50"
+            className="group block border border-gray-300 bg-white px-4 py-3 transition-colors hover:border-red-600 hover:bg-gray-50"
           >
             <span className="font-['Libre_Baskerville',serif] text-[15px] font-bold text-gray-900 transition-colors group-hover:text-red-600">
               {s.label}
-            </span>
-            <span className="flex-shrink-0 text-[11px] font-medium tracking-[0.12em] text-gray-500">
-              {counts[s.topic]}
             </span>
           </Link>
         ))}
