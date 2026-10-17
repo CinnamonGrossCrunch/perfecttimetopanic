@@ -104,12 +104,19 @@ export function SiteHeader({ variant }: { variant: Variant }) {
             )}
           </div>
 
-          {/* Desktop about icon — hidden on mobile */}
           {isHome && (
-            <Link href="/about" aria-label="About Worrry"
-              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full text-red-600 transition-colors hover:bg-gray-100 hover:text-red-700">
-              <InfoIcon />
-            </Link>
+            <>
+              <Link href="/about" aria-label="About Worrry"
+                className="hidden lg:inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-gray-100 hover:text-red-700">
+                <InfoIcon />
+                <span>About</span>
+              </Link>
+
+              <Link href="/about" aria-label="About Worrry"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-red-600 transition-colors hover:bg-gray-100 hover:text-red-700 lg:hidden">
+                <InfoIcon />
+              </Link>
+            </>
           )}
         </div>
 
